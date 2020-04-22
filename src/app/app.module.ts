@@ -7,6 +7,12 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { AppComponent } from './app.component';
 import { JournalComponent } from './journal/journal.component';
+import { NavComponent } from './navbar/nav/nav.component';
+import { HeaderComponent } from './navbar/header/header.component';
+import { FooterComponent } from './navbar/footer/footer.component';
+import {Angular2UsefulSwiperModule} from 'angular2-useful-swiper';
+import { IssueComponent } from './journal/issue/issue.component';
+import {JournalService} from './controller/service/journal.service';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -15,11 +21,16 @@ export function HttpLoaderFactory(http: HttpClient) {
 @NgModule({
   declarations: [
     AppComponent,
-    JournalComponent
+    JournalComponent,
+    NavComponent,
+    HeaderComponent,
+    FooterComponent,
+    IssueComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
+    Angular2UsefulSwiperModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -28,7 +39,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     })
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [JournalService],
+  bootstrap: [JournalComponent]
 })
 export class AppModule { }

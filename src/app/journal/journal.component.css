@@ -1,0 +1,50 @@
+.body {
+  padding-left: 40px ;
+  padding-right: 40px ;
+}
+swiper {
+  height: 300px;
+  position: relative;
+  margin-top: -24px;
+
+}
+.swiper-slide img{
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+.swiper-wrapper {
+  position: relative;
+}
+.latest-issue {
+  font-size: 25px;
+  padding: 0px;
+  text-transform: uppercase;
+  border-bottom: 1px solid black;
+}
+.latest-issue span:hover {
+  border-bottom: 3px solid #1E5991;
+}
+.first-row{
+  padding-top: 22px ;
+  margin-left: 15px;
+  border-bottom: 3px solid black;
+}
+
+.article {
+  font-size: 20px;
+  text-transform: uppercase;
+  padding-left: 50px;
+  margin-top: 5px;
+}
+
+.second-row {
+  margin-top: 62px ;
+  margin-left: 15px;
+  border-bottom: 3px solid black;
+}
+.border-bottom {
+  margin-top: 60px;
+  margin-bottom: 40px;
+}
+

@@ -1,0 +1,39 @@
+.associations{
+  text-align: center;
+}
+img {
+  box-sizing: border-box;
+  margin-left: 10px;
+}
+.uca {
+  width: 260px;
+  height: 70px;
+}
+.fst {
+  width: 60px;
+  height: 60px;
+}
+
+.associations a {
+  margin-right: 20px;
+  color: black;
+}
+.footer {
+  margin-top: 10px;
+  height: 60px;
+}
+.footer img {
+  width: 60px;
+  height: 60px;
+}
+.footer div {
+  text-align: center;
+}
+.footer a  {
+  display: inline-block;
+  margin-left: 17px;
+  margin-right: 15px;
+  margin-top: 20px;
+  text-decoration: none;
+  color: black;
+}

@@ -1,0 +1,92 @@
+.container {
+  padding-right: 0px;
+  padding-left: 0px;
+  margin-top: -25px;
+}
+.large-header {
+  position: relative;
+  width: 100%;
+  background: #111;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center center;
+  z-index: 1;
+}
+
+.large-header {
+  background-image: url("src/assets/pictures/abstractSky2.jpg");
+}
+
+.main-title {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  color: #F9F1E9;
+  text-align: center;
+  top: 40%;
+  left: 5%;
+}
+
+.main-title {
+  text-transform: uppercase;
+  font-size: 2em;
+  letter-spacing: 0.1em;
+}
+
+.main-title .thin {
+  font-weight: 200;
+}
+
+@media only screen and (max-width: 768px) {
+  .demo .main-title {
+    font-size: 3em;
+  }
+}
+/*/////////////////////*/
+.main-body {
+  padding-right: 80px;
+  padding-left: 80px;
+  padding-top: 40px;
+}
+
+.latest-issue {
+  font-size: 25px;
+  padding: 0px;
+  text-transform: uppercase;
+  border-bottom: 1px solid black;
+}
+
+.first-row{
+  padding-top: 22px ;
+}
+
+.article {
+  font-size: 20px;
+  text-transform: uppercase;
+  padding-left: 50px;
+  margin-top: 5px;
+}
+
+.issue {
+  padding: 40px 40px 0px;
+}
+.issue .options {
+  padding-bottom: 5px;
+  border-bottom: 1px solid black;
+}
+.issue .options button{
+  margin-left: 5px;
+}
+.latest-issue span:hover {
+  border-bottom: 3px solid #1E5991;
+}
+.previous-issues {
+  margin-top: 20px;
+}
+.previous-issues a {
+  text-decoration: none;
+  color: black;
+}
+.previous-issues a span {
+  font-family: FontAwesome;
+}

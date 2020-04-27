@@ -8,10 +8,13 @@
         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" id="dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Issues</a>
+        <a class="nav-link dropdown-toggle" id="dropdown1" data-toggle="dropdown" aria-haspopup="true"
+           aria-expanded="false">Issues</a>
         <ul class="dropdown-menu" aria-labelledby="dropdown1">
-          <li class="dropdown-item" href="#"><a>Latest Issues</a></li>
-          <li class="dropdown-item" href="#"><a>Archive</a></li>
+          <a routerLink="Issues"><li class="dropdown-item" href="#">
+            Latest Issues
+          </li></a>
+          <a routerLink="Archive"> <li class="dropdown-item" href="#">Archive</li></a>
         </ul>
       </li>
       <li class="nav-item dropdown">

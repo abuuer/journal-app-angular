@@ -1,4 +1,4 @@
-header{
+.container-fluid{
   margin-top: 15px;
   font-size: 15px;
 }
@@ -11,9 +11,10 @@ form {
   padding-top: 15px;
 }
 .login{
-  padding-top: 20px;
+  margin-top: 20px;
 }
-.line {
+
+.line  {
   border-left: 1px solid grey;
   height: 30px;
 }

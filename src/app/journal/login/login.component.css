@@ -1,0 +1,88 @@
+.login-pf-page {
+  background-image: url("../../../assets/pictures/lab.jpg");
+}
+.login-pf-page .login-pf-page-header{
+    text-align: center;
+    margin-top: 50px;
+    padding-bottom: 50px;
+  }
+.logo {
+  width: 70px;
+  height: 90px;
+}
+.login-pf-page {
+  padding-top: 20px;
+}
+#lg-page-title{
+  font-size: 24px;
+  text-align: center;
+  font-weight: normal;
+}
+#lg-form-login .control-label::after, #lg-register-form .control-label::after {
+  content: "*";
+  padding-left: 2px;
+  color: rgb(252, 106, 75);
+}
+* {
+  box-sizing: border-box;
+}
+div {
+  display: block;
+}
+.login-pf-header {
+  text-align: center;
+}
+.login-pf-page .card-pf {
+  box-shadow: rgb(219, 219, 219) 0px 1px 2px 1px;
+  border-radius: 4px;
+  margin-bottom: 40px;
+  max-width: 400px;
+}
+@media (min-width: 768px) {
+  .login-pf-page .card-pf {
+    padding: 20px 40px 30px 40px;
+  }
+}
+
+  .login-pf-page .card-pf {
+    padding: 10px 20px 30px 20px;
+    margin-bottom: 0;
+  }
+  .card-pf {
+    background: #fff;
+    margin: 0 auto;
+    padding:20px;
+    max-width: 500px;
+    border-top: 0;
+    box-shadow: 0 0 0;
+  }
+  .card-pf {
+    background: #fff;
+    border-top: 2px solid transparent;
+    box-shadow: 0 1px 1px rgba(3, 3, 3, 0.175);
+    margin: 0 -10px 20px;
+    padding: 0 20px;
+  }
+#lg-form-buttons {
+  margin-top: 80px;
+}
+a{
+  text-decoration: none;
+}
+#lg-registration {
+  margin-top: 30px;
+  text-align: center;
+  color: grey;
+}
+.btn {
+  margin-bottom: 0;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  touch-action: manipulation;
+  user-select: none;
+}
+label {
+  font-weight: 500;
+}

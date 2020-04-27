@@ -1,0 +1,67 @@
+<div class="body">
+  <swiper [config]="config">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide">
+        <img src="../../assets/pictures/lab.jpg" alt="">
+      </div>
+      <div class="swiper-slide">
+        <img src="../../assets/pictures/FSTGLablogo.png" alt="">
+      </div>
+      <div class="swiper-slide">Slide 3</div>
+      <div class="swiper-slide">Slide 4</div>
+    </div>
+    <!-- Add Pagination -->
+    <div class="swiper-pagination"></div>
+    <!-- Add Arrows -->
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+  </swiper>
+
+  <div class="section">
+    <div class="row">
+      <div class="col-md-8 issue-block">
+        <div class="row first-row">
+          <div class="col-md-12 latest-issue">
+            <span >Latest Issue</span>
+          </div>
+          <div class="row first-row-block">
+            <div class="col-md-12">
+              <div class="issue">
+                <div class="row main-article">
+                  <div class="col-md-12 ">
+                    <app-issue></app-issue>
+                  </div>
+                </div>
+                <div class="row other-articles">
+                  <div class="col-md-6 ">
+                    <app-issue></app-issue>
+                  </div>
+                  <div class="col-md-6 ">
+                    <app-issue></app-issue>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row second-row">
+          <div class="col-md-12 latest-issue">
+            <span >Most Read</span>
+          </div>
+          <div class="issue">
+          <div class="row">
+              <div class="col-md-6 ">
+                <app-issue></app-issue>
+              </div>
+              <div class="col-md-6 ">
+                <app-issue></app-issue>
+              </div>
+          </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 article">Article</div>
+    </div>
+  </div>
+</div>

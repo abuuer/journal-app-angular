@@ -19,10 +19,11 @@
       <div  class="col-md-4 d-flex justify-content-center"><em class="line"></em></div>
       <div class="col-md-4">
         <i class="fa fa-user-o" aria-hidden="true"></i>
-        <a hreflang="login" id="login" style="margin-left: 5px">Login</a></div>
-      <div class="col-md-4">
-        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-        <a href="#" id="register" style="margin-left: 5px">Register</a></div>
+        <a *ngIf="userService.authenticate()" [routerLink]="['user/profile']"> {{userService.currentUser.userNamme }}</a>
+        <a *ngIf="!userService.authenticate()" [routerLink]="['user/login']" id="login" style="margin-left: 5px">Login</a></div>
+      <div *ngIf="!userService.authenticate()" class="col-md-4">
+        <i  class="fa fa-pencil-square-o" aria-hidden="true"></i>
+        <a  id="register" style="margin-left: 5px">Register</a></div>
     </div>
   </div>
 

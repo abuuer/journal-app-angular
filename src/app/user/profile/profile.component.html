@@ -1,0 +1,122 @@
+<div class="container">
+        <div class="row">
+          <div class="col-md-auto col-4 ">
+            <img src="../../../assets/pictures/img_avatar.png" alt="">
+          </div>
+          <div class="col-md-5 col-4">
+            <div>Anouar Abouerraja
+            </div>
+            <div>Student </div>
+            <div >Marrakesh, Morocco</div>
+          </div>
+        </div>
+</div>
+
+
+
+<div class="container second-container">
+  <div class="row ">
+    <div class="col-md-2 option-wrap">
+      <div class="option" (click)="changeValue('Account')">Account</div>
+      <div class="option" (click)="changeValue('Submission')">Submission</div>
+      <div class="option" (click)="changeValue('Privacy')">Privacy Settings</div>
+      <div class="option" (click)="changeValue('Social')">Social Profils</div>
+    </div>
+    <div class="col-md-8 main-settings" [ngSwitch]="status">
+
+      <div class="account" *ngSwitchDefault >
+        <h2>Account Settings</h2>
+        <form action="">
+          <div class="edit-username">
+            <div style="font-size: larger"><b>Name</b></div>
+            <label >User name : </label>
+            <input class="form-control col-6" type="text" placeholder="Enter your user name" [value]="currentUser.userNamme">
+          </div>
+          <div class="login" style="margin-top: 35px">
+            <div style="font-size: larger"><b>Login</b></div>
+              <label >Email :</label>
+              <input class="form-control col-6" type="text" placeholder="Enter your user email" [value]="">
+            <div>
+              <button class="btn btn-outline-dark">Change Password</button>
+            </div>
+          </div>
+          <div class="profile-url" style="margin-top: 35px">
+            <h2>Profile URL</h2>
+            <input type="text" name="page_name" id="page_name" value="heyeejz" class="form-control col-6" [(ngModel)]="currentUser.email" placeholder="Profile URL">
+            <div>fstg.journalreview.edu/{{currentUser.email}}</div>
+            </div>
+          <div style="text-align: center">
+            <div class="btn btn-outline-secondary" style="border-radius: 15px; margin-right: 10px">CANCEL</div>
+            <div class="btn btn-outline-success" style="border-radius: 15px;">SAVE</div>
+          </div>
+
+          <br>
+          <hr>
+        </form>
+      </div>
+
+
+
+
+      <div *ngSwitchCase="'Submission'">
+        <h2>New Submission</h2>
+        <hr>
+        <div class="row">
+          <div class="col-8" style="margin-top: 0px">
+          Start a new submission and upload your paper.
+          </div>
+          <div class="col-4" style="margin-top: 0px">
+            <button [routerLink]="['../submission']" class="btn btn-outline-primary float-right">Start Submission</button>
+          </div>
+        </div>
+        <hr>
+        <br>
+        <h2>Statistics</h2>
+        <hr>
+        <div class="row">
+          <div class="col-8" style="margin-top: 0px">
+            View your submissions with more statistics and details.
+          </div>
+          <div class="col-4" style="margin-top: 0px">
+            <button class="btn btn-outline-primary float-right">More Details</button>
+          </div>
+        </div>
+        <hr>
+
+      </div>
+
+
+
+
+      <div *ngSwitchCase="'Privacy'">
+        <h2>Account Changes</h2>
+        <br>
+        <form action="">
+          <div>Hide your Publications on your profile<button class="btn btn-outline-danger float-right">Hide publications</button>
+          </div>
+          <br><br>
+          <div class="search-privacy">
+            <div style="font-size: larger"><b>Search Privacy</b></div>
+            <div>
+              <p-checkbox [(ngModel)]="value" name="checkbox"></p-checkbox>
+              <label style="margin-left: 10px"> Hide your profile from search results</label>
+            </div>
+          </div>
+          <br>
+          <hr>
+          <h2>Delete Account</h2>
+          <div class="alert alert-danger">Warning: Deleting your account cannot be undone.</div>
+          <div class="form-group"><textarea class="form-control" id="deletion_feedback" name="feedback"
+                                            placeholder="Let us know why you're deleting your account (optional)"
+                                            rows="4"></textarea></div>
+          <button class="btn btn-block btn-outline-danger">DELETE MY ACCOUNT</button>
+        </form>
+      </div>
+
+
+      <div *ngSwitchCase="'Social'">Social</div>
+    </div>
+  </div>
+</div>
+
+

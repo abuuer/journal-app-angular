@@ -1,5 +1,6 @@
 .login-pf-page {
   background-image: url("../../../assets/pictures/lab.jpg");
+  height: 700px;
 }
 .login-pf-page .login-pf-page-header{
     text-align: center;

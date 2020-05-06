@@ -4,10 +4,11 @@ import { CommonModule } from '@angular/common';
 import {LoginComponent} from './login/login.component';
 import {RouterModule} from '@angular/router';
 import {userRoutes} from './user-routing.module';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ProfileComponent} from './profile/profile.component';
 import {
-  CheckboxModule,
+  CardModule,
+  CheckboxModule, DialogModule,
   DropdownModule,
   FileUploadModule,
   InputTextareaModule, PickListModule,
@@ -16,13 +17,20 @@ import {
 } from 'primeng';
 import {MenuItem} from 'primeng/api';
 import {SubmissionComponent} from './submission/submission.component';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatIconModule} from '@angular/material/icon';
+import {MatRadioModule} from "@angular/material/radio";
+import {MatTableModule} from "@angular/material/table";
+import { RegisterComponent } from './register/register.component';
 
 
 @NgModule({
   declarations: [
     LoginComponent,
     ProfileComponent,
-    SubmissionComponent
+    SubmissionComponent,
+    RegisterComponent
   ],
   imports: [
     CommonModule,
@@ -35,6 +43,14 @@ import {SubmissionComponent} from './submission/submission.component';
     FileUploadModule,
     DropdownModule,
     PickListModule,
+    DialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    CardModule,
+    MatIconModule,
+    MatRadioModule,
+    MatTableModule,
   ],
   providers: [
   ]

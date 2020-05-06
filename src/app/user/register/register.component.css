@@ -1,0 +1,13 @@
+.register-page{
+  background-image: url("../../../assets/pictures/lab.jpg");
+  height: 950px;
+}
+.form {
+  margin: auto;
+  width: 50%;
+  padding-top: 10%;
+  width: 60vw;
+}
+.example-full-width {
+  width: 100%;
+}

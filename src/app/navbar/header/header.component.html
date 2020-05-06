@@ -21,9 +21,9 @@
         <i class="fa fa-user-o" aria-hidden="true"></i>
         <a *ngIf="userService.authenticate()" [routerLink]="['user/profile']"> {{userService.currentUser.userNamme }}</a>
         <a *ngIf="!userService.authenticate()" [routerLink]="['user/login']" id="login" style="margin-left: 5px">Login</a></div>
-      <div *ngIf="!userService.authenticate()" class="col-md-4">
+      <div *ngIf="!userService.authenticate()" class="col-md-4" style=" padding-left: 0px">
         <i  class="fa fa-pencil-square-o" aria-hidden="true"></i>
-        <a  id="register" style="margin-left: 5px">Register</a></div>
+        <a [routerLink]="['user/register']"  id="register" style="margin-left: 5px;">Register</a></div>
     </div>
   </div>
 

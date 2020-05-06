@@ -1,14 +1,20 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {MenuItem, Message, MessageService} from 'primeng/api';
+import {FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from '@angular/forms';
+import {ErrorStateMatcher} from '@angular/material/core';
 
 
 @Component({
   selector: 'app-submission',
-  providers: [MessageService],
+  providers: [
+    MessageService
+  ],
   templateUrl: './submission.component.html',
   styleUrls: ['./submission.component.css'],
   encapsulation: ViewEncapsulation.None
 })
+
+
 export class SubmissionComponent implements OnInit {
   items: MenuItem[];
   activeIndex = 0;
@@ -23,7 +29,34 @@ export class SubmissionComponent implements OnInit {
   finalTagsList: string[] = [];
   msgs: Message[] = [];
   additionalTags: string;
+  display = false;
+  displayBasic: boolean;
 
+  matcher = new MyErrorStateMatcher();
+
+  authForm = new FormGroup({
+      firstName: new FormControl('', Validators.required),
+      lastName: new FormControl('', Validators.required),
+      email: new FormControl('',[Validators.required, Validators.email]),
+      emailConf: new FormControl('',[Validators.required, Validators.email]),
+      institution: new FormControl('',[Validators.required]),
+    }
+  )
+  get firstName(): any {
+    return this.authForm.get('firstName');
+  }
+  get lastName(): any {
+    return this.authForm.get('lastName');
+  }
+  get email(): any {
+    return this.authForm.get('email');
+  }
+  get emailConf(): any {
+    return this.authForm.get('emailConf');
+  }
+  get institution(): any {
+    return this.authForm.get('institution');
+  }
   constructor(private messageService: MessageService) {
     this.types = [
       {label: 'Select your item\'s type', value: null},
@@ -69,26 +102,19 @@ export class SubmissionComponent implements OnInit {
         }
       },
       {
-        label: 'Reviewers',
-        command: (event: any) => {
-          this.activeIndex = 4;
-          this.messageService.add({severity: 'info', summary: 'Reviewers', detail: event.item.label});
-        }
-      },
-      {
         label: 'Details & Comments',
         command: (event: any) => {
-          this.activeIndex = 5;
+          this.activeIndex = 4;
           this.messageService.add({severity: 'info', summary: 'Details & Comments', detail: event.item.label});
-          this.value = '5';
+          this.value = '4';
         }
       },
       {
         label: 'Review & Submit',
         command: (event: any) => {
-          this.activeIndex = 6;
+          this.activeIndex = 5;
           this.messageService.add({severity: 'info', summary: 'Review & Submit', detail: event.item.label});
-          this.value = '6';
+          this.value = '5';
         }
       }
     ];
@@ -154,5 +180,17 @@ export class SubmissionComponent implements OnInit {
       this.msgs = [];
       this.msgs.push({severity: 'warn', summary: 'Warn Message', detail: 'Maximum allowed tags is 6'});
     }
+  }
+
+  showDialog() {
+    this.display = true ;
+  }
+
+}
+// tslint:disable-next-line:component-class-suffix
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
   }
 }

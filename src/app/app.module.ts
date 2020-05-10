@@ -16,15 +16,13 @@ import {JournalService} from './controller/service/journal.service';
 import {routes} from './routing';
 import {RouterModule} from '@angular/router';
 import { HomeComponent } from './journal/home/home.component';
-import { IssueDetailComponent } from './journal/issues/issue-detail/issue-detail.component';
 import {UserService} from './controller/service/user.service';
 import { FormsModule} from '@angular/forms';
-import { TableModule } from 'primeng/table';
-import { ToastModule } from 'primeng/toast';
-import { CalendarModule } from 'primeng/calendar';
-import {MenuItem} from 'primeng/api';
 import {AccordionModule} from 'primeng';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { ArchiveComponent } from './journal/issues/archive/archive.component';
+import {LatestIssuesComponent} from './journal/issues/latest-issues/latest-issues.component';
+import { ManageSubsComponent } from './user/editor/manage-subs/manage-subs.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -39,7 +37,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     FooterComponent,
     IssueComponent,
     HomeComponent,
-    IssueDetailComponent,
+    LatestIssuesComponent,
+    ArchiveComponent,
   ],
   imports: [
     BrowserModule,

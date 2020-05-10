@@ -6,51 +6,113 @@
     <header class="login-pf-header">
       <h1 id="lg-page-title">Login</h1>
     </header>
-    <div id="lg-content">
-      <div id="lg-content-wrapper">
-        <div id="lg-form">
-          <div id="lg-form-wrapper">
-            <form id="lg-form-login" action="" method="post" #loginForm="ngForm" (ngSubmit)="login(loginForm.value)">
-              <div class="form-group">
-                <label for="username" class="control-label" >User Name</label>
-                <input tabindex="1" id="username" class="form-control" name="username" value="" type="text" required
-                       autofocus="" autocomplete="off" [(ngModel)]="user.userNamme">
-              </div>
+    <mat-tab-group>
+      <mat-tab label="Author">
+        <div id="lg-content" class="lg-content">
+          <div id="lg-content-wrapper">
+            <div id="lg-form">
+              <div id="lg-form-wrapper">
+                <form id="lg-form-login" action="" method="post" #loginForm="ngForm" (ngSubmit)="authorLogin()">
+                  <div class="form-group">
+                    <label for="username" class="control-label" >User Name</label>
+                    <input tabindex="1" id="username" class="form-control" name="username" value="" type="text" required
+                           autofocus="" autocomplete="off" [(ngModel)]="author.email">
+                  </div>
 
-              <div class="form-group">
-                <label for="password" class="control-label">Password</label>
-                <input tabindex="2" id="password" class="form-control" name="password" type="password" autocomplete="off"
-                       required [(ngModel)]="user.password">
-              </div>
+                  <div class="form-group">
+                    <label for="password" class="control-label">Password</label>
+                    <input tabindex="2" id="password" class="form-control" name="password" type="password" autocomplete="off"
+                           required [(ngModel)]="author.password">
+                  </div>
 
-              <div class="form-group login-pf-settings">
-                <div id="lg-form-options">
-                </div>
-                <div class="">
-                  <span class="lg-forgot float-right"><a tabindex="5" href="">Forgot your password?</a></span>
-                </div>
-              </div>
+                  <div class="form-group login-pf-settings">
+                    <div id="lg-form-options">
+                    </div>
+                    <div class="">
+                      <span class="lg-forgot float-right"><a tabindex="5" href="">Forgot your password?</a></span>
+                    </div>
+                  </div>
 
-              <div id="lg-form-buttons" class="form-group">
-                  <input *ngIf="loginForm.invalid" tabindex="4" class="btn btn-primary btn-block btn-lg" name="login" id="lg-login"
-                         type="submit" value="LOG IN" [disabled]="true" title="Fill the required field with *">
-                <input *ngIf="!loginForm.invalid" tabindex="4" class="btn btn-primary btn-block btn-lg" name="login" id="lg-login"
-                       type="submit" value="LOG IN" [disabled]="false">
+                  <div id="lg-form-buttons" class="form-group">
+                    <input *ngIf="loginForm.invalid" tabindex="4" class="btn btn-primary btn-block btn-lg" name="login" id="lg-login"
+                           type="submit" value="LOG IN" [disabled]="true" title="Fill the required field with *">
+                    <input *ngIf="!loginForm.invalid" tabindex="4" class="btn btn-primary btn-block btn-lg" name="login" id="ed-lg-login"
+                           type="submit" value="LOG IN" [disabled]="false">
+                  </div>
+                </form>
               </div>
-            </form>
-          </div>
-        </div>
-
-        <div id="lg-info" class="login-pf-signup">
-          <div id="lg-info-wrapper" class="">
-            <div id="lg-registration">
-              <span>Don't have an account? <a tabindex="6" href="">Sign up</a></span>
             </div>
 
+            <div id="lg-info" class="login-pf-signup">
+              <div id="lg-info-wrapper" class="">
+                <div id="lg-registration">
+                  <span>Don't have an account? <a tabindex="6" href="">Sign up</a></span>
+                </div>
+
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </mat-tab>
+      <mat-tab label="Editor">
+        <div id="ed-lg-content" class="lg-content">
+          <div id="ed-lg-content-wrapper">
+            <div id="ed-lg-form">
+              <div id="ed-lg-form-wrapper">
+                <!-- #loginForm="ngForm" (ngSubmit)="login(loginForm.value)" -->
+                <form id="ed-lg-form-login" action="" method="post" (ngSubmit)="editorLogin()" [formGroup]="formGroup">
+                  <div class="col-md-12">
+                    <mat-form-field class="example-full-width" style="width: 100%">
+                      <mat-label>Email</mat-label>
+                      <input matInput [(ngModel)]="editor.email" formControlName="email"
+                             placeholder="Re-enter your primary email" required>
+                      <mat-hint>Errors appear instantly!</mat-hint>
+                      <mat-error *ngIf="email.hasError('email') &&
+                        !email.hasError('required')">
+                        Please enter a valid email address
+                      </mat-error>
+                      <mat-error *ngIf="email.hasError('required')">
+                        Email is <strong>required</strong>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
 
+                  <div class="col-md-12">
+                    <mat-form-field class="example-full-width" style="width: 100%">
+                      <mat-label>Password</mat-label>
+                      <input matInput [(ngModel)]="editor.password" formControlName="pwd" type="password" placeholder="Enter your Password" >
+                      <mat-error *ngIf="pwd.hasError('required')">
+                        Password is <strong>required</strong>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="form-group login-pf-settings">
+                    <div id="ed-lg-form-options">
+                    </div>
+                    <div class="">
+                      <span class="lg-forgot float-right"><a tabindex="5" (click)="c()">Forgot your password?</a></span>
+                    </div>
+                  </div>
+
+                  <div id="ed-lg-form-buttons" class="form-group">
+                    <button [disabled]="enable()" type="submit"  mat-button class="btn btn-block btn-primary">LOG IN</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div id="ed-lg-info" class="login-pf-signup">
+              <div id="ed-lg-info-wrapper" class="">
+                <div id="ed-lg-registration">
+                  <span>Don't have an account? <a tabindex="6" href="">Sign up</a></span>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
   </div>
 </div>

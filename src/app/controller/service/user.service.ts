@@ -8,7 +8,8 @@ import {Router} from '@angular/router';
 export class UserService {
 
   private _user : User ;
-  private _currentUser : User ;
+  private _author : User ;
+  private _editor : User ;
   constructor(private route : Router) { }
 
   get user(): User {
@@ -20,25 +21,42 @@ export class UserService {
   set user(value: User) {
     this._user = value;
   }
-  get currentUser(): User {
-    if(this._currentUser == null) {
-      this._currentUser = new User() ;
+  get editor(): User {
+    if(this._editor == null) {
+      this._editor = new User() ;
     }
-    return this._currentUser;
+    return this._editor;
   }
-  set currentUser(value: User) {
-    this._currentUser = value;
+  set editor(value: User) {
+    this._editor = value;
+  }
+  get author(): User {
+    if(this._author == null) {
+      this._author = new User() ;
+    }
+    return this._author;
+  }
+  set author(value: User) {
+    this._author = value;
   }
 
 
-  login(loginForm) {
-    this.currentUser.userNamme = this.user.userNamme ;
-    console.log(loginForm);
-    console.log(this.currentUser);
+  authorLogin() {
+    this.user.email = this.author.email ;
+    console.log(this.user);
+    console.log(this.author);
     this.route.navigate(['home']);
   }
 
   authenticate() : boolean{
-    return !!this.currentUser.userNamme;
+    return !!this.user.email;
+  }
+  editorAuthenticate() : boolean{
+    return !!(this.user.email && this.editor.email);
+  }
+
+  editorLogin() {
+    this.user.email = this.editor.email ;
+    this.route.navigate(['home']);
   }
 }

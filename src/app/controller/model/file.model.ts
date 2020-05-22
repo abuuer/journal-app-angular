@@ -1,4 +1,4 @@
-export class Journal {
+export class FileInfo {
 
   constructor() {
   }

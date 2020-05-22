@@ -19,12 +19,13 @@
       <div  class="col-md-4 d-flex justify-content-center"><em class="line"></em></div>
       <div class="col-md-4">
         <i class="fa fa-user-o" aria-hidden="true"></i>
-        <a *ngIf="userService.authenticate()" [routerLink]="['user/profile']"> {{userService.user.email }}</a>
-        <a *ngIf="!userService.authenticate()" [routerLink]="['user/login']" id="login" style="margin-left: 5px">Login</a></div>
+        <a *ngIf="authenticate()" [routerLink]="['user/profile']"> {{tokenStorage.getUser().email }}</a>
+        <a *ngIf="!authenticate()" [routerLink]="['user/login']" id="login" style="margin-left: 5px">Login</a></div>
       <div class="col-md-4" style=" padding-left: 0px">
         <i  class="fa fa-pencil-square-o" aria-hidden="true"></i>
-        <a *ngIf="!userService.authenticate()" [routerLink]="['user/register']"  id="register" style="margin-left: 5px;">Register</a>
-        <a *ngIf="userService.authenticate()" [routerLink]="['home']"  id="logout" style="margin-left: 5px;">Log out</a>
+        <a *ngIf="!authenticate()" [routerLink]="['user/register']"  id="register" style="margin-left: 5px;">Register</a>
+        <a *ngIf="authenticate()" [routerLink]="['home']"  id="logout" style="margin-left: 5px;"
+           (click)="tokenStorage.logOut()">Log out</a>
       </div>
     </div>
   </div>

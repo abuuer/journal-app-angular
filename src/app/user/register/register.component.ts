@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from '@angular/forms';
+import {AuthService} from '../../controller/service/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -9,44 +10,73 @@ import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validat
 export class RegisterComponent implements OnInit {
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
-  constructor(private _formBuilder: FormBuilder) { }
+  formGroup: FormGroup;
+  constructor(private _formBuilder: FormBuilder, private authService: AuthService) { }
 
   ngOnInit(): void {
-    this.firstFormGroup = this._formBuilder.group({
-      firstName: new FormControl('', Validators.required),
-      lastName: new FormControl('', Validators.required),
-      email: new FormControl('',[Validators.required, Validators.email]),
-      emailConf: new FormControl('',[Validators.required, Validators.email]),
-      institution: new FormControl('',[Validators.required]),
-    });
-    this.secondFormGroup = this._formBuilder.group({
-      userName: new FormControl('', Validators.required),
-      pwd: new FormControl('', Validators.required),
-      pwdConf: new FormControl('', Validators.required),
+    this.formGroup = this._formBuilder.group({
+      formArray: new FormArray([
+        new FormGroup({
+          prefix: new FormControl(),
+          firstName: new FormControl('', Validators.required),
+          lastName: new FormControl('', Validators.required),
+          email: new FormControl('',[Validators.required, Validators.email]),
+          emailConf: new FormControl('',[Validators.required, Validators.email]),
+          institution: new FormControl('',[Validators.required]),
+          middleName: new FormControl(),
+          degree: new FormControl(),
+          userAdress: new FormControl(),
+          country: new FormControl(),
+          region: new FormControl(),
+          city: new FormControl(),
+          postalCode: new FormControl(),
+          phone: new FormControl(),
+          fax: new FormControl(),
+          department: new FormControl(),
+          instAdress: new FormControl(),
+          instPhone: new FormControl(),
+        }),
+        new FormGroup({
+          pwd: new FormControl('', Validators.required),
+          pwdConf: new FormControl('', Validators.required),
+        })
+      ])
     });
   }
-  get firstName(): any {
-    return this.firstFormGroup.get('firstName');
+ get firstName(): any {
+    return this.formArray.get([0]).get('firstName');
   }
   get lastName(): any {
-    return this.firstFormGroup.get('lastName');
+    return this.formArray.get([0]).get('lastName');
   }
   get email(): any {
-    return this.firstFormGroup.get('email');
+    return this.formArray.get([0]).get('email');
   }
   get emailConf(): any {
-    return this.firstFormGroup.get('emailConf');
+    return this.formArray.get([0]).get('emailConf');
   }
   get institution(): any {
-    return this.firstFormGroup.get('institution');
-  }
-  get userName(): any {
-    return this.secondFormGroup.get('userName');
+    return this.formArray.get([0]).get('institution');
   }
   get pwd(): any {
-    return this.secondFormGroup.get('pwd');
+    return this.formArray.get([1]).get('pwd');
   }
   get pwdConf(): any {
-    return this.secondFormGroup.get('pwdConf');
+    return this.formArray.get([1]).get('pwdConf');
   }
+  get formArray(): FormArray{
+    return this.formGroup.get('formArray') as FormArray;
+  }
+
+  onSubmit(){
+    this.authService.signup(this.formArray.get([0]).value,this.formArray.get([1]).value).subscribe(
+      data => {
+        console.log(data);
+      },
+      err => {
+        console.log(err.error.message);
+      }
+    );
+  }
+
 }

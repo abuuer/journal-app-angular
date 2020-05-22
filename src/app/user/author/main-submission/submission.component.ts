@@ -2,6 +2,15 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {MenuItem, Message, MessageService} from 'primeng/api';
 import {FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
+import {SubmissionService} from '../../../controller/service/submission.service';
+import {HttpEventType, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {Article} from '../../../controller/model/article.model';
+import {User} from '../../../controller/model/user.model';
+import {UserArticleDetail} from '../../../controller/model/user-article-detail.true';
+import {ArticleFunds} from '../../../controller/model/article-funds.true';
+import {Tags} from '../../../controller/model/tags.true';
+import {ArticleTags} from '../../../controller/model/article-tags.true';
 
 
 @Component({
@@ -16,13 +25,13 @@ import {ErrorStateMatcher} from '@angular/material/core';
 
 
 export class SubmissionComponent implements OnInit {
+
   items: MenuItem[];
   activeIndex = 0;
   i: number;
   value: string;
   selectedValue = 'original';
   wordcmp = 0;
-  uploadedFiles: object[] = [];
   types: any[];
   sourceTags: object[];
   targetTags: object[];
@@ -31,8 +40,19 @@ export class SubmissionComponent implements OnInit {
   additionalTags: string;
   display = false;
   displayBasic: boolean;
-
+  currentFile: File;
+  uploadedFiles: FileList;
   matcher = new MyErrorStateMatcher();
+  progress = 0;
+  message = '';
+  fileInfos: Observable<any>;
+  check = false;
+  show = false ;
+  private _article = new Article();
+  private newCoAuthor = new User();
+  private userArticleDetail = new UserArticleDetail()
+  private _newfunding = new ArticleFunds();
+  private _articleTag= new ArticleTags()
 
   authForm = new FormGroup({
       firstName: new FormControl('', Validators.required),
@@ -42,6 +62,7 @@ export class SubmissionComponent implements OnInit {
       institution: new FormControl('',[Validators.required]),
     }
   )
+
   get firstName(): any {
     return this.authForm.get('firstName');
   }
@@ -57,17 +78,36 @@ export class SubmissionComponent implements OnInit {
   get institution(): any {
     return this.authForm.get('institution');
   }
-  constructor(private messageService: MessageService) {
+  get article(): Article {
+    return this._article;
+  }
+  set article(value: Article) {
+    this._article = value;
+  }
+  get newfunding(): ArticleFunds {
+    return this._newfunding;
+  }
+  get articleTag(): ArticleTags {
+    return this._articleTag;
+  }
+  set articleTag(value: ArticleTags) {
+    this._articleTag = value;
+  }
+
+  constructor(private messageService: MessageService, private submissionService: SubmissionService) {
     this.types = [
       {label: 'Select your item\'s type', value: null},
       {label: 'Main Document (PDF)', value: 'Main'},
       {label: 'Cover Letter', value: 'letter'},
       {label: 'Supplemental Material', value: 'supp'},
       {label: 'Copyright Form', value: 'cpyright'},
-    ]
+    ];
   }
 
   ngOnInit(): void {
+    this.fileInfos = this.submissionService.getFiles();
+    this.article = this.submissionService.getLocalStorage().article;
+    this.selectedValue = this.article.type ;
     this.items = [
       {
         label: 'General',
@@ -131,40 +171,88 @@ export class SubmissionComponent implements OnInit {
   }
 
   changeIndex(i) {
+    this.sendToLS();
     this.activeIndex = i;
     this.value = i;
   }
 
-  onUpload(event) {
-    for (const file of event.files) {
-      this.uploadedFiles.push(file);
-    }
+  // file upload
+  selectFile($event){
+    this.uploadedFiles = $event.target.files ;
+    this.currentFile = this.uploadedFiles.item(0);
+    console.log(this.currentFile);
   }
+  upload($eventFile) {
+   // this.currentFile = $eventFile.files[0];
+    this.submissionService.upload(this.currentFile).subscribe(
+      event => {
+        if (event.type === HttpEventType.UploadProgress) {
+          this.progress = Math.round(100 * event.loaded / event.total);
+          console.log('if');
+        } else if (event instanceof HttpResponse) {
+          this.message = event.body.message;
+          console.log('else if');
+          this.fileInfos = this.submissionService.getFiles();
+        }
+      },
+      err => {
+        this.progress = 0;
+        this.message = 'Could not upload the file!';
+        this.currentFile = undefined;
+      });
 
+    this.uploadedFiles = undefined;
+  }
   resetFilter() {
-    this.targetTags = null;
-    this.ngOnInit();
+    this.sourceTags = [
+      {label: 'AI', value: 'AI'},
+      {label: 'Computing', value: 'Computing'},
+      {label: 'Quantum Computers', value: 'Quantum'},
+      {label: 'HMI', value: 'HMI'},
+      {label: 'Machine learning', value: 'Machine'},
+      {label: 'Hacking', value: 'Hacking'},
+      {label: 'Security', value: 'Security'},
+    ],
+      this.targetTags = [];
   }
 
-
+  // add article tags
   addToList() {
-    // to do : count this.finalTagsList first then push
-    if (this.finalTagsList.length < 6) {
       this.msgs = [];
+      let x = true;
+      console.log(this.finalTagsList)
+      console.log(this.finalTagsList.length)
       // tslint:disable-next-line:prefer-for-of
       for (let j = 0; j < this.targetTags.length; j++) {
         // @ts-ignore
         if (!this.finalTagsList.includes(this.targetTags[j].label)) {
           // @ts-ignore
-          this.finalTagsList.push(this.targetTags[j].label);
-        } else {
-          console.log('already exist')
+          this.finalTagsList.push(this.targetTags[j].label)
+        }
+        // tslint:disable-next-line:prefer-for-of
+        for (let i = 0; i < this.finalTagsList.length; i++) {
+          x = true;
+          this.articleTag.tag.tags = this.finalTagsList[i]
+          // tslint:disable-next-line:prefer-for-of
+          for (let k = 0; k < this.article.articleTags.length; k++) {
+            if (this.article.articleTags[k].tag.tags === this.articleTag.tag.tags) {
+              console.log(this.article.articleTags[k].tag.tags)
+              console.log(this.articleTag.tag.tags)
+              x = false;
+              console.log(x)
+            }
+          }
+          if (x === true) {
+            if (this.article.articleTags.length < 6) {
+              this.article.articleTags.push(this.cloneTag(this.articleTag))
+            } else {
+              this.msgs = [];
+              this.msgs.push({severity: 'warn', summary: 'Warn Message', detail: 'Maximum allowed tags is 6'});
+            }
+          }
         }
       }
-    } else {
-      this.msgs = [];
-      this.msgs.push({severity: 'warn', summary: 'Warn Message', detail: 'Maximum allowed tags is 6'});
-    }
+      this.sendToLS();
   }
 
   addAdditional() {
@@ -185,9 +273,66 @@ export class SubmissionComponent implements OnInit {
   showDialog() {
     this.display = true ;
   }
+  sendToLS(){
+    // tslint:disable-next-line:prefer-for-of
+    if(this.article.funding === false){
+      this.article.articleFunds = null;
+    }
+    return this.submissionService.setLocalStorage(this.article);
+  }
 
+  addCoAuhor() {
+    if(this.article.userArticleDetails == null ){
+      this.article.userArticleDetails = new Array();
+    }
+    this.newCoAuthor = this.authForm.value;
+    this.userArticleDetail.user = this.newCoAuthor ;
+    // console.log(this.userArticleDetail);
+    this.article.userArticleDetails.push(this.clone(this.userArticleDetail));
+    console.log(this.article.userArticleDetails);
+  }
+
+  addFunder() {
+    if(this.article.articleFunds == null){
+      this.article.articleFunds = new Array();
+    }
+    this.article.articleFunds.push(this.clonefunds(this.newfunding));
+    this.sendToLS();
+  }
+
+  remove(i) {
+    this.article.articleFunds.splice(i,1)
+    console.log(this.article.articleFunds)
+    this.sendToLS();
+  }
+
+  clone(userArticleDetail : UserArticleDetail): UserArticleDetail{
+    const clone = new UserArticleDetail();
+    clone.user = userArticleDetail.user;
+    return clone;
+  }
+  clonefunds(newfunding: ArticleFunds) {
+    const clone = new ArticleFunds();
+    clone.funder = newfunding.funder;
+    clone.amount = newfunding.amount;
+    return clone;
+  }
+  cloneTag(articleTag: ArticleTags) {
+    const clone = new ArticleTags()
+    clone.tag = this.cloneTags(articleTag.tag)
+    return clone;
+  }
+  private cloneTags(tag: Tags) {
+    const clone = new Tags()
+    clone.tags = tag.tags
+    return clone;
+  }
+
+  deleteTag(i) {
+    this.article.articleTags.splice(i,1)
+  }
 }
-// tslint:disable-next-line:component-class-suffix
+
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
     const isSubmitted = form && form.submitted;

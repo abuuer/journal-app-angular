@@ -12,8 +12,6 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {CardModule, CheckboxModule} from 'primeng';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatInputModule} from '@angular/material/input';
-import { ReviewSubsComponent } from './reviewer/review-subs/review-subs.component';
-
 
 @NgModule({
   declarations: [

@@ -18,11 +18,13 @@ import {RouterModule} from '@angular/router';
 import { HomeComponent } from './journal/home/home.component';
 import {UserService} from './controller/service/user.service';
 import { FormsModule} from '@angular/forms';
-import {AccordionModule} from 'primeng';
+import {AccordionModule, InputTextareaModule} from 'primeng';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { ArchiveComponent } from './journal/issues/archive/archive.component';
 import {LatestIssuesComponent} from './journal/issues/latest-issues/latest-issues.component';
 import { ManageSubsComponent } from './user/editor/manage-subs/manage-subs.component';
+import {AuthService} from './controller/service/auth.service';
+import {SubmissionService} from './controller/service/submission.service';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -47,6 +49,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     Angular2UsefulSwiperModule,
     AccordionModule,
     BrowserAnimationsModule,
+    InputTextareaModule,
     RouterModule.forRoot(routes),
     TranslateModule.forRoot({
       loader: {
@@ -58,7 +61,9 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   providers: [
     JournalService,
-    UserService
+    UserService,
+    AuthService,
+    SubmissionService
   ],
   bootstrap: [JournalComponent],
 })

@@ -1,8 +1,7 @@
 <div class="register-page">
-  <div class="form">
-    <mat-horizontal-stepper linear #stepper >
-      <mat-step [stepControl]="firstFormGroup">
-        <form [formGroup]="firstFormGroup">
+  <form form="ngForm" [formGroup]="formGroup">
+    <mat-horizontal-stepper linear #stepper formArrayName="formArray">
+      <mat-step formGroupName="0" [stepControl]="formArray.get([0])" >
           <ng-template matStepLabel>General Information</ng-template>
           <p-card>
             <p-card>
@@ -11,7 +10,7 @@
                 <div class="col-md-2">
                   <mat-form-field class="example-full-width">
                     <mat-label>Prefix</mat-label>
-                    <select matNativeControl required>
+                    <select formControlName="prefix" matNativeControl required>
                       <option value="Dr">Dr.</option>
                       <option value="Mr">Mr.</option>
                       <option value="Miss">Miss</option>
@@ -33,7 +32,7 @@
                 <div class="col-md-2">
                   <mat-form-field class="example-full-width">
                     <mat-label>Middle Name</mat-label>
-                    <input matInput placeholder="Enter your middle name" >
+                    <input formControlName="middleName" matInput placeholder="Enter your middle name" >
                   </mat-form-field>
                 </div>
                 <div class="col-md-4">
@@ -80,7 +79,7 @@
                 <div class="col-md-4">
                   <mat-form-field class="example-full-width">
                     <mat-label>Degree</mat-label>
-                    <input matInput placeholder="Enter your degree" >
+                    <input formControlName="degree" matInput placeholder="Enter your degree" >
                   </mat-form-field>
                 </div>
               </div>
@@ -92,19 +91,19 @@
                   <div class="col-md-5">
                     <mat-form-field class="example-full-width">
                       <mat-label>Adress</mat-label>
-                      <input matInput placeholder="Enter your adress" >
+                      <input formControlName="userAdress" matInput placeholder="Enter your adress" >
                     </mat-form-field>
                   </div>
                   <div class="col-md-3">
                     <mat-form-field class="example-full-width">
                       <mat-label>Country / Region</mat-label>
-                      <input matInput placeholder="Enter your country / region" >
+                      <input formControlName="country" matInput placeholder="Enter your country" >
                     </mat-form-field>
                   </div>
                   <div class="col-md-3">
                     <mat-form-field class="example-full-width">
                       <mat-label>State / Province</mat-label>
-                      <input matInput placeholder="Enter your state / province" >
+                      <input formControlName="region" matInput placeholder="Enter your region" >
                     </mat-form-field>
                   </div>
                 </div>
@@ -112,25 +111,25 @@
                   <div class="col-md-3">
                     <mat-form-field class="example-full-width">
                       <mat-label>City</mat-label>
-                      <input matInput placeholder="Enter your city" >
+                      <input formControlName="city" matInput placeholder="Enter your city" >
                     </mat-form-field>
                   </div>
                   <div class="col-md-2">
                     <mat-form-field class="example-full-width">
                       <mat-label>Postal Code</mat-label>
-                      <input matInput placeholder="Enter your postal code" >
+                      <input formControlName="postalCode" matInput placeholder="Enter your postal code" >
                     </mat-form-field>
                   </div>
                   <div class="col-md-4">
                     <mat-form-field class="example-full-width">
                       <mat-label>Phone</mat-label>
-                      <input matInput placeholder="Enter your phone" >
+                      <input formControlName="phone" matInput placeholder="Enter your phone" >
                     </mat-form-field>
                   </div>
                   <div class="col-md-3">
                     <mat-form-field class="example-full-width">
                       <mat-label>Fax</mat-label>
-                      <input matInput placeholder="Enter your fax" >
+                      <input formControlName="fax" matInput placeholder="Enter your fax" >
                     </mat-form-field>
                   </div>
                 </div>
@@ -154,19 +153,19 @@
                 <div class="col-md-4">
                   <mat-form-field class="example-full-width">
                     <mat-label>Department</mat-label>
-                    <input  matInput placeholder="Enter your department" >
+                    <input formControlName="department"  matInput placeholder="Enter your department" >
                   </mat-form-field>
                 </div>
                 <div class="col-md-4">
                   <mat-form-field class="example-full-width">
                     <mat-label>Full Adress</mat-label>
-                    <input  matInput placeholder="Enter the institution's full adress" >
+                    <input formControlName="instAdress" matInput placeholder="Enter the institution's full adress" >
                   </mat-form-field>
                 </div>
                 <div class="col-md-4">
                   <mat-form-field class="example-full-width">
                     <mat-label>Phone/Fax Number</mat-label>
-                    <input matInput placeholder="Enter the institution's phone/fax number" >
+                    <input formControlName="instPhone" matInput placeholder="Enter the institution's phone/fax number" >
                   </mat-form-field>
                 </div>
               </div>
@@ -174,29 +173,18 @@
           </p-card>
           <div>
             <p-footer >
-              <button mat-button matStepperNext class="btn btn-block btn-primary float-right">Next</button>
+              <button mat-button matStepperNext class="btn btn-block btn-primary float-right" type="button">Next</button>
             </p-footer>
           </div>
-        </form>
       </mat-step>
-      <mat-step [stepControl]="secondFormGroup" >
-        <form [formGroup]="secondFormGroup">
+      <mat-step formGroupName="1" [stepControl]="formArray.get([1])" >
           <ng-template matStepLabel>Authentication Information </ng-template>
           <p-card>
             <div class="row">
               <div class="col-md-4">
                 <mat-form-field class="example-full-width">
-                  <mat-label>User Name</mat-label>
-                  <input formControlName="userName" matInput placeholder="Enter your user name" >
-                  <mat-error *ngIf="userName.hasError('required')">
-                    User Name is <strong>required</strong>
-                  </mat-error>
-                </mat-form-field>
-              </div>
-              <div class="col-md-4">
-                <mat-form-field class="example-full-width">
                   <mat-label>Password</mat-label>
-                  <input formControlName="pwd" type="password" matInput placeholder="Enter your Password" >
+                  <input formControlName="pwd" type="password" matInput placeholder="Enter your Password" required>
                   <mat-error *ngIf="pwd.hasError('required')">
                     Password is <strong>required</strong>
                   </mat-error>
@@ -205,7 +193,7 @@
               <div class="col-md-4">
                 <mat-form-field class="example-full-width">
                   <mat-label>Confirm Password</mat-label>
-                  <input formControlName="pwdConf" type="password" matInput placeholder="Re-enter your Password" >
+                  <input formControlName="pwdConf" type="password" matInput placeholder="Re-enter your Password" required>
                   <mat-error *ngIf="pwdConf.hasError('required')">
                     Password confirmation is <strong>required</strong>
                   </mat-error>
@@ -214,22 +202,22 @@
             </div>
           </p-card>
             <div style="padding-top: 10px">
-              <button mat-button matStepperNext class="btn btn-primary float-right">Next</button>
-              <button mat-button matStepperPrevious class="btn btn-outline-light float-right" style="color: #555555">Back</button>
+              <button mat-button matStepperNext class="btn btn-primary float-right" type="button">Next</button>
+              <button mat-button matStepperPrevious class="btn btn-outline-light float-right" style="color: #555555"
+                      type="button">Back</button>
             </div>
-        </form>
       </mat-step>
       <mat-step>
         <ng-template matStepLabel>Done</ng-template>
         <p>You are now done.</p>
         <div>User info to be displayed here</div>
           <div style="padding-top: 10px">
-            <button mat-button class="btn btn-outline-success float-right">Save</button>
+            <button mat-button class="btn btn-outline-success float-right" (click)="onSubmit()">Save</button>
             <button mat-button matStepperNext (click)="stepper.reset()" class="btn btn-outline-danger float-right">Reset</button>
-            <button mat-button matStepperPrevious class="btn btn-outline-light float-right" style="color: #555555">Back</button>
+            <button mat-button matStepperPrevious class="btn btn-outline-light float-right" style="color: #555555" type="button">Back</button>
           </div>
       </mat-step>
     </mat-horizontal-stepper>
-  </div>
+  </form>
 
 </div>

@@ -72,7 +72,64 @@ h2 {
 .mat-radio-button ~ .mat-radio-button {
   margin-left: 16px;
 }
+.mat-radio-button.mat-accent .mat-radio-inner-circle {
+  background-color: #007ad9;
+}
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+  border-color: #007ad9;
+}
+.pol-check {
+  display: block;
+  text-align: center;
+  margin-top: 50%;
+}
+.ui-g {
+  padding: 10px 30px;
+}
+.polgrid {
+  border: 1px solid grey;
+}
+.example-button-row{
+  float: right;
+  padding: 10px 30px;
+}
+.abstract {
+  font-size: 16px;
+  line-height: 16px;
+  height: 32px;
+  overflow: hidden;
+}
 
-
-
-
+.show {
+  overflow: visible;
+  height: auto;
+}
+.showMore{
+  color: dodgerblue;
+  cursor: pointer;
+}
+.tags {
+  margin-right: 10px;
+  background-color: #eceff1;
+  border-radius: 10px;
+  padding: 0px 10px;
+}
+mat-card-content {
+  padding: 5px 10px;
+}
+mat-card-title .mat-raised-button {
+  line-height: 5px;
+  padding: 5px 5px ;
+}
+.edit-btn {
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+.mat-button-wrapper{
+  font-family: Roboto,Helvetica Neue,sans-serif;
+}
+mat-card-content .ui-g div {
+  border: 1px solid lightgray;
+  text-align: center;
+  margin-top: 1px;
+}

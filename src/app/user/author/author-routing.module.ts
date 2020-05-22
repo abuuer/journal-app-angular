@@ -5,7 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import {SubmissionComponent} from './main-submission/submission.component';
 import {SubmissionTableComponent} from './submission-table/submission-table.component';
 import {
-  CalendarModule, CardModule,
+  CalendarModule, CardModule, CheckboxModule,
   DialogModule,
   DropdownModule, FileUploadModule,
   MessagesModule,
@@ -14,22 +14,27 @@ import {
   TableModule
 } from 'primeng';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {InputTextareaModule} from 'primeng/inputtextarea';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatCardModule} from '@angular/material/card';
 import {BrowserModule} from '@angular/platform-browser';
+import {AuthorBoardComponent} from './author-board/author-board.component';
+import {MatButtonModule} from '@angular/material/button';
 
 
 const routes: Routes = [
   { path : 'submission' , component : SubmissionComponent},
   { path : 'statistics' , component : SubmissionTableComponent},
+  { path : 'author-board' , component : AuthorBoardComponent}
 ];
 
 @NgModule({
   declarations: [
     SubmissionComponent,
-    SubmissionTableComponent
+    SubmissionTableComponent,
+    AuthorBoardComponent,
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -49,7 +54,10 @@ const routes: Routes = [
     RadioButtonModule,
     FileUploadModule,
     MatCardModule,
-    CommonModule
+    CommonModule,
+    InputTextareaModule,
+    CheckboxModule,
+    MatButtonModule
   ],
   exports: [RouterModule]
 })

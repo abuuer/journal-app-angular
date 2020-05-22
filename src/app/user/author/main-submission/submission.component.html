@@ -10,16 +10,16 @@
               <hr>
                 <div class="card-title"><h4>Type</h4>Select your manuscript type </div>
               <div style="padding-left: 20px">
-                <div><p-radioButton name="groupname" value="original" [(ngModel)]="selectedValue" label="Original Research"></p-radioButton></div>
-                <div><p-radioButton name="groupname" value="comm" [(ngModel)]="selectedValue" label="Rapid Communications"></p-radioButton></div>
-                <div><p-radioButton name="groupname" value="review" [(ngModel)]="selectedValue" label="Review Article"></p-radioButton></div>
-                <div><p-radioButton name="groupname" value="case" [(ngModel)]="selectedValue" label="Case Studies"></p-radioButton></div>
+                <div><p-radioButton name="groupname" value="Original Research" [(ngModel)]="selectedValue" label="Original Research"></p-radioButton></div>
+                <div><p-radioButton name="groupname" value="Rapid Communications" [(ngModel)]="selectedValue" label="Rapid Communications"></p-radioButton></div>
+                <div><p-radioButton name="groupname" value="Review Article" [(ngModel)]="selectedValue" label="Review Article"></p-radioButton></div>
+                <div><p-radioButton name="groupname" value="Case Studies" [(ngModel)]="selectedValue" label="Case Studies"></p-radioButton></div>
               </div>
               <hr>
               <div class="card-title"><h4>Title</h4></div>
               <div>
                 <span class="ui-float-label">
-                  <textarea id="float-input" maxlength="120" rows="1" pInputTextarea style="width: 100% "></textarea>
+                  <textarea name="title" [(ngModel)]="article.title" id="float-input" maxlength="120" rows="1" pInputTextarea style="width: 100% "></textarea>
                   <label for="float-input">Enter your manuscript's title (max : 120 characters)</label>
                 </span>
               </div>
@@ -27,21 +27,21 @@
               <div class="card-title"><h4>Abstract</h4></div>
               <div>
                 <span class="ui-float-label">
-                  <textarea id="float-input-abs" maxlength="120" rows="4" pInputTextarea style="width: 100% " ></textarea>
+                  <textarea name="abstract" [(ngModel)]="article.abstractt" id="float-input-abs" rows="4" pInputTextarea style="width: 100% " ></textarea>
                   <label for="float-input-abs">Enter your abstract (max : 500 words)</label>
                 </span>
               </div>
               <hr>
             </div>
             <div class="card-footer">
-              <button class="btn btn-block btn-success " (click)="changeIndex(1)">Save</button>
+              <button mat-raised-button color="primary" class="float-right" (click)="changeIndex(1)">Save</button>
             </div>
           </div>
         </form>
       </div>
 
       <div *ngSwitchCase="'1'">
-        <button class="btn btn-light" (click)="changeIndex(0)"><span class="pi pi-angle-left"></span> back</button>
+        <button mat-raised-button class="fa fa-angle-left "  (click)="changeIndex(0)"> Back</button>
         <form action="">
           <div class="card">
             <div class="card-header">
@@ -55,9 +55,11 @@
                         <p-dropdown [options]="types" placeholder="Select your item's type" [showClear]="true"></p-dropdown>
                       </div>
                       <div>
-                        <p-fileUpload name="pdf" accept=".pdf" [showUploadButton]="false"  [showCancelButton]="false"
-                                      mode="advanced" chooseLabel="Upload File" (onUpload)="onUpload($event)">
+                        <p-fileUpload  name="file[]" accept=".pdf" [showUploadButton]="true"  [showCancelButton]="false"
+                                      mode="advanced" chooseLabel="Choose File" customUpload="true"
+                                      (uploadHandler)="upload($event)">
                         </p-fileUpload>
+                        <div *ngIf="currentFile"><p-progressBar [value]="progress"></p-progressBar></div>
                       </div>
                     </div>
                   </div>
@@ -67,8 +69,9 @@
                         <p-dropdown [options]="types" placeholder="Select your item's type" [showClear]="true"></p-dropdown>
                       </div>
                       <div>
-                        <p-fileUpload [showUploadButton]="false"  [showCancelButton]="false"
-                                      mode="advanced" chooseLabel="Upload File" (onUpload)="onUpload($event)">
+                        <p-fileUpload name="file[]" [showUploadButton]="true"  [showCancelButton]="false"
+                                      mode="advanced" chooseLabel="Choose File" customUpload="true"
+                                      (uploadHandler)="upload($event)">
                         </p-fileUpload>
                       </div>
                     </div>
@@ -78,11 +81,12 @@
                 <div class="col-md-6 col-6">
                   <div class="card sub-card">
                     <div>
-                      <p-dropdown [options]="types" placeholder="Select your item's type" [showClear]="true"></p-dropdown>
+                      <p-dropdown  [options]="types" placeholder="Select your item's type" [showClear]="true"></p-dropdown>
                     </div>
                     <div>
-                      <p-fileUpload  [showUploadButton]="false"  [showCancelButton]="false"
-                                    mode="advanced" chooseLabel="Upload File" (onUpload)="onUpload($event)">
+                      <p-fileUpload name="file[]" [showUploadButton]="false"  [showCancelButton]="false"
+                                    mode="advanced" chooseLabel="Choose File" customUpload="true"
+                                    (uploadHandler)="upload($event)">
                       </p-fileUpload>
                     </div>
                   </div>
@@ -93,16 +97,18 @@
                       <p-dropdown [options]="types" placeholder="Select your item's type" [showClear]="true"></p-dropdown>
                     </div>
                     <div>
-                      <p-fileUpload [showUploadButton]="false"  [showCancelButton]="false"
-                                    mode="advanced" chooseLabel="Upload File" (onUpload)="onUpload($event)">
+                      <p-fileUpload name="file[]" [showUploadButton]="false"  [showCancelButton]="false"
+                                    mode="advanced" chooseLabel="Choose File" customUpload="true"
+                                    (uploadHandler)="upload($event)">
                       </p-fileUpload>
                     </div>
                   </div>
-                </div>
-              </div>
+            </div>
+
+          </div>
             </div>
             <div class="card-footer">
-              <button class="btn btn-block btn-success " (click)="changeIndex(2)">Save</button>
+              <button mat-raised-button color="primary" class="float-right" (click)="changeIndex(2)">Save</button>
             </div>
           </div>
         </form>
@@ -110,7 +116,7 @@
 
 
       <div *ngSwitchCase="'2'">
-        <button class="btn btn-light" (click)="changeIndex(1)"><span class="pi pi-angle-left"></span> back</button>
+        <button mat-raised-button class="fa fa-angle-left "  (click)="changeIndex(1)"> Back</button>
         <form action="">
           <div class="card">
             <div class="card-header"><h2>Step 3: Attributes</h2></div>
@@ -150,8 +156,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let t of finalTagsList">
-                      <th >{{t}}</th>
+                    <tr *ngFor="let t of article.articleTags; index as i">
+                      <th >{{t.tag.tags}}</th>
+                      <th><button class="pi pi-trash" (click)="deleteTag(i)"></button></th>
                     </tr>
                     </tbody>
                   </table>
@@ -159,7 +166,7 @@
               </div>
             </div>
             <div class="card-footer">
-              <button class="btn btn-block btn-success " (click)="changeIndex(3)">Save</button>
+              <button mat-raised-button color="primary" class="float-right" (click)="changeIndex(3)">Save</button>
             </div>
           </div>
         </form>
@@ -168,7 +175,7 @@
 
 
       <div *ngSwitchCase="'3'">
-        <button class="btn btn-light" (click)="changeIndex(2)"><span class="pi pi-angle-left"></span> back</button>
+        <button mat-raised-button class="fa fa-angle-left "  (click)="changeIndex(2)"> Back</button>
         <form action="">
           <div class="card">
             <div class="card-header"><h2>Step 4: Authors & Institutions</h2></div>
@@ -190,11 +197,11 @@
                   <th>His Institution His Institution His Institution His Institution His Institution </th>
                   <th></th>
                 </tr>
-                <tr >
-                  <th ></th>
-                  <th ></th>
-                  <th ></th>
-                  <th ></th>
+                <tr *ngFor="let l of article.userArticleDetails; index as i">
+                  <th>{{i+2}}</th>
+                  <th>{{l.user.firstName}}  {{l.user.lastName}}</th>
+                  <th>{{l.user.institution}}</th>
+                  <th></th>
                 </tr>
                 </tbody>
               </table>
@@ -370,87 +377,279 @@
                   </p-card>
                 </form>
                 <p-footer >
-                  <button class="btn btn-block btn-primary float-right">Add New Author</button>
+                  <button (click)="addCoAuhor()"  class="btn btn-block btn-primary float-right">Add New Author</button>
                   <button class="btn btn-block btn-outline-light float-right" style="color: #555555">Cancel</button>
                 </p-footer>
               </p-dialog>
             </div>
-          </div>
-          <div class="card-footer">
-            <button class="btn btn-block btn-success " (click)="changeIndex(4)">Save</button>
+            <div class="card-footer">
+              <button mat-raised-button color="primary" class="float-right" (click)="changeIndex(4)">Save</button>
+            </div>
           </div>
         </form>
       </div>
 
       <div *ngSwitchCase="'4'">
-        <button class="btn btn-light" (click)="changeIndex(3)"><span class="pi pi-angle-left"></span> back</button>
+        <button mat-raised-button class="fa fa-angle-left "  (click)="changeIndex(3)"> Back</button>
         <div class="card">
-          <div class="card-header"><h2>Step 6: Details & Comments</h2></div>
-          <div class="card-body">
-            <form action="">
-              <hr>
-              <div class="row">
-                <div class="col-md-6">
-                  <label ><b>Was there any funding to report for this submission ?</b></label>
-                  <div>
-                    <mat-radio-group aria-label="Select an option" required>
-                      <mat-radio-button name="funds" value="yes">Yes</mat-radio-button>
-                      <mat-radio-button name="funds" value="no">No</mat-radio-button>
-                    </mat-radio-group>
-                  </div></div>
-                <div class="col-md-6">
-                  <table class="table">
-                    <thead>
-                    <tr>
-                      <th>Funder</th>
-                      <th>Sum ( $ )</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                      <td><button class="pi pi-plus" (click)="showDialog()"></button></td>
-                      <td></td>
-                    </tr>
-                    </tbody>
-                  </table>
-                  <p-dialog [style]="{width: '30vw'}" [(visible)]="display"  [resizable]="true">
-                    <p-header>Add A Funder</p-header>
-                    <p-card>
-                      <div class="row">
-                      <div class="col-md-6">
-                        <mat-form-field class="example-full-width">
-                          <mat-label>Funder</mat-label>
-                          <input matInput placeholder="Enter the funder's name" >
-                        </mat-form-field>
+            <div class="card-header"><h2>Step 5: Details & Comments</h2></div>
+            <div class="container">
+              <div class="card-body">
+                <form action="" >
+                  <hr>
+                  <div class="row" style="padding: 10px 30px">
+                    <div class="col-md-6">
+                      <label ><b>Was there any funding to report for this submission ?</b></label>
+                      <div>
+                        <mat-radio-group [(ngModel)]="article.funding" name="funding" aria-label="Select an option" required>
+                          <mat-radio-button name="funds" [value]=true>Yes</mat-radio-button>
+                          <mat-radio-button name="funds" [value]=false>No</mat-radio-button>
+                        </mat-radio-group>
+                      </div></div>
+                    <div *ngIf="article.funding" class="col-md-6">
+                      <table class="table">
+                        <thead>
+                        <tr>
+                          <th>Funder</th>
+                          <th>Sum ( $ )</th>
+                          <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let f of article.articleFunds; index as i" [attr.data-index]="i">
+                          <td>{{f.funder}}</td>
+                          <td>{{f.amount}}</td>
+                          <td><button class="pi pi-trash" (click)="remove(i)"></button></td>
+                        </tr>
+                        <tr>
+                          <td><button class="pi pi-plus" (click)="showDialog()"></button></td>
+                        </tr>
+                        </tbody>
+                      </table>
+                      <p-dialog [style]="{width: '30vw'}" [(visible)]="display"  [resizable]="true">
+                        <p-header>Add A Funder</p-header>
+                        <p-card>
+                          <div class="row">
+                            <div class="col-md-6">
+                              <mat-form-field class="example-full-width">
+                                <mat-label>Funder</mat-label>
+                                <input [(ngModel)]="newfunding.funder" name="funder" matInput placeholder="Enter the funder's name" >
+                              </mat-form-field>
+                            </div>
+                            <div class="col-md-6">
+                              <mat-form-field class="example-full-width">
+                                <mat-label>Amount</mat-label>
+                                <input [(ngModel)]="newfunding.amount" name="amount" type="number" matInput placeholder="Enter the funding's amount" >
+                              </mat-form-field>
+                            </div>
+                          </div>
+                        </p-card>
+                        <p-footer>
+                          <button class="btn btn-block btn-primary float-right" (click)="addFunder()">Add</button>
+                        </p-footer>
+                      </p-dialog>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="ui-g" >
+                        <div class="ui-g-12 polgrid" ><b>Public Access Policy</b></div>
+                        <div class="ui-g-1 polgrid" >
+                          <p-checkbox [(ngModel)]="check" name="polCheck" class="pol-check" binary="true"></p-checkbox>
+                        </div>
+                        <div class="ui-g-11 polgrid">
+                          <p>
+                            SEC. 218. The Director of the FSTG Labs shall require that all investigators
+                            funded by submit or have submitted for them to the National Library
+                            Central an electronic version of their final peer-reviewed manuscripts upon acceptance for publication,
+                            to be made publicly available no later than 12 months after the official date of publication: Provided,
+                            That the FSTG shall implement the public access policy in a manner consistent with copyright law.
+                          </p>
+                        </div>
                       </div>
-                      <div class="col-md-6">
-                        <mat-form-field class="example-full-width">
-                          <mat-label>Amount</mat-label>
-                          <input matInput placeholder="Enter the funding's amount" >
-                        </mat-form-field>
-                      </div>
-                      </div>
-                    </p-card>
-                    <p-footer>
-                      <button class="btn btn-block btn-primary float-right">Add New Funder</button>
-                    </p-footer>
-                  </p-dialog>
-                </div>
+                    </div>
+                  </div>
+                  <div class="example-button-row">
+                    <button mat-raised-button color="primary" [disabled]="!check" (click)="changeIndex(5)">Save</button>
+                  </div>
+                </form>
               </div>
-              <hr>
-              <div class="row">
-                Policies  to be added later
-              </div>
-              <div class="card-footer">
-                <button class="btn btn-block btn-success " (click)="changeIndex(5)">Save</button>
-              </div>
-            </form>
+            </div>
+
           </div>
-        </div>
+
       </div>
 
       <div *ngSwitchCase="'5'">
+        <button mat-raised-button class="fa fa-angle-left "  (click)="changeIndex(4)"> Back</button>
+        <div class="card">
+          <div class="card-header"><h2>Step 6: Review & Submit</h2></div>
+          <mat-card>
+            <div class="container">
+              <div class="row">
+                <div class="col-md-12">
+                  <mat-card >
+                    <mat-card-title>
+                      <h4>Type, Title And Abstract
+                        <button mat-raised-button class="fa fa-pencil-square-o edit-btn" (click)="changeIndex(0)">Edit</button></h4>
+                    </mat-card-title>
+                    <mat-card-content >
+                      <div class="row">
+                        <div class="col-md-2"><b>Type</b></div>
+                        <div class="col-md-10">{{this.article.type}}</div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-2"><b>Title</b></div>
+                        <div class="col-md-10">{{this.article.title}}</div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-2"><b>Abstract</b></div>
+                        <div class="col-md-10" >
+                          <div class="abstract" [class.show]="show">{{this.article.abstractt}}</div>
+                          <label class="showMore" (click)="show = !show">{{ show ? 'Show less': 'Show More' }}</label>
+                        </div>
+                      </div>
+                    </mat-card-content>
+                  </mat-card>
+                </div>
 
+              </div>
+
+            </div>
+          </mat-card>
+          <hr>
+          <mat-card>
+            <div class="container">
+              <div class="row">
+                <div class="col-md-12">
+                  <mat-card >
+                    <mat-card-title>
+                      <h3>File
+                        <button mat-raised-button class="fa fa-pencil-square-o edit-btn" (click)="changeIndex(1)">Edit</button></h3>
+                    </mat-card-title>
+                    <mat-card-content>
+                      files to be displayed here
+                    </mat-card-content>
+                  </mat-card>
+                </div>
+
+              </div>
+
+            </div>
+          </mat-card>
+          <hr>
+          <mat-card>
+            <div class="container">
+              <div class="row">
+                <div class="col-md-12">
+                  <mat-card >
+                    <mat-card-title>
+                      <h4>Attributes
+                        <button mat-raised-button class="fa fa-pencil-square-o edit-btn" (click)="changeIndex(2)">Edit</button></h4>
+                    </mat-card-title>
+                    <mat-card-content>
+                      <div class="row">
+                        <div class="col-md-2"><b>Attributes</b></div>
+                        <div class="col-md-10">
+                          <div class="row">
+                            <div *ngFor="let t of article.articleTags">
+                              <label class="tags">{{t.tag.tags}}</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </mat-card-content>
+                  </mat-card>
+                </div>
+
+              </div>
+
+            </div>
+          </mat-card>
+          <hr>
+          <mat-card>
+            <div class="container">
+              <div class="row">
+                <div class="col-md-12">
+                  <mat-card >
+                    <mat-card-title>
+                      <h4>Authors & Institutions
+                        <button mat-raised-button class="fa fa-pencil-square-o edit-btn" (click)="changeIndex(3)">Edit</button></h4>
+                    </mat-card-title>
+                    <mat-card-content>
+                      <table class="table">
+                        <thead>
+                        <tr>
+                          <th>Order</th>
+                          <th>Authors</th>
+                          <th>Institutions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                          <th>1</th>
+                          <th>Name of current user</th>
+                          <th>His Institution His Institution His Institution His Institution His Institution </th>
+                        </tr>
+                        <tr *ngFor="let a of article.userArticleDetails; index as i">
+                          <td>{{i+2}}</td>
+                          <td>{{a.user.firstName}} {{a.user.lastName}}</td>
+                          <td>{{a.user.institution}}</td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </mat-card-content>
+                  </mat-card>
+                </div>
+
+              </div>
+
+            </div>
+          </mat-card>
+          <hr>
+          <mat-card>
+            <div class="container">
+              <div class="row">
+                <div class="col-md-12">
+                  <mat-card >
+                    <mat-card-title>
+                      <h4>Details & Comments
+                        <button mat-raised-button class="fa fa-pencil-square-o edit-btn" (click)="changeIndex(4)">Edit</button></h4>
+                    </mat-card-title>
+                    <mat-card-content>
+                      <div class="ui-g">
+                        <div class="ui-g-5"><b>Was there any funding to report for this submission ?</b></div>
+                        <div class="ui-g-1" *ngIf="article.funding == false"> No </div>
+                        <div class="ui-g-1" *ngIf="article.funding == true"> Yes </div>
+                      </div>
+                      <div class="ui-g">
+                        <div class="ui-g-12 polgrid" ><b>Public Access Policy</b></div>
+                        <div class="ui-g-1 polgrid" >
+                          <span class="pi pi-check pol-check"></span>
+                        </div>
+                        <div class="ui-g-11 polgrid">
+                          <p>
+                            SEC. 218. The Director of the FSTG Labs shall require that all investigators
+                            funded by submit or have submitted for them to the National Library
+                            Central an electronic version of their final peer-reviewed manuscripts upon acceptance for publication,
+                            to be made publicly available no later than 12 months after the official date of publication: Provided,
+                            That the FSTG shall implement the public access policy in a manner consistent with copyright law.
+                          </p>
+                        </div>
+                      </div>
+                    </mat-card-content>
+                  </mat-card>
+                </div>
+
+              </div>
+
+            </div>
+          </mat-card>
+          <div class="card-footer">
+            <button mat-raised-button color="primary" class="float-right"> Submit</button>
+          </div>
+        </div>
       </div>
 
     </div>

@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {UserService} from '../../controller/service/user.service';
 import {User} from '../../controller/model/user.model';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AuthService} from '../../controller/service/auth.service';
+import {TokenStorageService} from '../../controller/service/token-storage.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -11,23 +14,24 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 export class LoginComponent implements OnInit {
   formGroup : FormGroup;
   confirm = false;
-  constructor(private userService : UserService, private formBuilder: FormBuilder) { }
+  form: any = {};
+  roles: string[] = [];
+
+  constructor(private userService : UserService, private formBuilder: FormBuilder, private authService: AuthService,
+              private tokenStorage: TokenStorageService,private router: Router) { }
 
   ngOnInit(): void {
     this.formGroup = this.formBuilder.group({
       email: new FormControl('', [Validators.required,Validators.email]),
       pwd: new FormControl('', Validators.required),
     });
-    console.log(this.pwd.hasError('required'));
-    console.log(this.email.hasError('required'));
-    console.log(this.email.hasError('email'));
+    if (this.tokenStorage.getToken()) {
+      this.roles = this.tokenStorage.getUser().roles;
+    }
   }
   public enable(): boolean {
     return this.pwd.hasError('required') || this.email.hasError('required')
       || this.email.hasError('email');
-  }
-  c() {
-    console.log(this.formGroup.value);
   }
   get email(){
     return this.formGroup.get('email');
@@ -38,18 +42,23 @@ export class LoginComponent implements OnInit {
   public get user() : User{
     return this.userService.user;
   }
-  get editor(): User {
-    return this.userService.editor;
-  }
-  get author(): User {
-    return this.userService.author;
-  }
 
-  authorLogin(){
-    return this.userService.authorLogin();
+  login() {
+    this.authService.login(this.form).subscribe(
+      data => {
+        this.tokenStorage.saveToken(data.accessToken);
+        this.tokenStorage.saveUser(data);
+        console.log(data);
+        console.log(this.tokenStorage.getUser().roles);
+        this.roles = this.tokenStorage.getUser().roles;
+        this.router.navigateByUrl('home');
+      },
+      err => {
+        console.log(err.error.message);
+      }
+    );
   }
-
-  editorLogin() {
-    return this.userService.editorLogin();
+  reloadPage() {
+    window.location.reload();
   }
 }

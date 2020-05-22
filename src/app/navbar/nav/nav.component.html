@@ -16,8 +16,11 @@
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" id="dropdown1" data-toggle="dropdown" aria-haspopup="true"
            aria-expanded="false" href="">Authors</a>
-        <ul class="dropdown-menu" aria-labelledby="dropdown2">
-          <li class="dropdown-item" href="#"><a>Author's Board</a></li>
+        <ul class="dropdown-menu" aria-labelledby="dropdown1">
+          <li class="dropdown-item " [routerLink]="['user/author/author-board']">
+            <a class="nav-link-dropdown" >
+              Author's Board<span class="sr-only">(current)</span></a>
+          </li>
           <li class="dropdown-item" ><a>Submit a Manuscript</a></li>
           <li class="dropdown-item" href="#"><a>Information & Guidelines</a></li>
         </ul>

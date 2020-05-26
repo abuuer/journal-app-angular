@@ -1,10 +1,10 @@
 import {Article} from './article.model';
-import {Tags} from './tags.true';
+import {Tag} from './tag.model';
 
 export class ArticleTags {
-  tag = new Tags()
+  tag = new Tag()
 
   constructor() {
-    this.tag = new Tags()
+    this.tag = new Tag()
   }
 }

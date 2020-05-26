@@ -5,6 +5,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../controller/service/auth.service';
 import {TokenStorageService} from '../../controller/service/token-storage.service';
 import {Router} from '@angular/router';
+import {SubmissionService} from '../../controller/service/submission.service';
 
 @Component({
   selector: 'app-login',

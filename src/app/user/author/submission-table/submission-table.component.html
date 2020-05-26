@@ -44,27 +44,27 @@
     <ng-template pTemplate="body" let-submission>
       <tr class="ui-selectable-row" >
         <td>
-          <p-tableCheckbox [value]="submission"></p-tableCheckbox>
+          <p-tableCheckbox [value]="userArticleDetail"></p-tableCheckbox>
         </td>
         <td>
           <span class="ui-column-title">Title</span>
-          {{submission.name}}
+          {{userArticleDetail.article.title}}
         </td>
         <td>
           <span class="ui-column-title">Type</span>
-          <span style="vertical-align: middle; margin-left: .5em">{{submission.genre}}</span>
+          <span style="vertical-align: middle; margin-left: .5em">{{userArticleDetail.article.type}}</span>
         </td>
         <td>
           <span class="ui-column-title">Reviewer</span>
-          <span style="vertical-align: middle; margin-left: .5em">{{submission.reviewer}}</span>
+          <span style="vertical-align: middle; margin-left: .5em">reviewer</span>
         </td>
         <td>
           <span class="ui-column-title">Date</span>
-          {{submission.date}}
+          data
         </td>
         <td>
           <span class="ui-column-title">Status</span>
-          <span [class]="'submission-badge status-' + submission.status.value">{{submission.status.label}}</span>
+          <span [class]="'submission-badge status-' + submission.status.value">{{userArticleDetail.article.status}}</span>
         </td>
       </tr>
     </ng-template>

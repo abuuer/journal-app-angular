@@ -157,7 +157,7 @@
                     </thead>
                     <tbody>
                     <tr *ngFor="let t of article.articleTags; index as i">
-                      <th >{{t.tag.tags}}</th>
+                      <th >{{t.tag.name}}</th>
                       <th><button class="pi pi-trash" (click)="deleteTag(i)"></button></th>
                     </tr>
                     </tbody>
@@ -186,22 +186,25 @@
                 <tr>
                   <th style="color: white">ORDER</th>
                   <th style="color: white">AUTHOR</th>
+                  <th style="color: white">EMAIL</th>
                   <th style="color: white">INSTITUTION</th>
                   <th style="color: white"></th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr >
+                <tr>
                   <th>1</th>
-                  <th>Name of current user</th>
-                  <th>His Institution His Institution His Institution His Institution His Institution </th>
+                  <th>{{currentUser.firstName}} {{currentUser.lastName}}</th>
+                  <th>{{currentUser.email}}</th>
+                  <th>{{currentUser.institution}}</th>
                   <th></th>
                 </tr>
                 <tr *ngFor="let l of article.userArticleDetails; index as i">
                   <th>{{i+2}}</th>
-                  <th>{{l.user.firstName}}  {{l.user.lastName}}</th>
-                  <th>{{l.user.institution}}</th>
-                  <th></th>
+                  <th>{{l.author.firstName}}  {{l.author.lastName}}</th>
+                  <th>{{l.author.email}}</th>
+                  <th>{{l.author.institution}}</th>
+                  <th><span class="pi pi-trash" (click)="deleteAuthor(i)"></span></th>
                 </tr>
                 </tbody>
               </table>
@@ -554,7 +557,7 @@
                         <div class="col-md-10">
                           <div class="row">
                             <div *ngFor="let t of article.articleTags">
-                              <label class="tags">{{t.tag.tags}}</label>
+                              <label class="tags">{{t.tag.name}}</label>
                             </div>
                           </div>
                         </div>
@@ -589,22 +592,20 @@
                         <tbody>
                         <tr>
                           <th>1</th>
-                          <th>Name of current user</th>
-                          <th>His Institution His Institution His Institution His Institution His Institution </th>
+                          <th>{{currentUser.firstName}} {{currentUser.lastName}}</th>
+                          <th>{{currentUser.institution}}</th>
                         </tr>
                         <tr *ngFor="let a of article.userArticleDetails; index as i">
                           <td>{{i+2}}</td>
-                          <td>{{a.user.firstName}} {{a.user.lastName}}</td>
-                          <td>{{a.user.institution}}</td>
+                          <td>{{a.author.firstName}} {{a.author.lastName}}</td>
+                          <td>{{a.author.institution}}</td>
                         </tr>
                         </tbody>
                       </table>
                     </mat-card-content>
                   </mat-card>
                 </div>
-
               </div>
-
             </div>
           </mat-card>
           <hr>
@@ -647,7 +648,7 @@
             </div>
           </mat-card>
           <div class="card-footer">
-            <button mat-raised-button color="primary" class="float-right"> Submit</button>
+            <button mat-raised-button color="primary" class="float-right" (click)="submitAticle()"> Submit</button>
           </div>
         </div>
       </div>

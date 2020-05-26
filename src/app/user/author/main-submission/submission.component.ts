@@ -7,10 +7,11 @@ import {HttpEventType, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Article} from '../../../controller/model/article.model';
 import {User} from '../../../controller/model/user.model';
-import {UserArticleDetail} from '../../../controller/model/user-article-detail.true';
-import {ArticleFunds} from '../../../controller/model/article-funds.true';
-import {Tags} from '../../../controller/model/tags.true';
-import {ArticleTags} from '../../../controller/model/article-tags.true';
+import {UserArticleDetail} from '../../../controller/model/user-article-detail.model';
+import {ArticleFunds} from '../../../controller/model/article-funds.model';
+import {Tag} from '../../../controller/model/tag.model';
+import {ArticleTags} from '../../../controller/model/article-tags.model';
+import {TokenStorageService} from '../../../controller/service/token-storage.service';
 
 
 @Component({
@@ -25,7 +26,6 @@ import {ArticleTags} from '../../../controller/model/article-tags.true';
 
 
 export class SubmissionComponent implements OnInit {
-
   items: MenuItem[];
   activeIndex = 0;
   i: number;
@@ -48,6 +48,7 @@ export class SubmissionComponent implements OnInit {
   fileInfos: Observable<any>;
   check = false;
   show = false ;
+  private _currentUser : User ;
   private _article = new Article();
   private newCoAuthor = new User();
   private userArticleDetail = new UserArticleDetail()
@@ -63,38 +64,8 @@ export class SubmissionComponent implements OnInit {
     }
   )
 
-  get firstName(): any {
-    return this.authForm.get('firstName');
-  }
-  get lastName(): any {
-    return this.authForm.get('lastName');
-  }
-  get email(): any {
-    return this.authForm.get('email');
-  }
-  get emailConf(): any {
-    return this.authForm.get('emailConf');
-  }
-  get institution(): any {
-    return this.authForm.get('institution');
-  }
-  get article(): Article {
-    return this._article;
-  }
-  set article(value: Article) {
-    this._article = value;
-  }
-  get newfunding(): ArticleFunds {
-    return this._newfunding;
-  }
-  get articleTag(): ArticleTags {
-    return this._articleTag;
-  }
-  set articleTag(value: ArticleTags) {
-    this._articleTag = value;
-  }
-
-  constructor(private messageService: MessageService, private submissionService: SubmissionService) {
+  constructor(private messageService: MessageService, private submissionService: SubmissionService,
+              public tokenStorage: TokenStorageService) {
     this.types = [
       {label: 'Select your item\'s type', value: null},
       {label: 'Main Document (PDF)', value: 'Main'},
@@ -105,6 +76,9 @@ export class SubmissionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.currentUser = this.tokenStorage.getUser();
+    console.log(this.currentUser)
+
     this.fileInfos = this.submissionService.getFiles();
     this.article = this.submissionService.getLocalStorage().article;
     this.selectedValue = this.article.type ;
@@ -166,8 +140,48 @@ export class SubmissionComponent implements OnInit {
       {label: 'Machine learning', value: 'Machine'},
       {label: 'Hacking', value: 'Hacking'},
       {label: 'Security', value: 'Security'},
-    ],
-      this.targetTags = [];
+    ]
+    this.targetTags = [];
+  }
+
+  get firstName(): any {
+    return this.authForm.get('firstName');
+  }
+  get lastName(): any {
+    return this.authForm.get('lastName');
+  }
+  get email(): any {
+    return this.authForm.get('email');
+  }
+  get emailConf(): any {
+    return this.authForm.get('emailConf');
+  }
+  get institution(): any {
+    return this.authForm.get('institution');
+  }
+  get article(): Article {
+    return this._article;
+  }
+  set article(value: Article) {
+    this._article = value;
+  }
+  get newfunding(): ArticleFunds {
+    return this._newfunding;
+  }
+  get articleTag(): ArticleTags {
+    return this._articleTag;
+  }
+  set articleTag(value: ArticleTags) {
+    this._articleTag = value;
+  }
+  get currentUser(): User {
+    if(this._currentUser == null){
+      this._currentUser = new User()
+    }
+    return this._currentUser;
+  }
+  set currentUser(value: User) {
+    this._currentUser = value;
   }
 
   changeIndex(i) {
@@ -232,12 +246,12 @@ export class SubmissionComponent implements OnInit {
         // tslint:disable-next-line:prefer-for-of
         for (let i = 0; i < this.finalTagsList.length; i++) {
           x = true;
-          this.articleTag.tag.tags = this.finalTagsList[i]
+          this.articleTag.tag.name = this.finalTagsList[i]
           // tslint:disable-next-line:prefer-for-of
           for (let k = 0; k < this.article.articleTags.length; k++) {
-            if (this.article.articleTags[k].tag.tags === this.articleTag.tag.tags) {
-              console.log(this.article.articleTags[k].tag.tags)
-              console.log(this.articleTag.tag.tags)
+            if (this.article.articleTags[k].tag.name === this.articleTag.tag.name) {
+              console.log(this.article.articleTags[k].tag.name)
+              console.log(this.articleTag.tag.name)
               x = false;
               console.log(x)
             }
@@ -286,7 +300,7 @@ export class SubmissionComponent implements OnInit {
       this.article.userArticleDetails = new Array();
     }
     this.newCoAuthor = this.authForm.value;
-    this.userArticleDetail.user = this.newCoAuthor ;
+    this.userArticleDetail.author = this.newCoAuthor ;
     // console.log(this.userArticleDetail);
     this.article.userArticleDetails.push(this.clone(this.userArticleDetail));
     console.log(this.article.userArticleDetails);
@@ -308,7 +322,7 @@ export class SubmissionComponent implements OnInit {
 
   clone(userArticleDetail : UserArticleDetail): UserArticleDetail{
     const clone = new UserArticleDetail();
-    clone.user = userArticleDetail.user;
+    clone.author = userArticleDetail.author;
     return clone;
   }
   clonefunds(newfunding: ArticleFunds) {
@@ -322,14 +336,22 @@ export class SubmissionComponent implements OnInit {
     clone.tag = this.cloneTags(articleTag.tag)
     return clone;
   }
-  private cloneTags(tag: Tags) {
-    const clone = new Tags()
-    clone.tags = tag.tags
+  private cloneTags(tag: Tag) {
+    const clone = new Tag()
+    clone.name = tag.name
     return clone;
   }
 
   deleteTag(i) {
     this.article.articleTags.splice(i,1)
+  }
+
+  submitAticle() {
+    return this.submissionService.submitAticle(this.article)
+  }
+
+  deleteAuthor(i) {
+    this.article.userArticleDetails.splice(i,1)
   }
 }
 

@@ -1,5 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Table} from 'primeng';
+import {TokenStorageService} from '../../../controller/service/token-storage.service';
+import {SubmissionService} from '../../../controller/service/submission.service';
+import {User} from '../../../controller/model/user.model';
+import {Article} from '../../../controller/model/article.model';
+import {UserArticleDetail} from '../../../controller/model/user-article-detail.model';
 
 @Component({
   selector: 'app-submission-details',
@@ -8,6 +13,9 @@ import {Table} from 'primeng';
 })
 export class SubmissionTableComponent implements OnInit {
   loading = true;
+  private _currentUser : User;
+  private _submissionss : Array<Article>
+  private _userArticleDetail : UserArticleDetail
   @ViewChild('dt') table: Table;
   selectedSubmission: any[];
   submissions = [
@@ -25,12 +33,42 @@ export class SubmissionTableComponent implements OnInit {
     {label: 'Being Reviewed', value: 'renewal'},
 
   ];
-  constructor() {
+  constructor(private submissionService: SubmissionService, private tokenStorage: TokenStorageService) {
   }
 
   ngOnInit() {
-      this.loading = false;
+    this.currentUser = this.tokenStorage.getUser()
+    this.userArticleDetail = this.getUserArticles(this.tokenStorage.getUser().id)
+    this.loading = false
   };
+
+  get currentUser(): User {
+    if(this._currentUser == null){
+      this._currentUser = new User()
+    }
+    return this._currentUser;
+  }
+  set currentUser(value: User) {
+    this._currentUser = value;
+  }
+  get submissionss(): Array<Article> {
+    if(this._submissionss == null){
+      this._submissionss = new Array<Article>()
+    }
+    return this._submissionss;
+  }
+  set submissionss(value: Array<Article>) {
+    this._submissionss = value;
+  }
+  get userArticleDetail(): UserArticleDetail {
+    if(this._userArticleDetail == null){
+      this._userArticleDetail = new UserArticleDetail()
+    }
+    return this._userArticleDetail;
+  }
+  set userArticleDetail(value: UserArticleDetail) {
+    this._userArticleDetail = value;
+  }
 
   onDateSelect(value) {
     this.table.filter(this.formatDate(value), 'date', 'equals')
@@ -55,6 +93,10 @@ export class SubmissionTableComponent implements OnInit {
     // tslint:disable-next-line:no-debugger
     debugger;
     this.table.filter(event.value, 'representative', 'in')
+  }
+
+  getUserArticles(id : number): UserArticleDetail{
+    return this.submissionService.getUserArticles(id)
   }
 }
 

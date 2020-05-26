@@ -3,7 +3,8 @@ import {Article} from './article.model';
 
 export class UserArticleDetail {
 
-  user = new User()
+  author = new User()
+  article = new Article()
 
 
   constructor() {

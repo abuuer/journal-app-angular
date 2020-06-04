@@ -3,7 +3,7 @@ import {MenuItem, Message, MessageService} from 'primeng/api';
 import {FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
 import {SubmissionService} from '../../../controller/service/submission.service';
-import {HttpEventType, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpEventType, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Article} from '../../../controller/model/article.model';
 import {User} from '../../../controller/model/user.model';
@@ -12,6 +12,9 @@ import {ArticleFunds} from '../../../controller/model/article-funds.model';
 import {Tag} from '../../../controller/model/tag.model';
 import {ArticleTags} from '../../../controller/model/article-tags.model';
 import {TokenStorageService} from '../../../controller/service/token-storage.service';
+import {CanActivate, Router} from '@angular/router';
+import {AuthService} from '../../../controller/service/auth.service';
+import {FileInfo} from '../../../controller/model/file.model';
 
 
 @Component({
@@ -31,7 +34,6 @@ export class SubmissionComponent implements OnInit {
   i: number;
   value: string;
   selectedValue = 'original';
-  wordcmp = 0;
   types: any[];
   sourceTags: object[];
   targetTags: object[];
@@ -39,13 +41,11 @@ export class SubmissionComponent implements OnInit {
   msgs: Message[] = [];
   additionalTags: string;
   display = false;
-  displayBasic: boolean;
   currentFile: File;
-  uploadedFiles: FileList;
   matcher = new MyErrorStateMatcher();
   progress = 0;
   message = '';
-  fileInfos: Observable<any>;
+  fileType : string
   check = false;
   show = false ;
   private _currentUser : User ;
@@ -65,21 +65,19 @@ export class SubmissionComponent implements OnInit {
   )
 
   constructor(private messageService: MessageService, private submissionService: SubmissionService,
-              public tokenStorage: TokenStorageService) {
+              public tokenStorage: TokenStorageService, private router: Router, private authService : AuthService) {
     this.types = [
       {label: 'Select your item\'s type', value: null},
-      {label: 'Main Document (PDF)', value: 'Main'},
-      {label: 'Cover Letter', value: 'letter'},
-      {label: 'Supplemental Material', value: 'supp'},
-      {label: 'Copyright Form', value: 'cpyright'},
+      {label: 'Main Document (PDF)', value: 'Main Document'},
+      {label: 'Cover Letter', value: 'Cover Letter'},
+      {label: 'Supplemental Material', value: 'Supplemental Material'},
+      {label: 'Copyright Form', value: 'Copyright Form'},
     ];
   }
 
   ngOnInit(): void {
     this.currentUser = this.tokenStorage.getUser();
     console.log(this.currentUser)
-
-    this.fileInfos = this.submissionService.getFiles();
     this.article = this.submissionService.getLocalStorage().article;
     this.selectedValue = this.article.type ;
     this.items = [
@@ -190,23 +188,18 @@ export class SubmissionComponent implements OnInit {
     this.value = i;
   }
 
-  // file upload
-  selectFile($event){
-    this.uploadedFiles = $event.target.files ;
-    this.currentFile = this.uploadedFiles.item(0);
-    console.log(this.currentFile);
-  }
-  upload($eventFile) {
-   // this.currentFile = $eventFile.files[0];
-    this.submissionService.upload(this.currentFile).subscribe(
-      event => {
-        if (event.type === HttpEventType.UploadProgress) {
-          this.progress = Math.round(100 * event.loaded / event.total);
-          console.log('if');
-        } else if (event instanceof HttpResponse) {
-          this.message = event.body.message;
-          console.log('else if');
-          this.fileInfos = this.submissionService.getFiles();
+  upload(event) {
+    console.log(this.fileType)
+    this.progress = 0;
+    this.currentFile = event.files[0]
+
+   this.submissionService.upload(this.currentFile, this.fileType).subscribe(
+      data => {
+        if (data.type === HttpEventType.UploadProgress) {
+          this.progress = Math.round(100 * data.loaded / data.total);
+        } else if (data instanceof HttpResponse) {
+          this.message = 'Uploaded ' + data.body.name + ' Successfully'
+          this.article.fileInfos.push(this.cloneFile(data.body))
         }
       },
       err => {
@@ -214,8 +207,13 @@ export class SubmissionComponent implements OnInit {
         this.message = 'Could not upload the file!';
         this.currentFile = undefined;
       });
-
-    this.uploadedFiles = undefined;
+  }
+  cloneFile(body: any): FileInfo {
+    const file = new FileInfo()
+    file.url = body.url
+    file.name = body.name
+    file.type = body.type
+    return file
   }
   resetFilter() {
     this.sourceTags = [
@@ -300,7 +298,7 @@ export class SubmissionComponent implements OnInit {
       this.article.userArticleDetails = new Array();
     }
     this.newCoAuthor = this.authForm.value;
-    this.userArticleDetail.author = this.newCoAuthor ;
+    this.userArticleDetail.user = this.newCoAuthor ;
     // console.log(this.userArticleDetail);
     this.article.userArticleDetails.push(this.clone(this.userArticleDetail));
     console.log(this.article.userArticleDetails);
@@ -322,7 +320,7 @@ export class SubmissionComponent implements OnInit {
 
   clone(userArticleDetail : UserArticleDetail): UserArticleDetail{
     const clone = new UserArticleDetail();
-    clone.author = userArticleDetail.author;
+    clone.user = userArticleDetail.user;
     return clone;
   }
   clonefunds(newfunding: ArticleFunds) {
@@ -336,7 +334,7 @@ export class SubmissionComponent implements OnInit {
     clone.tag = this.cloneTags(articleTag.tag)
     return clone;
   }
-  private cloneTags(tag: Tag) {
+  cloneTags(tag: Tag) {
     const clone = new Tag()
     clone.name = tag.name
     return clone;
@@ -353,6 +351,7 @@ export class SubmissionComponent implements OnInit {
   deleteAuthor(i) {
     this.article.userArticleDetails.splice(i,1)
   }
+
 }
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {

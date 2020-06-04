@@ -4,49 +4,50 @@ import {HttpClient, HttpEvent, HttpRequest} from '@angular/common/http';
 import {Article} from '../model/article.model';
 import {UserArticleDetail} from '../model/user-article-detail.model';
 import {TokenStorageService} from './token-storage.service';
+import {CanActivate, Router} from '@angular/router';
+import {AuthService} from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SubmissionService {
+export class SubmissionService implements CanActivate{
 
-  private baseUrl = 'http://localhost:8080';
+  public baseUrl = 'http://localhost:8080';
   private userArticleDetail = new UserArticleDetail()
 
-  constructor(private http: HttpClient, public tokenStorage: TokenStorageService) { }
+  constructor(public http: HttpClient, public tokenStorage: TokenStorageService
+              ,private router: Router, private authService : AuthService) { }
 
-  upload(file: File): Observable<HttpEvent<any>> {
-    console.log(file);
-      const form: FormData = new FormData();
-      form.append('file', file);
-      console.log(form.getAll('file'));
-    const req = new HttpRequest('POST', `${this.baseUrl}/journal-api/file/upload`, form , {
+
+  upload(file: File, fileType: string): Observable<HttpEvent<any>> {
+    const formData: FormData = new FormData();
+
+    formData.append('file', file);
+    const req = new HttpRequest('POST', `${this.baseUrl}/journal-api/file/upload/type/fileType`, formData, {
       reportProgress: true,
       responseType: 'json'
     });
-
     return this.http.request(req);
   }
+
 
   getFiles() {
     return this.http.get(`${this.baseUrl}/journal-api/file/files`)
   }
 
   setLocalStorage(article : Article): void {
-    localStorage.setItem('article',JSON.stringify({article}));
+    localStorage.setItem('article-submission',JSON.stringify({article}));
   }
 
   getLocalStorage(){
-    return JSON.parse(localStorage.getItem('article'));
+    return JSON.parse(localStorage.getItem('article-submission'));
   }
 
   submitAticle(article: Article) {
-    this.userArticleDetail.author = this.tokenStorage.getUser() ;
+    this.userArticleDetail.user = this.tokenStorage.getUser() ;
     article.userArticleDetails.unshift(this.userArticleDetail);
-    article.doi = 'doi6'
-    article.fileInfos =  [
-      { name : 'dffd', url : 'fddf', reference : 'rsds'}
-    ]
+    const r = Math.random().toString(36).substring(7);
+    article.reference = 'ref' + r
 	  console.log(article)
     this.http.post(this.baseUrl + `/journal-api/article/save`, article).subscribe(
       data => {
@@ -57,18 +58,18 @@ export class SubmissionService {
     )
   }
 
-  getUserArticles(id : number): UserArticleDetail {
-    let userArticle = new UserArticleDetail()
-    this.http.get<UserArticleDetail>(this.baseUrl + '/journal-api/user-article/id/' + id).subscribe(
-      data=>{
-        console.log('data : ')
-        console.log(data)
-        userArticle =  data;
-      }, error => {
-        console.log(error)
-      }
-    )
-    return userArticle
+  getUserArticles(id : number){
+    return this.http.get<UserArticleDetail>(this.baseUrl + '/journal-api/user-article/id/' + id).toPromise()
+      .then(data => { return data; });
   }
 
+  canActivate() {
+    if (this.tokenStorage.getRoles().includes('ROLE_AUTHOR')) {
+      return true
+    }
+    else {
+      this.router.navigate(['/home'])
+      return false
+    }
+  }
 }

@@ -1,5 +1,6 @@
 <div class="register-page">
   <form form="ngForm" [formGroup]="formGroup">
+    <p-messages [(value)]="msgs"></p-messages>
     <mat-horizontal-stepper linear #stepper formArrayName="formArray">
       <mat-step formGroupName="0" [stepControl]="formArray.get([0])" >
           <ng-template matStepLabel>General Information</ng-template>
@@ -67,12 +68,11 @@
                     <input matInput formControlName="emailConf"
                            placeholder="Re-enter your primary email" required>
                     <mat-hint>Errors appear instantly!</mat-hint>
-                    <mat-error *ngIf="emailConf.hasError('email') &&
-                        !emailConf.hasError('required')">
-                      Please enter a valid email address
-                    </mat-error>
                     <mat-error *ngIf="emailConf.hasError('required')">
                       Email is <strong>required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="emailConf.hasError('notSame')">
+                      Emails don't <strong>match</strong>
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -171,11 +171,9 @@
               </div>
             </p-card>
           </p-card>
-          <div>
-            <p-footer >
-              <button mat-button matStepperNext class="btn btn-block btn-primary float-right" type="button">Next</button>
-            </p-footer>
-          </div>
+              <div class="example-button-row">
+                <button mat-raised-button color="primary" matStepperNext class="float-right" type="button">Next</button>
+              </div>
       </mat-step>
       <mat-step formGroupName="1" [stepControl]="formArray.get([1])" >
           <ng-template matStepLabel>Authentication Information </ng-template>
@@ -201,9 +199,9 @@
               </div>
             </div>
           </p-card>
-            <div style="padding-top: 10px">
-              <button mat-button matStepperNext class="btn btn-primary float-right" type="button">Next</button>
-              <button mat-button matStepperPrevious class="btn btn-outline-light float-right" style="color: #555555"
+            <div class="example-button-row">
+              <button mat-raised-button color="primary" matStepperNext class="btn btn-primary float-right" type="button">Next</button>
+              <button mat-raised-button matStepperPrevious class="float-right"
                       type="button">Back</button>
             </div>
       </mat-step>
@@ -211,11 +209,17 @@
         <ng-template matStepLabel>Done</ng-template>
         <p>You are now done.</p>
         <div>User info to be displayed here</div>
-          <div style="padding-top: 10px">
-            <button mat-button class="btn btn-outline-success float-right" (click)="onSubmit()">Save</button>
-            <button mat-button matStepperNext (click)="stepper.reset()" class="btn btn-outline-danger float-right">Reset</button>
-            <button mat-button matStepperPrevious class="btn btn-outline-light float-right" style="color: #555555" type="button">Back</button>
+          <div *ngIf="!showProgressBar() && !gthb"  class="example-button-row">
+            <button mat-raised-button color="primary" class="float-right" (click)="onSubmit()">Save</button>
+            <button mat-raised-button color="warn" matStepperNext (click)="stepper.reset()" class="float-right">Reset</button>
+            <button mat-raised-button  matStepperPrevious class="float-right" style="color: #555555" type="button">Back</button>
           </div>
+        <div style="margin-top: 10px">
+          <span *ngIf="showProgressBar()"><mat-progress-bar mode="indeterminate"></mat-progress-bar></span>
+        </div>
+        <div *ngIf="gthb">
+          <button mat-raised-button color="accent" class="float-right" [routerLink]="'../login'">Login</button>
+        </div>
       </mat-step>
     </mat-horizontal-stepper>
   </form>

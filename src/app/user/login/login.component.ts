@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {UserService} from '../../controller/service/user.service';
 import {User} from '../../controller/model/user.model';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
@@ -13,10 +13,10 @@ import {SubmissionService} from '../../controller/service/submission.service';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  formGroup : FormGroup;
-  confirm = false;
-  form: any = {};
-  roles: string[] = [];
+  formGroup : FormGroup
+  confirm = false
+  form: any = {}
+  progress = false
 
   constructor(private userService : UserService, private formBuilder: FormBuilder, private authService: AuthService,
               private tokenStorage: TokenStorageService,private router: Router) { }
@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
       pwd: new FormControl('', Validators.required),
     });
     if (this.tokenStorage.getToken()) {
-      this.roles = this.tokenStorage.getUser().roles;
+      this.authService.roles = this.tokenStorage.getUser().roles;
     }
   }
   public enable(): boolean {
@@ -45,21 +45,23 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    this.progress = true
     this.authService.login(this.form).subscribe(
       data => {
-        this.tokenStorage.saveToken(data.accessToken);
-        this.tokenStorage.saveUser(data);
-        console.log(data);
-        console.log(this.tokenStorage.getUser().roles);
-        this.roles = this.tokenStorage.getUser().roles;
-        this.router.navigateByUrl('home');
+        this.tokenStorage.saveRoles(data.roles)
+        this.authService.getUserInfos(data.email)
+        this.tokenStorage.saveToken(data.accessToken)
+        window.location.href = 'home'
+        // this.router.navigateByUrl('home')
       },
       err => {
         console.log(err.error.message);
+        this.progress = false
       }
     );
   }
-  reloadPage() {
-    window.location.reload();
+
+  showProgressBar() {
+    return this.progress
   }
 }

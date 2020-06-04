@@ -26,6 +26,9 @@ import { ManageSubsComponent } from './user/editor/manage-subs/manage-subs.compo
 import {AuthService} from './controller/service/auth.service';
 import {SubmissionService} from './controller/service/submission.service';
 import { authInterceptorProviders } from './controller/helper/auth.interceptor';
+import {SubmissionComponent} from './user/author/main-submission/submission.component';
+import {EditorService} from './controller/service/editor.service';
+import {ReviewerService} from './controller/service/reviewer.service';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -65,6 +68,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     UserService,
     AuthService,
     SubmissionService,
+    EditorService,
+    ReviewerService,
     authInterceptorProviders
   ],
   bootstrap: [JournalComponent],

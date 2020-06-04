@@ -11,3 +11,7 @@
 .example-full-width {
   width: 100%;
 }
+.example-button-row button{
+  margin-right: 10px;
+  margin-top: 10px;
+}

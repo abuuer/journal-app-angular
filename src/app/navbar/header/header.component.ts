@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {UserService} from '../../controller/service/user.service';
 import {TokenStorageService} from '../../controller/service/token-storage.service';
+import {AuthService} from '../../controller/service/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -9,7 +10,7 @@ import {TokenStorageService} from '../../controller/service/token-storage.servic
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(public userService : UserService,public tokenStorage: TokenStorageService) { }
+  constructor(public authService : AuthService,public tokenStorage: TokenStorageService) { }
 
   ngOnInit(): void {
   }

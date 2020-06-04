@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {UserService} from '../../controller/service/user.service';
 import {TokenStorageService} from '../../controller/service/token-storage.service';
+import {AuthService} from '../../controller/service/auth.service';
 
 @Component({
   selector: 'app-nav',
@@ -9,15 +10,22 @@ import {TokenStorageService} from '../../controller/service/token-storage.servic
 })
 export class NavComponent implements OnInit {
 
-  constructor(private userService: UserService,private tokenStorage: TokenStorageService) { }
+  private _roles : string[] = []
+  constructor(private authService : AuthService, private tokenStorage: TokenStorageService) { }
 
   ngOnInit(): void {
+    this.roles = this.tokenStorage.getRoles()
   }
 
-  editorAuthenticate(){
-    return this.userService.editorAuthenticate();
+  get roles(): string[] {
+    if(this._roles == null){
+      this._roles = []
+    }
+    return this._roles;
   }
-  authenticate(){
-    return this.userService.authenticate();
+  set roles(value: string[]) {
+    this._roles = value;
   }
+
+
 }

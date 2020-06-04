@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <p-table #dt [value]="submissions" [(selection)]="selectedSubmission" dataKey="id"
+  <p-table #dt [value]="userArticleDetail" [(selection)]="selectedSubmission" dataKey="id"
            styleClass="ui-table-submission" [rowHover]="true"
            [showCurrentPageReport]="true" [loading]="loading"
            [paginator]="false" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -41,18 +41,18 @@
         </th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-submission>
-      <tr class="ui-selectable-row" >
+    <ng-template pTemplate="body" let-userArticle>
+      <tr class="ui-selectable-row">
         <td>
-          <p-tableCheckbox [value]="userArticleDetail"></p-tableCheckbox>
+          <p-tableCheckbox [value]="userArticle"></p-tableCheckbox>
         </td>
         <td>
           <span class="ui-column-title">Title</span>
-          {{userArticleDetail.article.title}}
+          {{userArticle.article.title}}
         </td>
         <td>
           <span class="ui-column-title">Type</span>
-          <span style="vertical-align: middle; margin-left: .5em">{{userArticleDetail.article.type}}</span>
+          <span style="vertical-align: middle; margin-left: .5em">{{userArticle.article.type}}</span>
         </td>
         <td>
           <span class="ui-column-title">Reviewer</span>
@@ -64,7 +64,7 @@
         </td>
         <td>
           <span class="ui-column-title">Status</span>
-          <span [class]="'submission-badge status-' + submission.status.value">{{userArticleDetail.article.status}}</span>
+          <span [class]="'submission-badge status-' + getValueStatus(userArticle.article.status) ">{{userArticle.article.status}}</span>
         </td>
       </tr>
     </ng-template>

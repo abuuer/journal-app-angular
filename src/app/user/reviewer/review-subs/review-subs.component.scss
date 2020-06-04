@@ -204,3 +204,13 @@ td div {
 .container > div {
   margin-top: 60px;
 }
+table {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+}
+.authors {
+  text-decoration: none;
+  color: #1E5991;
+  margin-right: 10px;
+  background-color: #eceff1;
+  border-radius: 10px;
+}

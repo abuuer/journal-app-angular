@@ -1,22 +1,19 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Table} from 'primeng';
+import {CanActivate, Router} from '@angular/router';
+import {AuthService} from '../../../controller/service/auth.service';
+import {Article} from '../../../controller/model/article.model';
+import {ReviewerService} from '../../../controller/service/reviewer.service';
+import {TokenStorageService} from '../../../controller/service/token-storage.service';
 
 @Component({
   selector: 'app-review-subs',
   templateUrl: './review-subs.component.html',
   styleUrls: ['./review-subs.component.scss']
 })
-export class ReviewSubsComponent implements OnInit {
-  loading = true;
+export class ReviewSubsComponent implements OnInit{
+  loading = true
   @ViewChild('dt') table: Table;
-  selectedSubmission: any[];
-  submissions = [
-    {name: 'Title of the paper lkjlkjvlj glkjxlckg jlkcjg kxlcjgkljx klgx', genre: 'paper', reviewer: 'Anouar Abuer',
-      date: '2020-05-14', status: {label: 'Reviewed', value: 'qualified'}},
-    {name: 'Title of the paper', genre: 'paper', reviewer: 'Anouar Abuer', date: '2020-05-14', status: {label: 'Rejected', value: 'unqualified'},},
-    {name: 'Title of the paper', genre: 'paper', reviewer: 'Anouar Abuer', date: '2020-04-14', status: {label: 'New', value: 'new'}},
-    {name: 'Title of the paper', genre: 'paper', reviewer: 'Anouar Abuer', date: '2020-04-14', status: {label: 'Being Reviewed', value: 'renewal'}},
-  ]
   statuses = [
     {label: 'Reviewed', value: 'qualified'},
     {label: 'Rejected', value: 'unqualified'},
@@ -25,11 +22,23 @@ export class ReviewSubsComponent implements OnInit {
     {label: 'Being Reviewed', value: 'renewal'},
 
   ];
-  display = false ;
-  constructor() { }
+  display = false
+  selectedArticle: Article
+  private _articles = new Array<Article>()
+  constructor(private router: Router, private authService : AuthService
+              , private reviewerService : ReviewerService, private tokenStorage : TokenStorageService) { }
 
   ngOnInit(): void {
-    this.loading = false;
+   this.reviewerService.getArticles(this.tokenStorage.getUser().id).then(articles => {
+      this.articles = articles
+      this.loading = false
+    })
+  }
+  get articles(): Article[] {
+    return this._articles;
+  }
+  set articles(value: Article[]) {
+    this._articles = value;
   }
 
   onDateSelect(value) {
@@ -51,7 +60,22 @@ export class ReviewSubsComponent implements OnInit {
     return date.getFullYear() + '-' + month + '-' + day;
   }
 
-  showDialog() {
-    this.display = true ;
+  getValueStatus(status: string) {
+    // tslint:disable-next-line:prefer-for-of
+    for(let i = 0 ; i < this.statuses.length ; i++){
+      // tslint:disable-next-line:no-conditional-assignment
+      if(this.statuses[i].label.toLowerCase() === status.toLowerCase()){
+        return this.statuses[i].value
+      }
+    }
+  }
+
+  selected(selectedArticle: Article) {
+    return selectedArticle==null ? false : true
+  }
+
+  review() {
+    this.reviewerService.setLocalStorage(this.selectedArticle)
+    this.reviewerService.selectedArticle = this.selectedArticle
   }
 }

@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
 import {User} from '../model/user.model';
-import {Router} from '@angular/router';
+import {CanActivate, Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
+import {AuthService} from './auth.service';
+import {TokenStorageService} from './token-storage.service';
+import {UserArticleDetail} from "../model/user-article-detail.model";
+import {Article} from "../model/article.model";
 
 const API_URL = 'http://localhost:8080/journal-api/test/';
 
@@ -11,12 +15,13 @@ const API_URL = 'http://localhost:8080/journal-api/test/';
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
-
+export class UserService implements CanActivate{
+  private baseUrl = 'http://localhost:8080';
   private _user : User ;
   private _author : User ;
   private _editor : User ;
-  constructor(private route : Router, private http: HttpClient) { }
+  constructor(private route : Router, private http: HttpClient,private router: Router,  private authService: AuthService
+  ,public tokenStorage: TokenStorageService) { }
 
   get user(): User {
     if(this._user == null) {
@@ -46,38 +51,14 @@ export class UserService {
     this._author = value;
   }
 
-
-  authorLogin() {
-    this.user.email = this.author.email ;
-    console.log(this.user);
-    console.log(this.author);
-    this.route.navigate(['home']);
-  }
-  authenticate() : boolean{
-    return !!this.user.email;
-  }
-  editorAuthenticate() : boolean{
-    return !!(this.user.email && this.editor.email);
-  }
-  editorLogin() {
-    this.user.email = this.editor.email ;
-    this.route.navigate(['home']);
-  }
-
-  getPublicContent(): Observable<any> {
-    return this.http.get(API_URL + 'all', { responseType: 'text' });
-  }
-
-  getUserBoard(): Observable<any> {
-    return this.http.get(API_URL + 'user', { responseType: 'text' });
-  }
-
-  getModeratorBoard(): Observable<any> {
-    return this.http.get(API_URL + 'mod', { responseType: 'text' });
-  }
-
-  getAdminBoard(): Observable<any> {
-    return this.http.get(API_URL + 'admin', { responseType: 'text' });
+  canActivate() {
+    if (this.tokenStorage.getUser() != null) {
+      return true
+    }
+    else {
+      this.router.navigate(['/'])
+      return false
+    }
   }
 
 

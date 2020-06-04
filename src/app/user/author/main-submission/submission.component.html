@@ -48,64 +48,51 @@
               <h2>Step 2: File Upload </h2>
             </div>
             <div class="card-body ">
+              <div class="col-md-12">
                 <div class="row">
-                  <div class="col-md-6 col-6">
-                    <div class="card sub-card">
+                  <div class="col-md-6 col-sm-12" style="margin-left: 25%">
+                    <div class="card sub-card" >
                       <div>
-                        <p-dropdown [options]="types" placeholder="Select your item's type" [showClear]="true"></p-dropdown>
+                        <p-dropdown [options]="types" [(ngModel)]="fileType" name="type" placeholder="Select your item's type"
+                                    [showClear]="true"></p-dropdown>
                       </div>
                       <div>
-                        <p-fileUpload  name="file[]" accept=".pdf" [showUploadButton]="true"  [showCancelButton]="false"
-                                      mode="advanced" chooseLabel="Choose File" customUpload="true"
-                                      (uploadHandler)="upload($event)">
+                        <p-fileUpload [disabled]="article.fileInfos.length >= 4"  name="file" accept=".pdf" [showUploadButton]="true"  [showCancelButton]="false"
+                                       mode="advanced" chooseLabel="Choose File" customUpload="true" [fileLimit]="1"
+                                       (uploadHandler)="upload($event)">
                         </p-fileUpload>
                         <div *ngIf="currentFile"><p-progressBar [value]="progress"></p-progressBar></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-6 col-6">
-                    <div class="card sub-card">
-                      <div>
-                        <p-dropdown [options]="types" placeholder="Select your item's type" [showClear]="true"></p-dropdown>
-                      </div>
-                      <div>
-                        <p-fileUpload name="file[]" [showUploadButton]="true"  [showCancelButton]="false"
-                                      mode="advanced" chooseLabel="Choose File" customUpload="true"
-                                      (uploadHandler)="upload($event)">
-                        </p-fileUpload>
+                        {{message}}
                       </div>
                     </div>
                   </div>
                 </div>
-              <div class="row">
-                <div class="col-md-6 col-6">
-                  <div class="card sub-card">
-                    <div>
-                      <p-dropdown  [options]="types" placeholder="Select your item's type" [showClear]="true"></p-dropdown>
-                    </div>
-                    <div>
-                      <p-fileUpload name="file[]" [showUploadButton]="false"  [showCancelButton]="false"
-                                    mode="advanced" chooseLabel="Choose File" customUpload="true"
-                                    (uploadHandler)="upload($event)">
-                      </p-fileUpload>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6 col-6">
-                  <div class="card sub-card">
-                    <div>
-                      <p-dropdown [options]="types" placeholder="Select your item's type" [showClear]="true"></p-dropdown>
-                    </div>
-                    <div>
-                      <p-fileUpload name="file[]" [showUploadButton]="false"  [showCancelButton]="false"
-                                    mode="advanced" chooseLabel="Choose File" customUpload="true"
-                                    (uploadHandler)="upload($event)">
-                      </p-fileUpload>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <mat-card>
+                        <table class="table col-md-12 fileTable">
+                          <thead class="thead-light">
+                          <tr class=" col-md-12">
+                            <th width="20" scope="col"></th>
+                            <th width="50" scope="col">Type</th>
+                            <th width="100" scope="col">Name</th>
+                            <th width="100" scope="col">Link</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr class=" col-md-12" *ngFor="let f of article.fileInfos; index as i">
+                            <th width="20" scope="col">File {{i+1}}</th>
+                            <td width="50" >{{f.type}}</td>
+                            <td width="100" >{{f.name}}</td>
+                            <td width="100" ><a href="{{f.url}}" target="_blank">{{f.url}}</a></td>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </mat-card>
                     </div>
                   </div>
-            </div>
+              </div>
 
-          </div>
             </div>
             <div class="card-footer">
               <button mat-raised-button color="primary" class="float-right" (click)="changeIndex(2)">Save</button>
@@ -201,9 +188,9 @@
                 </tr>
                 <tr *ngFor="let l of article.userArticleDetails; index as i">
                   <th>{{i+2}}</th>
-                  <th>{{l.author.firstName}}  {{l.author.lastName}}</th>
-                  <th>{{l.author.email}}</th>
-                  <th>{{l.author.institution}}</th>
+                  <th>{{l.user.firstName}}  {{l.user.lastName}}</th>
+                  <th>{{l.user.email}}</th>
+                  <th>{{l.user.institution}}</th>
                   <th><span class="pi pi-trash" (click)="deleteAuthor(i)"></span></th>
                 </tr>
                 </tbody>
@@ -597,8 +584,8 @@
                         </tr>
                         <tr *ngFor="let a of article.userArticleDetails; index as i">
                           <td>{{i+2}}</td>
-                          <td>{{a.author.firstName}} {{a.author.lastName}}</td>
-                          <td>{{a.author.institution}}</td>
+                          <td>{{a.user.firstName}} {{a.user.lastName}}</td>
+                          <td>{{a.user.institution}}</td>
                         </tr>
                         </tbody>
                       </table>

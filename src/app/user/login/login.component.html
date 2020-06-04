@@ -48,7 +48,8 @@
               </div>
 
               <div id="ed-lg-form-buttons" class="form-group">
-                <button [disabled]="enable()" type="submit"  mat-button class="btn btn-block btn-primary">LOG IN</button>
+                <button mat-raised-button *ngIf="!showProgressBar()" [disabled]="enable()" type="submit" color="primary" class="btn btn-block" >LOG IN</button>
+                <span *ngIf="showProgressBar()"><mat-progress-bar mode="indeterminate"></mat-progress-bar></span>
               </div>
             </form>
           </div>

@@ -14,23 +14,19 @@ import {UserArticleDetail} from '../../../controller/model/user-article-detail.m
 export class SubmissionTableComponent implements OnInit {
   loading = true;
   private _currentUser : User;
-  private _submissionss : Array<Article>
+  private _submissions : Array<Article>
   private _userArticleDetail : UserArticleDetail
+  userArticleDetails : UserArticleDetail[]
   @ViewChild('dt') table: Table;
   selectedSubmission: any[];
-  submissions = [
-    {name: 'Title of the paper lkjlkjvlj glkjxlckg jlkcjg kxlcjgkljx klgx', genre: 'paper', reviewer: 'Anouar Abuer',
-      date: '2020-05-14', status: {label: 'Reviewed', value: 'qualified'}},
-   {name: 'Title of the paper', genre: 'paper', reviewer: 'Anouar Abuer', date: '2020-05-14', status: {label: 'Rejected', value: 'unqualified'},},
-   {name: 'Title of the paper', genre: 'paper', reviewer: 'Anouar Abuer', date: '2020-04-14', status: {label: 'Pending', value: 'negotiation'}},
-   {name: 'Title of the paper', genre: 'paper', reviewer: 'Anouar Abuer', date: '2020-04-14', status: {label: 'Being Reviewed', value: 'renewal'}},
-]
+
   statuses = [
-    {label: 'Reviewed', value: 'qualified'},
+    {label: 'Published', value: 'qualified'},
     {label: 'Rejected', value: 'unqualified'},
     {label: 'Pending', value: 'negotiation'},
-    {label: 'New', value: 'new'},
+    {label: 'Accepted', value: 'new'},
     {label: 'Being Reviewed', value: 'renewal'},
+    {label: 'Reviewed', value: 'proposal'}
 
   ];
   constructor(private submissionService: SubmissionService, private tokenStorage: TokenStorageService) {
@@ -38,8 +34,10 @@ export class SubmissionTableComponent implements OnInit {
 
   ngOnInit() {
     this.currentUser = this.tokenStorage.getUser()
-    this.userArticleDetail = this.getUserArticles(this.tokenStorage.getUser().id)
-    this.loading = false
+    this.submissionService.getUserArticles(this.tokenStorage.getUser().id).then(userArticles => {
+      this.userArticleDetail = userArticles
+      this.loading = false
+    })
   };
 
   get currentUser(): User {
@@ -52,13 +50,13 @@ export class SubmissionTableComponent implements OnInit {
     this._currentUser = value;
   }
   get submissionss(): Array<Article> {
-    if(this._submissionss == null){
-      this._submissionss = new Array<Article>()
+    if(this._submissions == null){
+      this._submissions = new Array<Article>()
     }
-    return this._submissionss;
+    return this._submissions;
   }
   set submissionss(value: Array<Article>) {
-    this._submissionss = value;
+    this._submissions = value;
   }
   get userArticleDetail(): UserArticleDetail {
     if(this._userArticleDetail == null){
@@ -73,7 +71,6 @@ export class SubmissionTableComponent implements OnInit {
   onDateSelect(value) {
     this.table.filter(this.formatDate(value), 'date', 'equals')
   }
-
   formatDate(date) {
     let month = date.getMonth() + 1;
     let day = date.getDate();
@@ -89,14 +86,16 @@ export class SubmissionTableComponent implements OnInit {
     return date.getFullYear() + '-' + month + '-' + day;
   }
 
-  onRepresentativeChange(event) {
-    // tslint:disable-next-line:no-debugger
-    debugger;
-    this.table.filter(event.value, 'representative', 'in')
+
+  getValueStatus(status: string) {
+    // tslint:disable-next-line:prefer-for-of
+    for(let i = 0 ; i < this.statuses.length ; i++){
+      // tslint:disable-next-line:no-conditional-assignment
+      if(this.statuses[i].label === status){
+        return this.statuses[i].value
+      }
+    }
   }
 
-  getUserArticles(id : number): UserArticleDetail{
-    return this.submissionService.getUserArticles(id)
-  }
 }
 

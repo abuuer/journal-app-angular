@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { Routes, RouterModule } from '@angular/router';
+import {Routes, RouterModule } from '@angular/router';
 import {SubmissionComponent} from './main-submission/submission.component';
 import {SubmissionTableComponent} from './submission-table/submission-table.component';
 import {
@@ -22,6 +22,7 @@ import {MatCardModule} from '@angular/material/card';
 import {BrowserModule} from '@angular/platform-browser';
 import {AuthorBoardComponent} from './author-board/author-board.component';
 import {MatButtonModule} from '@angular/material/button';
+import {MatDividerModule} from "@angular/material/divider";
 
 
 const routes: Routes = [
@@ -36,31 +37,32 @@ const routes: Routes = [
     SubmissionTableComponent,
     AuthorBoardComponent,
   ],
-  imports: [
-    RouterModule.forChild(routes),
-    TableModule,
-    CalendarModule,
-    DropdownModule,
-    StepsModule,
-    MessagesModule,
-    PickListModule,
-    FormsModule,
-    DialogModule,
-    CardModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatRadioModule,
-    RadioButtonModule,
-    FileUploadModule,
-    MatCardModule,
-    CommonModule,
-    InputTextareaModule,
-    CheckboxModule,
-    MatButtonModule
-  ],
+    imports: [
+        RouterModule.forChild(routes),
+        TableModule,
+        CalendarModule,
+        DropdownModule,
+        StepsModule,
+        MessagesModule,
+        PickListModule,
+        FormsModule,
+        DialogModule,
+        CardModule,
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatRadioModule,
+        RadioButtonModule,
+        FileUploadModule,
+        MatCardModule,
+        CommonModule,
+        InputTextareaModule,
+        CheckboxModule,
+        MatButtonModule,
+        MatDividerModule
+    ],
   exports: [RouterModule]
 })
 
 
-export class AuthorRoutingModule { }
+export class AuthorRoutingModule {}

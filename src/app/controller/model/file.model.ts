@@ -2,9 +2,8 @@ export class FileInfo {
 
   name : string
   url : string
-  reference : string
+  type : string
 
   constructor() {
-    this.reference= 'ref'
   }
 }

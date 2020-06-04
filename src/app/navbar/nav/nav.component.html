@@ -36,8 +36,9 @@
     </ul>
     <ul class="navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" *ngIf="editorAuthenticate()" [routerLink]="['user/editor/manage']">Manage Submissions <span class="sr-only">(current)</span></a>
-        <a class="nav-link" *ngIf="!authenticate()">Contact Us<span class="sr-only">(current)</span></a>
+        <a class="nav-link" *ngIf="roles.includes('ROLE_EDITOR')" [routerLink]="['user/editor/manage']">Manage Submissions <span class="sr-only">(current)</span></a>
+        <a class="nav-link" *ngIf="roles.includes('ROLE_REVIEWER')" [routerLink]="['user/reviewer/submissions']">Manage Submissions <span class="sr-only">(current)</span></a>
+        <a class="nav-link" *ngIf="roles.length == 0">Contact Us<span class="sr-only">(current)</span></a>
       </li>
     </ul>
   </div>

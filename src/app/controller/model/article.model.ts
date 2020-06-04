@@ -5,12 +5,13 @@ import {ArticleTags} from './article-tags.model';
 
 
 export class Article {
-  doi : string
+  reference : string
   title : string
   type : string
   abstractt : string
   funding : boolean
   status : string
+  submitDate : Date
   articleFunds = new Array<ArticleFunds>()
   fileInfos = new Array <FileInfo>()
   userArticleDetails = new Array <UserArticleDetail>()

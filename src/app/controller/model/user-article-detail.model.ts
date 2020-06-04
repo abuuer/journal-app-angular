@@ -3,8 +3,9 @@ import {Article} from './article.model';
 
 export class UserArticleDetail {
 
-  author = new User()
+  user = new User()
   article = new Article()
+  userFunction : string
 
 
   constructor() {

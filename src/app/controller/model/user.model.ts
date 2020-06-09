@@ -1,5 +1,8 @@
+import {UserSpecialtyDetail} from './user-specialty-detail.model';
+
 export class User {
     id : number
+    prefix : string
     firstName : string
     lastName: string
     middleName: string
@@ -16,6 +19,7 @@ export class User {
     departement: string
     instAdress: string
     instPhone: string
+    userSpecialtyDetails = new Array <UserSpecialtyDetail>()
 
   constructor() {
   }

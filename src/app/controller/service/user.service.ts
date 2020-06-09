@@ -7,6 +7,7 @@ import {AuthService} from './auth.service';
 import {TokenStorageService} from './token-storage.service';
 import {UserArticleDetail} from "../model/user-article-detail.model";
 import {Article} from "../model/article.model";
+import {environment} from '../../../environments/environment';
 
 const API_URL = 'http://localhost:8080/journal-api/test/';
 
@@ -16,7 +17,7 @@ const API_URL = 'http://localhost:8080/journal-api/test/';
   providedIn: 'root'
 })
 export class UserService implements CanActivate{
-  private baseUrl = 'http://localhost:8080';
+  private baseUrl = environment.url
   private _user : User ;
   private _author : User ;
   private _editor : User ;

@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {CanActivate, Router} from '@angular/router';
 import {User} from "../model/user.model";
 import {TokenStorageService} from "./token-storage.service";
+import {environment} from "../../../environments/environment";
 
 
 
@@ -15,7 +16,7 @@ import {TokenStorageService} from "./token-storage.service";
 export class AuthService{
   private _roles : string[] = []
   private _currentUser : User
-  private authUrl = 'http://localhost:8080/journal-api/user/';
+  private authUrl = environment.url;
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
@@ -40,26 +41,21 @@ export class AuthService{
   }
 
   login(credentials): Observable<any>{
-    return this.http.post(this.authUrl + 'signin',{
+    return this.http.post(this.authUrl + '/journal-api/user/signin',{
       email: credentials.email,
-      password: credentials.password,
+      password: credentials.pwd,
     }, this.httpOptions)
-    console.log(this.httpOptions)
   }
 
   getUserInfos(email : string){
-    this.http.get<User>(this.authUrl + 'email/' + email).subscribe(
-      data => {
-        this.tokenStorage.saveUser(data)
-      }, error => {
-        console.log(error)
-      }
+    return this.http.get<User>(this.authUrl + '/journal-api/user/email/' + email).toPromise().then(
+      data=>{ return data}
     )
   }
 
-  signup(credentials, passwords): Observable<any>{
-    return this.http.post(this.authUrl + 'signup',{
-      prefix: credentials.prefix,
+  signup(credentials): Observable<any>{
+    return this.http.post(this.authUrl + '/journal-api/user/signup',{
+      pseudo: credentials.prefix,
       firstName: credentials.firstName,
       lastName: credentials.lastName,
       middleName: credentials.middleName,
@@ -76,10 +72,12 @@ export class AuthService{
       departement: credentials.department,
       instAdress: credentials.instAdress,
       instPhone: credentials.instPhone,
-      password: passwords.pwd,
-      role: ['author', 'user']
     }, this.httpOptions)
   }
 
 
+  confirmRegistration(token: string, value: any) {
+   return this.http.put(this.authUrl + '/journal-api/user/confirmRegistraion/token/'+token+'/password/'+value,'')
+      .toPromise().then(data=>{return data})
+  }
 }

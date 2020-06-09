@@ -1,0 +1,130 @@
+<div class="container">
+  <p-messages [(value)]="message"></p-messages>
+  <p-messages [(value)]="warnmessage"></p-messages>
+  <p-table #dt [value]="authors" dataKey="id"
+           styleClass="ui-table-submission" [rowHover]="true" [rows]="10" show
+           [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading"
+           [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+           [filterDelay]="0" >
+    <ng-template pTemplate="caption">
+      List of Authors
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th></th>
+        <th ></th>
+        <th ></th>
+        <th> </th>
+        <th pSortableColumn="institution">Institution <p-sortIcon field="institution"></p-sortIcon></th>
+        <th pSortableColumn="date">Date<p-sortIcon field="date"></p-sortIcon></th>
+        <th ></th>
+      </tr>
+      <tr >
+        <th></th>
+        <th>Full Name</th>
+        <th>Email</th>
+        <th>Specialities</th>
+        <th>
+          <input pInputText type="text" (input)="dt.filter($event.target.value, 'institution', 'contains')" placeholder="Search by Type" class="ui-column-filter">
+        </th>
+        <th>
+          <p-calendar (onSelect)="onDateSelect($event)" (onClearClick)="dt.filter('', 'date', 'equals')" [showButtonBar]="true" styleClass="ui-column-filter" placeholder="Registration Date" [readonlyInput]="true" dateFormat="yy-mm-dd"></p-calendar>
+        </th>
+        <th>Fill Detail</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-author let-rowIndex="rowIndex">
+      <tr class="ui-selectable-row"  >
+        <td>
+          {{rowIndex +1}}
+        </td>
+        <td>
+          <span class="ui-column-title">Full Name</span>
+          {{author.pseudo}}. {{author.firstName}} {{author.lastName}}
+        </td>
+        <td>
+          <span class="ui-column-title">Email</span>
+          <span style="vertical-align: middle; margin-left: .5em">{{author.email}}</span>
+        </td>
+        <td>
+          <span class="ui-column-title">Speacialities</span>
+          <span class="tags" *ngFor="let s of author.userSpecialtyDetails">{{s.tag.name}}</span>
+        </td>
+        <td>
+          <span class="ui-column-title">Institution</span>
+          {{author.institution}}
+        </td>
+        <td>
+          <span class="ui-column-title">Registration Date</span>
+          2020-06-15
+        </td>
+        <td> <button mat-mini-fab color="primary" class="pi pi-list" (click)="showDialog(rowIndex)" ></button></td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="7" style="text-align:left">No Reviewers found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-dialog [(visible)]="display" [modal]="true" [style]="{width: '60vw'}" [maximizable]="true" [baseZIndex]="10000"
+            [draggable]="false" [resizable]="false" [closable]="true">
+    <p-header><h3 style="text-align: center; padding-top: 20px">
+      Full Author's Details</h3></p-header>
+    <p-confirmDialog [style]="{width: '70vw'}" [baseZIndex]="100000"></p-confirmDialog>
+
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title><h2>Anouar Abouer</h2></mat-card-title>
+          <mat-card-subtitle>View the full information about the author</mat-card-subtitle>
+        </mat-card-header>
+
+        <div class="container">
+          <div >
+            <mat-card-content >
+              <div class="row">
+                <div class="col-md-2"><b>Full Name</b></div>
+                <div class="col-md-3">{{selectedAuthor.prefix}}. {{selectedAuthor.firstName}} {{selectedAuthor.lastName}}</div>
+                <div class="col-md-2"><b>Email</b></div>
+                <div class="col-md-4">{{selectedAuthor.email}}</div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-md-2"><b>Date</b></div>
+                <div class="col-md-3">2020-05-05</div>
+                <div class="col-md-2"><b>Institution</b></div>
+                <div class="col-md-5">{{selectedAuthor.institution}}</div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-md-2"><b>departement</b></div>
+                <div class="col-md-3">{{selectedAuthor.departement}}</div>
+                <div class="col-md-2"><b>Fields of Interest</b></div>
+                <div class="col-md-5">
+                  <span class="tags" *ngFor="let s of selectedAuthor.userSpecialtyDetails">{{s.tag.name}}</span>
+              </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-md-2"><b>Submissions : </b></div>
+              </div>
+              <div class="row">
+                <div class="col-md-2">Article 1</div>
+                <div class="col-md-9">Title TitleTitleTitle v Title Title Title Title Title Title Title Title Title Title Title Title Title </div>
+                <div class="col-md-1"><a href="#" style="cursor: pointer;text-decoration: none"><span  class="pi pi-external-link"></span></a></div>
+              </div>
+            </mat-card-content>
+          </div>
+        </div>
+      </mat-card>
+
+    <div class="row" style="margin: 10px 0px">
+      <div *ngIf="!showProgressBar()">
+        <button mat-raised-button color="warn"  label="Delete" (click)="delete()">Delete User</button>
+        <button mat-raised-button color="primary" style="margin-left: 10px"   label="Assign" (click)="promote()">Promote to Reviewer</button>
+      </div>
+      <div *ngIf="showProgressBar()"><mat-progress-bar mode="indeterminate" ></mat-progress-bar></div>
+    </div>
+
+  </p-dialog>
+</div>

@@ -1,0 +1,282 @@
+<div class="container-fluid">
+  <p-messages [(value)]="sucmsgs"></p-messages>
+  <p-messages [(value)]="warnmsgs"></p-messages>
+  <p-table #dt [value]="articles" [(selection)]="selectedArticle" dataKey="id"
+           styleClass="ui-table-submission" [rowHover]="true"
+           [showCurrentPageReport]="true" [loading]="loading"
+           [paginator]="false" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+           [filterDelay]="0" >
+    <ng-template pTemplate="caption">
+      List of Submission
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th></th>
+        <th pSortableColumn="title">Title <p-sortIcon field="title"></p-sortIcon></th>
+        <th pSortableColumn="type">Type <p-sortIcon field="type"></p-sortIcon></th>
+        <th pSortableColumn="date">Date <p-sortIcon field="date"></p-sortIcon></th>
+        <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
+        <th >Author </th>
+        <th >Reviewer </th>
+      </tr>
+      <tr >
+        <th>
+          select
+        </th>
+        <th>
+          <input pInputText type="text" (input)="dt.filter($event.target.value, 'title', 'contains')" placeholder="Search by Title" class="ui-column-filter">
+        </th>
+        <th>
+          <input pInputText type="text" (input)="dt.filter($event.target.value, 'type', 'contains')" placeholder="Search by Type" class="ui-column-filter">
+        </th>
+        <th>
+          <p-calendar (onSelect)="onDateSelect($event)" (onClearClick)="dt.filter('', 'date', 'equals')" [showButtonBar]="true" styleClass="ui-column-filter" placeholder="Registration Date" [readonlyInput]="true" dateFormat="yy-mm-dd"></p-calendar>
+        </th>
+        <th class="side">
+          <p-dropdown [options]="statuses"  (onChange)="fiterStatus($event.value)" styleClass="ui-column-filter" placeholder="Select a Status" [showClear]="true">
+            <ng-template let-option pTemplate="item">
+              <span  [class]="'submission-badge status-' + option.value">{{option.label}}</span>
+            </ng-template>
+          </p-dropdown>
+        </th>
+        <th>
+        </th>
+        <th>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-article>
+      <tr class="ui-selectable-row" >
+        <td>
+          <p-tableRadioButton (click)="a(selectedArticle)" [value]="article" ></p-tableRadioButton>
+        </td>
+        <td>
+          <span class="ui-column-title">Title</span>
+          {{article.title}}
+        </td>
+        <td>
+          <span class="ui-column-title">Type</span>
+          <span style="vertical-align: middle; margin-left: .5em">{{article.type}}</span>
+        </td>
+        <td>
+          <span class="ui-column-title">Date</span>
+          {{article.submitDate}}
+        </td>
+        <td>
+          <span class="ui-column-title">Status</span>
+          <span [class]="'submission-badge status-' + getValueStatus(article.status)">{{article.status}}</span>
+        </td>
+        <td>
+          <span class="ui-column-title">Author</span>
+          <div  style="vertical-align: middle;" *ngFor="let a of article.userArticleDetails; index as i">
+            <a href="" class="authors tags" *ngIf="a.function === 'Author'">{{a.user.firstName}} {{a.user.lastName}}</a></div>
+        </td>
+        <td>
+          <span class="ui-column-title">Reviewer</span>
+          <div  style="vertical-align: middle;" *ngFor="let a of article.userArticleDetails" psel>
+            <a href="" class="authors" *ngIf="a.function === 'Reviewer'"> {{a.user.firstName}} {{a.user.lastName}}</a></div>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="7" style="text-align:left">No articles found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title><h2>Submission</h2></mat-card-title>
+      <mat-card-subtitle>View the full submission</mat-card-subtitle>
+    </mat-card-header>
+
+    <div class="container" *ngIf="a(selectedArticle)">
+      <div >
+        <header><h5>Author's Information</h5></header>
+        <table class="table col-md-12" >
+          <thead class="thead-light">
+          <tr class="d-flex">
+            <th class="col-md-2" scope="col">Field</th>
+            <th class="col-md-10" scope="col">Info</th>
+          </tr>
+          </thead>
+          <tbody *ngFor="let a of selectedArticle.userArticleDetails">
+          <tr class="d-flex"   *ngIf="a.function === 'Author'">
+            <td class="col-md-2">Author</td>
+            <td class="col-md-10">
+              <div class="fullName">{{a.user.firstName}} {{a.user.firstName}}</div>
+              <mat-divider></mat-divider>
+              <div class="email">{{a.user.email}}</div>
+              <mat-divider></mat-divider>
+              <div class="institution">{{a.user.institution}}</div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+      <div>
+        <header><h5>Type, Title & Abstract</h5></header>
+        <table class="table col-md-12">
+          <thead class="thead-light">
+          <tr class="d-flex">
+            <th class="col-md-2" scope="col">Field</th>
+            <th class="col-md-10" scope="col">Info</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr class="d-flex">
+            <td class="col-md-2">Manuscript Type</td>
+            <td class="col-md-10">{{selectedArticle.type}}</td>
+          </tr>
+          <tr class="d-flex">
+            <td class="col-md-2">Title</td>
+            <td class="col-md-10">{{selectedArticle.title}}</td>
+          </tr>
+          <tr class="d-flex">
+            <td class="col-md-2">Abstract</td>
+            <td class="col-md-10">
+              <p>
+                {{selectedArticle.abstractt}}
+              </p>
+            </td>
+          </tr>
+          <tr class="d-flex" >
+            <td class="col-md-2">Attributs</td>
+            <td class="col-md-10" ><label class="tags" *ngFor="let t of selectedArticle.articleTags">{{t.tag.name}}</label></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div >
+        <header><h5>Files</h5></header>
+        <table class="table col-md-12">
+          <thead class="thead-light">
+          <tr class="d-flex">
+            <th class="col-md-2" scope="col">File</th>
+            <th class="col-md-2" scope="col">Type</th>
+            <th class="col-md-8" scope="col">Link</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr class="d-flex" *ngFor="let f of selectedArticle.fileInfos; index as i">
+            <td class="col-md-2">File {{i+1}}</td>
+            <td class="col-md-2"> Main Manuscript</td>
+            <td class="col-md-8"><a href="{{f.url}}" target="_blank">{{f.url}}</a></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div>
+        <header><h5>Reviewer's Information</h5></header>
+        <table class="table col-md-12">
+          <thead class="thead-light">
+          <tr class="d-flex">
+            <th class="col-md-2" scope="col">Field</th>
+            <th class="col-md-9" scope="col">Info</th>
+            <th class="col-md-1" scope="col"></th>
+          </tr>
+          </thead>
+          <tbody *ngFor="let a of selectedArticle.userArticleDetails">
+          <tr  class="d-flex" *ngIf="a.function === 'Reviewer'">
+            <td class="col-md-2">Reviewer</td>
+            <td class="col-md-9" >
+              <div>
+                <a href="" class="authors"> {{a.user.firstName}} {{a.user.lastName}}</a></div>
+              <mat-divider></mat-divider>
+              <div class="email">{{a.user.email}}</div>
+              <mat-divider></mat-divider>
+              <div class="institution">{{a.user.institution}}</div>
+            </td>
+            <td class="col-md-1"><button mat-mini-fab color="warn" class="pi pi-trash trashBtn" (click)="deleteReviewer(a.user.email)"></button></td>
+          </tr>
+          </tbody>
+          <tfoot>
+          <button mat-raised-button color="primary" class="btn btn-block" (click)="showDialog()" style="margin-top: 10px">Assign a reviewer</button>
+          </tfoot>
+        </table>
+        <p-dialog [(visible)]="display" [modal]="true" [style]="{width: '60vw'}" [maximizable]="true" [baseZIndex]="10000"
+                  [draggable]="false" [resizable]="false" [closable]="false">
+          <p-header><h3 style="text-align: center; padding-top: 20px">
+            Assign Reviewer</h3></p-header>
+          <p-card>
+            <p-confirmDialog [style]="{width: '70vw'}" [baseZIndex]="100000"></p-confirmDialog>
+            <p-table #dt [value]="reviewers" [(selection)]="selectedUser" dataKey="id"
+                     styleClass="ui-table-submission" [rowHover]="true"
+                     [showCurrentPageReport]="true" [loading]="loadingSec"
+                     [paginator]="false" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                     [filterDelay]="0" [globalFilterFields]="['firstName','lastName']">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th></th>
+                  <th pSortableColumn="lastName">Full Name <p-sortIcon field="lastName"></p-sortIcon></th>
+                  <th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon></th>
+                  <th pSortableColumn="specialty">Specialty <p-sortIcon field="specialty"></p-sortIcon></th>
+                  <th pSortableColumn="status">Availability <p-sortIcon field="status"></p-sortIcon></th>
+                </tr>
+                <tr>
+                  <th>
+                  </th>
+                  <th>
+                    <input pInputText type="text" (input)="dt.filter($event.target.value, 'lastName', 'contains')" placeholder="Search by last name" class="ui-column-filter">
+                  </th>
+                  <th>
+                    <input pInputText type="text" (input)="dt.filter($event.target.value,'email', 'contains')" placeholder="Search by email" class="ui-column-filter">
+                  </th>
+                  <th>
+                    <input pInputText type="text" (input)="dt.filter($event.target.value, 's.tag.name', 'contains')" placeholder="Search by Specialty" class="ui-column-filter">
+                  </th>
+                  <th class="side">
+                    <p-dropdown [options]="reviewerStatuses" (onChange)="dt.filter($event.value, 'status.value', 'equals')" styleClass="ui-column-filter" placeholder="Select a Status" [showClear]="true">
+                      <ng-template let-option pTemplate="item">
+                        <span [class]="'submission-badge status-' + option.value">{{option.label}}</span>
+                      </ng-template>
+                    </p-dropdown>
+                  </th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-reviewer>
+                <tr class="ui-selectable-row" >
+                  <td>
+                    <p-tableCheckbox [value]="reviewer"></p-tableCheckbox>
+                  </td>
+                  <td>
+                    <span class="ui-column-title">Full Name</span>
+                    {{reviewer.firstName}} {{reviewer.lastName}}
+                  </td>
+                  <td>
+                    <span class="ui-column-title">Full Name</span>
+                    {{reviewer.email}}
+                  </td>
+                  <td>
+                    <span class="ui-column-title">Specialty</span>
+                    <span class="tags" *ngFor="let s of reviewer.userSpecialtyDetails">{{s.tag.name}} </span>
+                  </td>
+                  <td>
+                    <span class="ui-column-title">Status</span>
+                    <span [class]="'submission-badge status-'">available</span>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+            <hr>
+            <p-card *ngIf="selectedUser.length !== 0">
+              <p-header><h5>Selected Reviewers :</h5></p-header>
+              <div><span class="tags" *ngFor="let r of selectedUser">{{r.firstName}} {{r.lastName}}</span></div>
+            </p-card>
+            <button mat-raised-button color="primary"  class="float-right" (click)="save()" style="margin-top: 20px; margin-right: 5px" label="Save">save</button>
+            <button mat-stroked-button  class="float-right" (click)="cancel()" style="margin-top: 20px; margin-right: 5px" label="Cancel">Cancel</button>
+          </p-card>
+        </p-dialog>
+      </div>
+
+    </div>
+
+  </mat-card>
+
+
+</div>

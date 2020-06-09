@@ -1,0 +1,61 @@
+
+<div class="login-pf-page mx-auto">
+  <div id="lg-header" class="login-pf-page-header">
+    <img class="logo" src="../../../assets/pictures/logo.png" alt="">
+  </div>
+  <mat-card class="card-pf mx-auto">
+    <br>
+    <mat-card-content>
+      <form form="ngForm" name="form"  [formGroup]="formGroup" >
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <mat-form-field class="example-full-width" >
+                <mat-label>Create a new password</mat-label>
+                <input matInput formControlName="pwd" type="password"
+                       placeholder="Re-enter your password" required [errorStateMatcher]="matcher" >
+                <mat-hint>Errors appear instantly!</mat-hint>
+                <mat-error *ngIf="pwd.hasError('required')">
+                  Password is <strong>required</strong>
+                </mat-error>
+                <mat-error *ngIf="formGroup.hasError('passwordReg')">
+                  Password doesn't meet the criteria <strong>below</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <mat-form-field class="example-full-width" >
+                <mat-label>Confirm new password</mat-label>
+                <input matInput formControlName="pwdConf" type="password"
+                       placeholder="Re-enter your password" required [errorStateMatcher]="matcher"
+                       [type]="hide ? 'password' : 'text'">
+                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+                <mat-hint>Errors appear instantly!</mat-hint>
+                <mat-error *ngIf="formGroup.hasError('nomatch')">
+                  Password don't <strong>match</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row ">
+            <div class="col-md-12 footer">
+                <li >Must be a minimum of 8 characters.</li>
+                <li>Must contain letters, numbers, and symbols.</li>
+                <li>Passwords must match.</li>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 footer" *ngIf="!showProgressBar()">
+              <button mat-raised-button (click)="submit()"  type="submit" color="primary" class="btn btn-block" >Submit</button>
+            </div>
+            <div class="col-12 footer" *ngIf="showProgressBar()"><mat-progress-bar mode="indeterminate" ></mat-progress-bar></div>
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,4 +1,10 @@
 
+.someclasse{
+  background-image:url("../../assets/pictures/white.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
 .border-bottom {
   margin-top: 60px;
   margin-bottom: 40px;

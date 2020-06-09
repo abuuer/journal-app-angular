@@ -5,7 +5,7 @@ export class UserArticleDetail {
 
   user = new User()
   article = new Article()
-  userFunction : string
+  function : string
 
 
   constructor() {

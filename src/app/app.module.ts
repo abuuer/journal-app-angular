@@ -7,9 +7,9 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { AppComponent } from './app.component';
 import { JournalComponent } from './journal/journal.component';
-import { NavComponent } from './navbar/nav/nav.component';
-import { HeaderComponent } from './navbar/header/header.component';
-import { FooterComponent } from './navbar/footer/footer.component';
+import { NavComponent } from './journal/navbar/nav/nav.component';
+import { HeaderComponent } from './journal/navbar/header/header.component';
+import { FooterComponent } from './journal/navbar/footer/footer.component';
 import {Angular2UsefulSwiperModule} from 'angular2-useful-swiper';
 import { IssueComponent } from './journal/issue/issue.component';
 import {JournalService} from './controller/service/journal.service';
@@ -17,18 +17,33 @@ import {routes} from './routing';
 import {RouterModule} from '@angular/router';
 import { HomeComponent } from './journal/home/home.component';
 import {UserService} from './controller/service/user.service';
-import { FormsModule} from '@angular/forms';
-import {AccordionModule, InputTextareaModule} from 'primeng';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {
+  AccordionModule,
+  CardModule,
+  InputTextareaModule,
+  MessagesModule,
+} from 'primeng';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { ArchiveComponent } from './journal/issues/archive/archive.component';
 import {LatestIssuesComponent} from './journal/issues/latest-issues/latest-issues.component';
-import { ManageSubsComponent } from './user/editor/manage-subs/manage-subs.component';
 import {AuthService} from './controller/service/auth.service';
 import {SubmissionService} from './controller/service/submission.service';
 import { authInterceptorProviders } from './controller/helper/auth.interceptor';
-import {SubmissionComponent} from './user/author/main-submission/submission.component';
 import {EditorService} from './controller/service/editor.service';
 import {ReviewerService} from './controller/service/reviewer.service';
+import {LoginComponent} from './sign/login/login.component';
+import {RegisterConfComponent} from './sign/register-conf/register-conf.component';
+import {RegisterComponent} from './sign/register/register.component';
+import {MatCardModule} from '@angular/material/card';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatIconModule} from '@angular/material/icon';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatStepperModule} from '@angular/material/stepper';
+import {MatInputModule} from '@angular/material/input';
+import {MatButtonModule} from '@angular/material/button';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatTabsModule} from '@angular/material/tabs';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -38,13 +53,17 @@ export function HttpLoaderFactory(http: HttpClient) {
   declarations: [
     AppComponent,
     JournalComponent,
+    ArchiveComponent,
+    HomeComponent,
     NavComponent,
     HeaderComponent,
     FooterComponent,
     IssueComponent,
     HomeComponent,
     LatestIssuesComponent,
-    ArchiveComponent,
+    LoginComponent,
+    RegisterConfComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
@@ -61,7 +80,19 @@ export function HttpLoaderFactory(http: HttpClient) {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
-    })
+    }),
+    MatCardModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatIconModule,
+    MatProgressBarModule,
+    MessagesModule,
+    MatStepperModule,
+    CardModule,
+    MatInputModule,
+    MatButtonModule,
+    MatDividerModule,
+    MatTabsModule,
   ],
   providers: [
     JournalService,
@@ -72,7 +103,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ReviewerService,
     authInterceptorProviders
   ],
-  bootstrap: [JournalComponent],
+  bootstrap: [AppComponent],
 })
 export class AppModule {
 }

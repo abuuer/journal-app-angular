@@ -1,0 +1,31 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2 col-xs-12">
+      <img class="logoImg" src="../../../../assets/pictures/logo.png" alt="">
+    </div>
+    <div class="col-md-7 col-xs-1">
+      <!--<form action="" class="float-md-right">
+        <div class="bg-light rounded rounded-pill shadow-sm ">
+          <div class="input-group ">
+            <input type="search" placeholder="Enter word" aria-describedby="button-addon1" class="form-control border-0 bg-light">
+            <div class="input-group-append">
+              <button id="button-addon1" type="submit" class="btn btn-link text-primary"><i class="fa fa-search"></i></button>
+            </div>
+          </div>
+        </div>
+      </form> -->
+    </div>
+    <div class="col-md-3 col-xs-2 login d-flex justify-content-center">
+     <!-- <div  class="col-md-1 d-flex justify-content-center "><em class="line"></em></div> -->
+      <div class="col-md-8">
+        <a class="float-right" *ngIf="authenticate()" [routerLink]="['user/profile']"><i class="fa fa-user-o" aria-hidden="true"></i>  {{tokenStorage.getUser().lastName }}</a>
+        <a class="float-right" *ngIf="!authenticate()" [routerLink]="['../login']" id="login" style="margin-left: 5px"> Login</a></div>
+      <div class="col-md-3" style=" padding-left: 0px">
+        <a *ngIf="!authenticate()" [routerLink]="['../register']" class="float-right" id="register" style="margin-left: 5px;">Sign up</a>
+        <a *ngIf="authenticate()" [routerLink]="['home']"  id="logout" style="margin-left: 5px;"
+           (click)="tokenStorage.logOut()">Log out</a>
+      </div>
+    </div>
+  </div>
+
+</div>

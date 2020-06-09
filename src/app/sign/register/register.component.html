@@ -1,0 +1,218 @@
+<div class="register-page mx-auto">
+  <form *ngIf="!done" form="ngForm" #form [formGroup]="formGroup">
+    <p-messages [(value)]="msgs"></p-messages>
+          <ng-template matStepLabel>General Information</ng-template>
+          <p-card>
+            <p-card>
+              <p-header><h4 style="padding: 15px 15px">Personal Information</h4></p-header>
+              <div class="row">
+                <div class="col-md-2">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Prefix</mat-label>
+                    <select formControlName="prefix" matNativeControl required>
+                      <option value="Dr">Dr.</option>
+                      <option value="Mr">Mr.</option>
+                      <option value="Miss">Miss</option>
+                      <option value="Mrs">Mrs.</option>
+                      <option value="Ms">Ms.</option>
+                      <option value="Prof">Prof.</option>
+                    </select>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>First Name</mat-label>
+                    <input formControlName="firstName" matInput placeholder="Enter your first name" required>
+                    <mat-error *ngIf="firstName.hasError('required')">
+                      First Name is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-2">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Middle Name</mat-label>
+                    <input formControlName="middleName" matInput placeholder="Enter your middle name" >
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Last Name</mat-label>
+                    <input formControlName="lastName" matInput placeholder="Enter your last name" required>
+                    <mat-error *ngIf="lastName.hasError('required')">
+                      Last Name is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email"
+                           placeholder="Re-enter your primary email" required>
+                    <mat-hint>Errors appear instantly!</mat-hint>
+                    <mat-error *ngIf="email.hasError('email') &&
+                        !email.hasError('required')">
+                      Please enter a valid email address
+                    </mat-error>
+                    <mat-error *ngIf="email.hasError('required')">
+                      Email is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                  <mat-form-field class="example-full-width" >
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="emailConf"
+                           placeholder="Re-enter your primary email" required [errorStateMatcher]="matcher">
+                    <mat-hint>Errors appear instantly!</mat-hint>
+                    <mat-error *ngIf="formGroup.hasError('nomatch')">
+                      Emails don't <strong>match</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Degree</mat-label>
+                    <input formControlName="degree" matInput placeholder="Enter your degree" >
+                  </mat-form-field>
+                </div>
+              </div>
+              <p-card>
+                <p-header>
+                  <p style="padding: 15px 15px">Adress</p>
+                </p-header>
+                <div class="row">
+                  <div class="col-md-5">
+                    <mat-form-field class="example-full-width">
+                      <mat-label>Adress</mat-label>
+                      <input formControlName="userAdress" matInput placeholder="Enter your adress" >
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-3">
+                    <mat-form-field class="example-full-width">
+                      <mat-label>Country / Region</mat-label>
+                      <input formControlName="country" matInput placeholder="Enter your country" >
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-3">
+                    <mat-form-field class="example-full-width">
+                      <mat-label>State / Province</mat-label>
+                      <input formControlName="region" matInput placeholder="Enter your region" >
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-3">
+                    <mat-form-field class="example-full-width">
+                      <mat-label>City</mat-label>
+                      <input formControlName="city" matInput placeholder="Enter your city" >
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-2">
+                    <mat-form-field class="example-full-width">
+                      <mat-label>Postal Code</mat-label>
+                      <input formControlName="postalCode" matInput placeholder="Enter your postal code" >
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-4">
+                    <mat-form-field class="example-full-width">
+                      <mat-label>Phone</mat-label>
+                      <input formControlName="phone" matInput placeholder="Enter your phone" >
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-3">
+                    <mat-form-field class="example-full-width">
+                      <mat-label>Fax</mat-label>
+                      <input formControlName="fax" matInput placeholder="Enter your fax" >
+                    </mat-form-field>
+                  </div>
+                </div>
+              </p-card>
+            </p-card>
+            <hr>
+            <p-card>
+              <p-header><h4 style="padding: 15px 15px">Institution</h4></p-header>
+              <div class="row">
+                <div class="col-md-12">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Institution Name</mat-label>
+                    <input formControlName="institution" matInput placeholder="Enter your institution's Name" required>
+                    <mat-error *ngIf="institution.hasError('required')">
+                      Institution's Name is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Department</mat-label>
+                    <input formControlName="department"  matInput placeholder="Enter your department" >
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Full Adress</mat-label>
+                    <input formControlName="instAdress" matInput placeholder="Enter the institution's full adress" >
+                  </mat-form-field>
+                </div>
+                <div class="col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Phone/Fax Number</mat-label>
+                    <input formControlName="instPhone" matInput placeholder="Enter the institution's phone/fax number" >
+                  </mat-form-field>
+                </div>
+              </div>
+            </p-card>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="example-button-row"  *ngIf="!showProgressBar() && !gthb">
+                  <button mat-raised-button type="submit" color="primary" (click)="onSubmit()" class="float-right" required >Save</button>
+                  <button mat-raised-button color="warn"  (click)="form.reset()" class="float-right">Reset</button>
+                  <button mat-raised-button  [routerLink]="'../journal/home'"  class="float-right" style="color: #555555" type="button">Back</button>
+                </div>
+                <div style="margin-top: 10px">
+                  <span *ngIf="showProgressBar()"><mat-progress-bar mode="indeterminate"></mat-progress-bar></span>
+                </div>
+              </div>
+            </div>
+          </p-card>
+
+  </form>
+
+  <form *ngIf="done" class="sec">
+    <p-card class="">
+      <div class="container ">
+        <div class="row">
+          <div class="col-md-12">
+            <p>
+              Please check your email (<strong style="font-size: 14px">fgsdgf@fdf.com</strong>)
+              to confirm your account.
+            </p>
+          </div>
+        </div>
+        <br>
+        <hr>
+        <br>
+          <div class="row">
+            <div class="col-md-12">
+            <p>
+              If <strong style="font-size: 14px">fgsdgf@fdf.com</strong> is not your email address, please <a
+              (click)="goBack()" style="cursor: pointer; color: #007ad9">go back</a> and enter the correct one.
+            </p>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-md-12">
+            <p>
+              If you haven't received our email in 15 minutes, please check your spam folder.
+            </p>
+            </div>
+          </div>
+      </div>
+    </p-card>
+  </form>
+
+</div>

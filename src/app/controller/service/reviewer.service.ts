@@ -6,22 +6,27 @@ import {Article} from '../model/article.model';
 import {HttpClient, HttpEvent, HttpRequest} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {FileInfo} from '../model/file.model';
+import {environment} from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReviewerService implements CanActivate{
   private _selectedArticle = new Article();
-  url = 'http://localhost:8080'
+  url = environment.url
   constructor(private router: Router, private http : HttpClient, private tokenService: TokenStorageService) { }
 
   canActivate() {
-    if (this.tokenService.getRoles().includes('ROLE_REVIEWER')) {
-      return true
-    }
-    else {
-      this.router.navigate(['/'])
+    if(this.tokenService.getRoles() == null){
+      this.router.navigate(['/home'])
       return false
+    } else {
+      if (this.tokenService.getRoles().includes('ROLE_REVIEWER')) {
+        return true
+      } else {
+        this.router.navigate(['/'])
+        return false
+      }
     }
   }
   get selectedArticle(): Article {
@@ -45,9 +50,10 @@ export class ReviewerService implements CanActivate{
     return this.http.request(req);
   }
 
-  getArticles(id: any) {
-    return this.http.get<Article[]>(this.url + '/journal-api/user-article/findAllArticlesByReviewer/id/'+ id)
+  getArticles(email) {
+    return this.http.get<any>(this.url + '/journal-api/user-article/findAllArticlesByReviewer/email/'+ email)
       .toPromise().then(data =>{
+        console.log(data)
         return data})
   }
 
@@ -56,7 +62,7 @@ export class ReviewerService implements CanActivate{
   }
 
   getLocalStorageReview(){
-    return JSON.parse(localStorage.getItem(`final-review${this.getLocalStorage().article.id}`))
+    return JSON.parse(localStorage.getItem(`final-review${this.getLocalStorage().article.ref}`))
   }
 
   setLocalStorage(article : Article): void {
@@ -67,13 +73,10 @@ export class ReviewerService implements CanActivate{
     return JSON.parse(localStorage.getItem('article'));
   }
 
-  submitAticle(article: Article) {
-    this.http.post(this.url + `/journal-api/article/save`, article).subscribe(
-      data => {
-        console.log(data)
-      }, error => {
-        console.log(error)
-      }
-    )
+
+  submitAticle(finalReview: FileInfo) {
+   return  this.http.post(this.url + '/journal-api/file/save', finalReview).toPromise().then(data=>{
+      return data;
+    })
   }
 }

@@ -1,0 +1,69 @@
+<div class="login-pf-page mx-auto">
+  <div id="lg-header" class="login-pf-page-header">
+    <a [routerLink]="'../journal/home'"><img class="logo"  src="../../../assets/pictures/logo.png" alt=""></a>
+  </div>
+  <mat-card class="card-pf mx-auto">
+    <div class="row">
+      <div id="lg-page-title" class="col-12">
+        Login
+      </div>
+    </div>
+    <br>
+    <mat-card-content>
+      <form form="ngForm" name="form" (submit)="login()" [formGroup]="formGroup">
+      <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <mat-form-field class="example-full-width">
+                <mat-label>Email</mat-label>
+                <input name="email"  matInput formControlName="email"
+                       placeholder="Re-enter your primary email" required>
+                <mat-hint>Errors appear instantly!</mat-hint>
+                <mat-error *ngIf="email.hasError('email') &&
+                        !email.hasError('required')">
+                  Please enter a valid email address
+                </mat-error>
+                <mat-error *ngIf="email.hasError('required')">
+                  Email is <strong>required</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        <div class="row">
+          <div class="col-12">
+            <mat-form-field class="example-full-width">
+              <mat-label>Enter your password</mat-label>
+              <input matInput formControlName="pwd" [type]="hide ? 'password' : 'text'">
+              <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+              <mat-error *ngIf="pwd.hasError('required')">
+                Password is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            <a tabindex="5" class="float-right info">Forgot your password?</a>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <mat-error *ngIf="error" class="error">
+              <strong>Invalid</strong> email or password.
+            </mat-error>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 footer" *ngIf="!showProgressBar()">
+            <button mat-raised-button   type="submit" color="primary" class="btn btn-block float-right" >LOG IN</button>
+          </div>
+          <div class="col-12 footer" *ngIf="showProgressBar()"><mat-progress-bar mode="indeterminate" ></mat-progress-bar></div>
+        </div>
+        <div class="row">
+          <div class="col-12 infos">
+                Don't have an account? <a tabindex="6" [routerLink]="'register'">Sign up</a>
+          </div>
+        </div>
+      </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

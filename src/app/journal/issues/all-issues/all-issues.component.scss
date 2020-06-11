@@ -1,0 +1,71 @@
+.main-body {
+  padding-right: 80px;
+  padding-left: 80px;
+  padding-top: 40px;
+}
+
+.title {
+  font-size: 25px;
+  padding: 0px;
+  text-transform: uppercase;
+  border-bottom: 1px solid black;
+}
+
+.first-row{
+  padding: 22px 22px ;
+  margin: 0px 0px;
+}
+.current{
+  text-decoration: none;
+  color:  #050511;
+}
+.current b {
+  font-size: 15px;
+  cursor: pointer;
+  color: #1E5991;
+}
+.current a {
+  text-decoration: none;
+}
+.article {
+  font-size: 20px;
+  text-transform: uppercase;
+  padding-left: 50px;
+  padding-top: 22px;
+}
+.latest-side{
+  padding: 20px 0px;
+}
+.block {
+  padding: 40px 40px;
+}
+::ng-deep {
+  body .ui-accordion .ui-accordion-header:not(.ui-state-disabled).ui-state-active a {
+    background-color: transparent;
+    color: black;
+  }
+}
+::ng-deep {
+  body .ui-accordion .ui-accordion-header:not(.ui-state-disabled).ui-state-active:hover a {
+    background-color: #1E5991;
+  }
+}
+::ng-deep {
+  body .ui-accordion .ui-accordion-header:not(.ui-state-disabled).ui-state-active a .ui-accordion-toggle-icon{
+    color: black;
+  }
+}
+
+::ng-deep {
+  body .ui-tree {
+    padding: 0px;
+    border: none;
+  }
+}
+.latest app-issue {
+  padding-top: 8px;
+  font-size: 12px;
+}
+.latest app-issue::ng-deep .article-title {
+  font-size: 16px ;
+}

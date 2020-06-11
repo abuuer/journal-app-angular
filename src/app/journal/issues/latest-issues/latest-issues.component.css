@@ -83,6 +83,7 @@
 }
 .previous-issues a span {
   font-family: FontAwesome;
+
 }
 
 .abstract{
@@ -90,12 +91,23 @@
 }
 .most-read{
   margin-top: 10px;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: bold;
 }
+
+.most-read app-issue::ng-deep .article-title {
+  font-size: 16px ;
+}
+
 .sub-title{
   padding: 10px 0px;
   font: 14px 'Noto Sans', sans-serif;
   font-style: italic;
 }
 
+.article {
+  font-size: 20px;
+  text-transform: uppercase;
+  padding-left: 50px;
+  padding-top: 22px;
+}

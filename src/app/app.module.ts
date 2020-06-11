@@ -22,7 +22,7 @@ import {
   AccordionModule,
   CardModule,
   InputTextareaModule,
-  MessagesModule,
+  MessagesModule, TreeModule,
 } from 'primeng';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { AllIssuesComponent } from './journal/issues/all-issues/all-issues.component';
@@ -93,6 +93,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatButtonModule,
     MatDividerModule,
     MatTabsModule,
+    TreeModule,
   ],
   providers: [
     JournalService,

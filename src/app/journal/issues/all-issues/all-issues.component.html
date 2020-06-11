@@ -7,38 +7,40 @@
           <div class="col-md-12">
             <div class="row">
               <div class="col-md-12 title">
-                <span >Latest Issue</span>
+                <span >All Issues</span>
               </div></div>
-            <div class="row first-row-block">
-
+            <div class="row first-row-block ">
+              <div class="col-md-12 block">
+                  <p-accordion>
+                    <p-accordionTab header="2020" [selected]="true">
+                      <p-tree [value]="years" (onNodeSelect)="show($event)"></p-tree>
+                    </p-accordionTab>
+                  </p-accordion>
+              </div>
             </div>
           </div>
 
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="row ">
-          <div class="col-md-12">
-            <div class="row">
+      <div class="col-md-4 article">
+        <div class="row">
               <div class="col-md-12 title">
                 Current Issue
               </div>
               <div class="row current">
                 <div class="col-md-12">
-                  <a href=""><b>Go To Current Issue</b></a>
+                  <a [routerLink]="['latest-issue']"><b>Go To Current Issue</b></a>
                 </div>
               </div>
-            </div>
-          </div>
         </div>
-        <div class="row first-row">
+        <div class="row latest-side">
           <div class="col-md-12">
             <div class="row">
               <div class="col-md-12 title">
                 Latest Article
               </div>
             </div>
-            <div class="row">
+            <div class="row latest">
               <app-issue></app-issue>
             </div>
           </div>

@@ -22,7 +22,7 @@ import {MatCardModule} from '@angular/material/card';
 import {AuthorBoardComponent} from './author-board/author-board.component';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDividerModule} from '@angular/material/divider';
-import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 
 const routes: Routes = [

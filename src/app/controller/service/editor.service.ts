@@ -46,14 +46,15 @@ export class EditorService implements CanActivate {
   getAllReviewers() {
     return this.http.get<User[]>(this._url + '/journal-api/user-role/findAllReviewers').toPromise().then(
       data => {
+        console.log(data)
         return data
       }
     )
   }
 
-  assignReviewer(id: any, reference: string) {
+  assignReviewer(email, reference) {
     return this.http.put(this._url + '/journal-api/article/assignReviewer/articleRef/' + reference +
-      '/id/' + id, this.httpOptions)
+      '/email/' + email, this.httpOptions)
   }
 
   authorToReviewer(selectedAuthor: User) {
@@ -66,6 +67,7 @@ export class EditorService implements CanActivate {
   getAllAuthors() {
     return this.http.get<User[]>(this._url + '/journal-api/user-role/findAllAuthors').toPromise()
       .then(data => {
+        console.log(data)
         return data
       })
   }
@@ -87,5 +89,10 @@ export class EditorService implements CanActivate {
 
   dismissReviewer(email: string) {
     return this.http.delete(this._url +'/journal-api/user/dismissReviewer/email/'+ email).toPromise().then(data=>{return data})
+  }
+
+  submitFinalDecision(finalDecision: any, reference: string) {
+    return this.http.put(this._url +'/journal-api/article/updateStatus/articleRef/'+ reference +'/status/' + finalDecision, '')
+      .toPromise().then(data=>{return data})
   }
 }

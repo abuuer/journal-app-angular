@@ -38,7 +38,6 @@ export class RegisterComponent implements OnInit {
   msgs: Message[] = []
   matcher = new MyErrorStateMatcher()
   progress = false
-  gthb = false
   done = false
   constructor(private _formBuilder: FormBuilder , private authService: AuthService,private router: Router) { }
 
@@ -103,7 +102,6 @@ export class RegisterComponent implements OnInit {
         data => {
           this.done = true
           this.progress = false
-          this.gthb = true
           this.msgs = []
           this.msgs.push({severity:'success', summary:'registered successfully!'})
           this.done = true

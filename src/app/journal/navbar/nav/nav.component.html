@@ -7,12 +7,19 @@
       <li class="nav-item active">
         <a class="nav-link" [routerLink]="['home']">Home <span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item active">
-        <a class="nav-link" [routerLink]="['issues']">Latest Issues <span class="sr-only">(current)</span></a>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="dropdown8" data-toggle="dropdown" aria-haspopup="true"
+           aria-expanded="false" href="">Browse Issues</a>
+        <ul class="dropdown-menu" aria-labelledby="dropdown1">
+          <li class="dropdown-item " [routerLink]="['latest-issue']">
+            <a class="nav-link-dropdown" >
+              Latest Issue<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="dropdown-item" [routerLink]="['all-issues']"><a>All Issues</a></li>
+        </ul>
       </li>
-      <li class="nav-item active">
-        <a class="nav-link" [routerLink]="['archive']">Archive <span class="sr-only">(current)</span></a>
-      </li>
+
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" id="dropdown1" data-toggle="dropdown" aria-haspopup="true"
            aria-expanded="false" href="">Authors</a>
@@ -21,7 +28,7 @@
             <a class="nav-link-dropdown" >
               Author's Board<span class="sr-only">(current)</span></a>
           </li>
-          <li class="dropdown-item" ><a>Submit a Manuscript</a></li>
+          <li class="dropdown-item" [routerLink]="'../login'"><a>Submit a Manuscript</a></li>
           <li class="dropdown-item" href="#"><a>Information & Guidelines</a></li>
         </ul>
       </li>
@@ -29,8 +36,8 @@
         <a class="nav-link dropdown-toggle" id="dropdown2" data-toggle="dropdown" aria-haspopup="true"
            aria-expanded="false" href="">Editors</a>
         <ul class="dropdown-menu" aria-labelledby="dropdown2">
-          <li class="dropdown-item" href="#"><a>Editors' Board</a></li>
-          <li class="dropdown-item" href="#"><a>Information & Guidelines</a></li>
+          <li class="dropdown-item"><a>Editors' Board</a></li>
+          <li class="dropdown-item"><a>Information & Guidelines</a></li>
         </ul>
       </li>
     </ul>
@@ -52,14 +59,27 @@
            aria-expanded="false" href="">Author space</a>
         <ul class="dropdown-menu sec" aria-labelledby="dropdown1">
           <li class="dropdown-item " [routerLink]="['user/author/submission']">
-            <a class="nav-link-dropdown" >
-              Submit Your Manuscript<span class="sr-only">(current)</span></a>
+            <a class="nav-link-dropdown" *ngIf="!article">Submit Your Manuscript<span class="sr-only">(current)</span></a>
+            <a class="nav-link-dropdown" *ngIf="article">Continue your submission<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="dropdown-item" [routerLink]="['user/author/statistics']"><a>My Submissions' Table</a></li>
+        </ul>
+      </li>
+      <li class="nav-item dropdown" *ngIf="roles.includes('ROLE_REVIEWER')">
+        <a class="nav-link dropdown-toggle" id="dropdown5" data-toggle="dropdown" aria-haspopup="true"
+           aria-expanded="false" href="">Author space</a>
+        <ul class="dropdown-menu sec" aria-labelledby="dropdown1">
+          <li class="dropdown-item " [routerLink]="['user/reviewer/submissions']">
+            <a class="nav-link-dropdown" >Manage Assigned Submissions<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="dropdown-item " [routerLink]="['user/author/submission']">
+            <a class="nav-link-dropdown" *ngIf="!article">Submit Your Manuscript<span class="sr-only">(current)</span></a>
+            <a class="nav-link-dropdown" *ngIf="article">Continue your submission<span class="sr-only">(current)</span></a>
           </li>
           <li class="dropdown-item" [routerLink]="['user/author/statistics']"><a>My Submissions' Table</a></li>
         </ul>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" *ngIf="roles.includes('ROLE_REVIEWER')" [routerLink]="['user/reviewer/submissions']">Manage Assigned Submissions <span class="sr-only">(current)</span></a>
         <a class="nav-link" *ngIf="roles.length == 0">Contact Us<span class="sr-only">(current)</span></a>
       </li>
     </ul>

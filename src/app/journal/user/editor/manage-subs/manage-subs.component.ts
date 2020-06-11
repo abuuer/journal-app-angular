@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ConfirmationService, Table} from 'primeng';
 import {UserService} from '../../../../controller/service/user.service';
 import {Article} from '../../../../controller/model/article.model';
@@ -20,9 +20,13 @@ export class ManageSubsComponent implements OnInit {
   sucmsgs: Message[] = []
   @ViewChild('dt') table: Table;
   selectedArticle : Article
-  selectedUser = new Array <any>();
+  selectedUser : User[]
+  decisions: any[]
+  finalDecision: any
+  progress = false
   private _articles : Article[]
-  private _reviewers : User[]
+   _reviewers : User[]
+  hideRejected  = false
 
   statuses = [
     {label: 'Published', value: 'qualified'},
@@ -38,11 +42,21 @@ export class ManageSubsComponent implements OnInit {
     {label: 'Busy', value: 'negotiation'}
   ];
 
+
+
   constructor( private userService : UserService, private editorService : EditorService,
-               private confirmationService: ConfirmationService) { }
+               private confirmationService: ConfirmationService) {
+    this.decisions = [
+      {label: 'Select the final decision', value: null},
+      {label: 'Accept without any changes', value: 'Accepted'},
+      {label: 'Accept with minor revisions', value: 'Accepted'},
+      {label: 'Accept after major revisions', value: 'Accepted'},
+      {label: 'Revise and resubmit', value: 'Rejected'},
+      {label: 'Reject the paper', value: 'Rejected'},
+    ];
+  }
 
   ngOnInit(): void {
-    console.log(this.selectedUser)
     this.editorService.getArticles().then(articles => {
       this.articles = articles
       this.loading = false
@@ -128,7 +142,7 @@ export class ManageSubsComponent implements OnInit {
     this.loadingSec = true
     // tslint:disable-next-line:prefer-for-of
     for(let i = 0 ; i < this.selectedUser.length ; i++) {
-      this.editorService.assignReviewer(this.selectedUser[i].id, this.selectedArticle.reference).subscribe(
+      this.editorService.assignReviewer(this.selectedUser[i].email, this.selectedArticle.reference).subscribe(
         data => {
           this.display=false
           window.scrollTo(0,0)
@@ -187,5 +201,38 @@ export class ManageSubsComponent implements OnInit {
       this.sucmsgs.push({severity:'success', summary: data.message})
       this.ngOnInit()
     })
+  }
+
+  submitFinalDecision() {
+    this.sucmsgs = []
+    this.confirmationService.confirm({
+      message: `Are you sure you want to ${this.finalDecision} this paper?`,
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.progress = true
+        this.editorService.submitFinalDecision(this.finalDecision, this.selectedArticle.reference).then(data=>{
+          this.progress = false
+          // @ts-ignore
+          this.sucmsgs.push({severity:'success', summary: 'Your decision has been saved successfully'})
+          window.scrollTo(0,0)
+          window.location.reload()
+        }, error=> {
+          this.progress = false
+          this.sucmsgs.push({severity:'warn', summary: 'We can\'t save your decision at the moment'})
+          window.scrollTo(0,0)
+        })
+      },
+      reject: () => {}
+    });
+  }
+
+  scroll(target: HTMLDivElement, i) {
+    this.selectedArticle = this.articles[i]
+    target.scrollIntoView()
+  }
+
+  scrollToTop() {
+    window.scrollTo(0,0)
   }
 }

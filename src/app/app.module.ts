@@ -25,7 +25,7 @@ import {
   MessagesModule,
 } from 'primeng';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { ArchiveComponent } from './journal/issues/archive/archive.component';
+import { AllIssuesComponent } from './journal/issues/all-issues/all-issues.component';
 import {LatestIssuesComponent} from './journal/issues/latest-issues/latest-issues.component';
 import {AuthService} from './controller/service/auth.service';
 import {SubmissionService} from './controller/service/submission.service';
@@ -53,7 +53,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   declarations: [
     AppComponent,
     JournalComponent,
-    ArchiveComponent,
+    AllIssuesComponent,
     HomeComponent,
     NavComponent,
     HeaderComponent,

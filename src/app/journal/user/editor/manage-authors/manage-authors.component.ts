@@ -23,7 +23,6 @@ export class ManageAuthorsComponent implements OnInit {
 
   ngOnInit(): void {
     this.editorService.getAllAuthors().then(authors => {
-      console.log(authors.length)
       this.authors = authors
       this.loading = false
       })

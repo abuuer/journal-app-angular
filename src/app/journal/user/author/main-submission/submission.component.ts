@@ -78,7 +78,7 @@ export class SubmissionComponent implements OnInit {
   ngOnInit(): void {
     this.currentUser = this.tokenStorage.getUser();
 	if(this.submissionService.getLocalStorage() !== null){
-	this.article = this.submissionService.getLocalStorage().article;	
+	this.article = this.submissionService.getLocalStorage().article
 	}
     this.selectedValue = this.article.type ;
     this.items = [
@@ -201,7 +201,7 @@ export class SubmissionComponent implements OnInit {
         this.progress = 100;
         this.message = 'Could not upload the file!';
         this.currentFile = undefined;
-      }); 
+      })
   }
   cloneFile(body: any): FileInfo {
     const file = new FileInfo()
@@ -280,7 +280,7 @@ export class SubmissionComponent implements OnInit {
     this.display = true ;
   }
   sendToLS(){
-	  this.article.type = this.selectedValue 
+	  this.article.type = this.selectedValue
     // tslint:disable-next-line:prefer-for-of
     if(this.article.funding === false){
       this.article.articleFunds = null;
@@ -345,7 +345,7 @@ export class SubmissionComponent implements OnInit {
       this.msgs = []
       this.msgs.push({severity: 'success', summary: 'Your script has been submitted successfully and will be reviewed by the editorial board'});
       this.progressBar=false
-      window.location.href = 'journal/home'
+      window.location.href = 'journal/user/author/statistics'
       localStorage.removeItem('article-submission')
     }, error=>{
       this.msgs = []
@@ -353,7 +353,7 @@ export class SubmissionComponent implements OnInit {
       this.msgs.push({severity: 'warn', summary: 'Error' , detail: 'can\'t upload you submission at the moment'});
     })
   }
-  
+
   reset(){
 	  localStorage.removeItem('article-submission')
 	  window.location.reload()

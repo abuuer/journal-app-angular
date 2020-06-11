@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {ConfirmationService, Table} from 'primeng';
 import {User} from '../../../../controller/model/user.model';
 import {EditorService} from '../../../../controller/service/editor.service';
-import {Message} from "primeng/api";
+import {Message} from 'primeng/api';
 
 @Component({
   selector: 'app-manage-reviewers',

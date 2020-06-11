@@ -161,7 +161,7 @@
           <tbody>
           <tr class="d-flex" *ngFor="let f of selectedArticle.fileInfos; index as i">
             <td class="col-md-2">File {{i+1}}</td>
-            <td class="col-md-2"> Main Manuscript</td>
+            <td class="col-md-2"> {{f.type}}</td>
             <td class="col-md-8"><a href="{{f.url}}" target="_blank">{{f.url}}</a></td>
           </tr>
           </tbody>

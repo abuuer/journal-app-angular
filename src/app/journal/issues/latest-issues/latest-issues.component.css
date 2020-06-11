@@ -49,7 +49,7 @@
   padding-top: 40px;
 }
 
-.latest-issue {
+.title {
   font-size: 25px;
   padding: 0px;
   text-transform: uppercase;
@@ -60,12 +60,6 @@
   padding-top: 22px ;
 }
 
-.article {
-  font-size: 20px;
-  text-transform: uppercase;
-  padding-left: 50px;
-  margin-top: 5px;
-}
 
 .issue {
   padding: 40px 40px 0px;
@@ -90,3 +84,18 @@
 .previous-issues a span {
   font-family: FontAwesome;
 }
+
+.abstract{
+  margin-top: 10px;
+}
+.most-read{
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: bold;
+}
+.sub-title{
+  padding: 10px 0px;
+  font: 14px 'Noto Sans', sans-serif;
+  font-style: italic;
+}
+

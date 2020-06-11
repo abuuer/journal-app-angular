@@ -1,6 +1,6 @@
 <div class="register-page mx-auto">
+  <p-messages [(value)]="msgs"></p-messages>
   <form *ngIf="!done" form="ngForm" #form [formGroup]="formGroup">
-    <p-messages [(value)]="msgs"></p-messages>
           <ng-template matStepLabel>General Information</ng-template>
           <p-card>
             <p-card>
@@ -167,7 +167,7 @@
             </p-card>
             <div class="row">
               <div class="col-md-12">
-                <div class="example-button-row"  *ngIf="!showProgressBar() && !gthb">
+                <div class="example-button-row"  *ngIf="!showProgressBar()">
                   <button mat-raised-button type="submit" color="primary" (click)="onSubmit()" class="float-right" required >Save</button>
                   <button mat-raised-button color="warn"  (click)="form.reset()" class="float-right">Reset</button>
                   <button mat-raised-button  [routerLink]="'../journal/home'"  class="float-right" style="color: #555555" type="button">Back</button>
@@ -187,7 +187,7 @@
         <div class="row">
           <div class="col-md-12">
             <p>
-              Please check your email (<strong style="font-size: 14px">fgsdgf@fdf.com</strong>)
+              Please check your email (<strong style="font-size: 14px">{{email()}}</strong>)
               to confirm your account.
             </p>
           </div>
@@ -198,7 +198,7 @@
           <div class="row">
             <div class="col-md-12">
             <p>
-              If <strong style="font-size: 14px">fgsdgf@fdf.com</strong> is not your email address, please <a
+              If <strong style="font-size: 14px">{{email()}}</strong> is not your email address, please <a
               (click)="goBack()" style="cursor: pointer; color: #007ad9">go back</a> and enter the correct one.
             </p>
             </div>

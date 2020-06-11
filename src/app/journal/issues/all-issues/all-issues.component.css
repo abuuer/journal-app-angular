@@ -1,0 +1,22 @@
+.main-body {
+  padding-right: 80px;
+  padding-left: 80px;
+  padding-top: 40px;
+}
+
+.title {
+  font-size: 25px;
+  padding: 0px;
+  text-transform: uppercase;
+  border-bottom: 1px solid black;
+}
+
+.first-row{
+  padding: 22px 22px ;
+  margin: 0px 0px;
+}
+.current{
+  text-decoration: none;
+  color:  #050511;
+  padding: 10px 0px;
+}

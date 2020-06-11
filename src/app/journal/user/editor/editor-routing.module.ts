@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {ManageSubsComponent} from './manage-subs/manage-subs.component';
+import {TableModule} from 'primeng/table';
 import {
   CalendarModule,
   CardModule,
@@ -8,7 +9,7 @@ import {
   DialogModule,
   DropdownModule,
   MessagesModule,
-  TableModule
+  TabViewModule, TreeTableModule
 } from 'primeng';
 import {MatCardModule} from '@angular/material/card';
 import {MatTableModule} from '@angular/material/table';
@@ -18,6 +19,9 @@ import {CommonModule} from '@angular/common';
 import {ManageReviewersComponent} from './manage-reviewers/manage-reviewers.component';
 import {ManageAuthorsComponent} from './manage-authors/manage-authors.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatRadioModule} from '@angular/material/radio';
+import {FormsModule} from '@angular/forms';
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 
 const routes: Routes = [
@@ -41,7 +45,7 @@ const routes: Routes = [
         MatDividerModule,
         DialogModule,
         CardModule,
-        MatButtonModule, CommonModule, MessagesModule, ConfirmDialogModule, MatProgressBarModule],
+        MatButtonModule, CommonModule, MessagesModule, ConfirmDialogModule, MatProgressBarModule, TabViewModule, TreeTableModule, MatRadioModule, FormsModule, MatCheckboxModule],
   exports: [RouterModule]
 })
 

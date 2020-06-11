@@ -35,7 +35,7 @@ export class RegisterConfComponent implements OnInit {
     return pwd.value === pwdConf.value ? null : {nomatch: true};
   }
   passwordReg(group : FormGroup) {
-    const reg : RegExp = /^(?=.*[0-9])(?=.*[!@#$%^&*/])[a-zA-Z0-9!/@#$%^&*]{8,}$/
+    const reg : RegExp = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/
     const pwd = group.get( 'pwd' );
     console.log(pwd.value)
     return reg.test(pwd.value) ? null : {passwordReg: true};
@@ -58,10 +58,14 @@ export class RegisterConfComponent implements OnInit {
   }
 
   submit() {
+    this.progress = true
     if(!this.enable()){
       this.authService.confirmRegistration(this.token,this.formGroup.get('pwd').value).then(
         data=> {
-          console.log(data)
+          this.progress = true
+          window.location.href = 'login'
+        }, error=> {
+          this.progress = false
         }
       )
     }

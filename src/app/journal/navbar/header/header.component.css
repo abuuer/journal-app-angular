@@ -6,6 +6,13 @@
   background-position: center;
 }
 
+h1 {
+  margin-left: -60px;
+  margin-top: 8px;
+  font-weight: bold;
+  color: #1E5991;
+}
+
 .logoImg {
   height: 70px;
   margin-left: 50px;

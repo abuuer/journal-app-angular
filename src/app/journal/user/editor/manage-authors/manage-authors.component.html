@@ -48,7 +48,10 @@
         </td>
         <td>
           <span class="ui-column-title">Speacialities</span>
-          <span class="tags" *ngFor="let s of author.userSpecialtyDetails">{{s.tag.name}}</span>
+            <span class="tags" *ngFor="let s of author.userSpecialtyDetails">
+              <span *ngIf="s.tag !== null">{{s.tag.name}}</span>
+            </span>
+
         </td>
         <td>
           <span class="ui-column-title">Institution</span>

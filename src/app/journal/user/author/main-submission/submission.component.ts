@@ -135,6 +135,7 @@ export class SubmissionComponent implements OnInit {
       {label: 'Security', value: 'Security'},
     ]
     this.targetTags = [];
+    this.populateTags()
   }
 
   get firstName(): any {
@@ -177,6 +178,15 @@ export class SubmissionComponent implements OnInit {
     this._currentUser = value;
   }
 
+  populateTags(){
+    this.finalTagsList = []
+    // tslint:disable-next-line:prefer-for-of
+    for (let j = 0; j < this.article.articleTags.length; j++) {
+      this.finalTagsList.push(this.article.articleTags[j].tag.name)
+    }
+  }
+
+
   changeIndex(i) {
     this.sendToLS();
     this.activeIndex = i;
@@ -191,6 +201,8 @@ export class SubmissionComponent implements OnInit {
       data => {
         if (data.type === HttpEventType.UploadProgress) {
           this.progress = this.progress + Math.floor(Math.random() * 10) + 1;
+        }else if(this.progress >=100){
+          this.progress = 100
         } else if (data instanceof HttpResponse) {
           this.progress = 100;
           this.message = 'Uploaded ' + data.body.name + ' Successfully'
@@ -208,6 +220,7 @@ export class SubmissionComponent implements OnInit {
     file.url = body.url
     file.name = body.name
     file.type = this.fileType
+    file.reference = body.reference
     return file
   }
   resetFilter() {
@@ -221,108 +234,49 @@ export class SubmissionComponent implements OnInit {
       {label: 'Security', value: 'Security'},
     ],
       this.targetTags = [];
+    this.populateTags()
   }
 
   // add article tags
-
-  addToList() {
-      this.msgs = [];
-      let x = true;
-      console.log(this.finalTagsList)
-      console.log(this.finalTagsList.length)
-      // tslint:disable-next-line:prefer-for-of
-      for (let j = 0; j < this.targetTags.length; j++) {
-        // @ts-ignore
-        if (!this.finalTagsList.includes(this.targetTags[j].label)) {
-          // @ts-ignore
-          this.finalTagsList.push(this.targetTags[j].label)
-        }
-        // tslint:disable-next-line:prefer-for-of
-        for (let i = 0; i < this.finalTagsList.length; i++) {
-          x = true;
-          this.articleTag.tag.name = this.finalTagsList[i]
-          // tslint:disable-next-line:prefer-for-of
-          for (let k = 0; k < this.article.articleTags.length; k++) {
-            if (this.article.articleTags[k].tag.name === this.articleTag.tag.name) {
-              console.log(this.article.articleTags[k].tag.name)
-              console.log(this.articleTag.tag.name)
-            }
-          }
-          if (x === true) {
-            if (this.article.articleTags.length < 6) {
-              this.article.articleTags.push(this.cloneTag(this.articleTag))
-            } else {
-              this.msgs = [];
-              this.msgs.push({severity: 'warn', summary: 'Warn Message', detail: 'Maximum allowed tags is 6'});
-            }
-          }
-        }
-      }
-      this.sendToLS();
-  }
-
   addAdditional() {
-    if (this.finalTagsList.length < 6) {
-      console.log(this.additionalTags)
+    if (this.article.articleTags.length < 6) {
       if (!this.finalTagsList.includes(this.additionalTags)) {
         {
           this.finalTagsList.push(this.additionalTags);
+            // tslint:disable-next-line:prefer-for-of
+            // @ts-ignore
+            this.articleTag.tag.name = this.additionalTags
+              this.article.articleTags.push(this.cloneTag(this.articleTag))
         }
       }
     }
     else {
       this.msgs = [];
       this.msgs.push({severity: 'warn', summary: 'Warn Message', detail: 'Maximum allowed tags is 6'});
+      window.scrollTo(0,0)
     }
   }
-
-  showDialog() {
-    this.display = true ;
-  }
-  sendToLS(){
-	  this.article.type = this.selectedValue
-    // tslint:disable-next-line:prefer-for-of
-    if(this.article.funding === false){
-      this.article.articleFunds = null;
-    }
-    return this.submissionService.setLocalStorage(this.article);
-  }
-
-  addCoAuhor() {
-    if(this.article.userArticleDetails == null ){
-      this.article.userArticleDetails = new Array();
-    }
-    this.newCoAuthor = this.authForm.value;
-    this.userArticleDetail.user = this.newCoAuthor ;
-    // console.log(this.userArticleDetail);
-    this.article.userArticleDetails.push(this.clone(this.userArticleDetail));
-    this.display = false
-  }
-
-  addFunder() {
-    if(this.article.articleFunds == null){
-      this.article.articleFunds = new Array();
-    }
-    this.article.articleFunds.push(this.clonefunds(this.newfunding));
-    this.sendToLS();
-  }
-
-  remove(i) {
-    this.article.articleFunds.splice(i,1)
-    console.log(this.article.articleFunds)
-    this.sendToLS();
-  }
-
-  clone(userArticleDetail : UserArticleDetail): UserArticleDetail{
-    const clone = new UserArticleDetail();
-    clone.user = userArticleDetail.user;
-    return clone;
-  }
-  clonefunds(newfunding: ArticleFunds) {
-    const clone = new ArticleFunds();
-    clone.funder = newfunding.funder;
-    clone.amount = newfunding.amount;
-    return clone;
+  addToList() {
+      this.msgs = [];
+      // tslint:disable-next-line:prefer-for-of
+      for (let j = 0; j < this.targetTags.length; j++) {
+        // @ts-ignore
+        if (!this.finalTagsList.includes(this.targetTags[j].label)) {
+          // @ts-ignore
+          this.finalTagsList.push(this.targetTags[j].label)
+          // tslint:disable-next-line:prefer-for-of
+            // @ts-ignore
+          this.articleTag.tag.name = this.targetTags[j].label
+            if (this.article.articleTags.length < 6) {
+              this.article.articleTags.push(this.cloneTag(this.articleTag))
+            } else {
+              this.msgs = [];
+              this.msgs.push({severity: 'warn', summary: 'Warn Message', detail: 'Maximum allowed tags is 6'});
+              window.scrollTo(0,0)
+            }
+        }
+      }
+      this.sendToLS();
   }
   cloneTag(articleTag: ArticleTags) {
     const clone = new ArticleTags()
@@ -337,21 +291,80 @@ export class SubmissionComponent implements OnInit {
 
   deleteTag(i) {
     this.article.articleTags.splice(i,1)
+    this.sendToLS();
+    this.populateTags()
   }
 
+
+  showDialog() {
+    this.display = true ;
+  }
+   sendToLS(){
+	  this.article.type = this.selectedValue
+    // tslint:disable-next-line:prefer-for-of
+    if(this.article.funding === false){
+      this.article.articleFunds = null;
+    }
+    return this.submissionService.setLocalStorage(this.article);
+  }
+
+  addCoAuhor() {
+    if(this.article.userArticleDetails == null ){
+      this.article.userArticleDetails = new Array();
+    }
+    this.newCoAuthor = this.authForm.value;
+    this.userArticleDetail.user = this.newCoAuthor ;
+    this.article.userArticleDetails.push(this.clone(this.userArticleDetail));
+    this.display = false
+  }
+
+  addFunder() {
+    if(this.article.articleFunds == null){
+      this.article.articleFunds = new Array();
+    }
+    this.article.articleFunds.push(this.clonefunds(this.newfunding));
+    this.sendToLS();
+  }
+
+  remove(i) {
+    this.article.articleFunds.splice(i,1)
+    this.sendToLS();
+  }
+
+  clone(userArticleDetail : UserArticleDetail): UserArticleDetail{
+    const clone = new UserArticleDetail();
+    clone.user = userArticleDetail.user;
+    return clone;
+  }
+  clonefunds(newfunding: ArticleFunds) {
+    const clone = new ArticleFunds();
+    clone.funder = newfunding.funder;
+    clone.amount = newfunding.amount;
+    return clone;
+  }
+
+
   submitAticle() {
+    this.msgs = []
     this.progressBar = true
-    return this.submissionService.submitAticle(this.article).then(data=>{
-      this.msgs = []
-      this.msgs.push({severity: 'success', summary: 'Your script has been submitted successfully and will be reviewed by the editorial board'});
-      this.progressBar=false
-      window.location.href = 'journal/user/author/statistics'
-      localStorage.removeItem('article-submission')
-    }, error=>{
-      this.msgs = []
-      this.progressBar=false
-      this.msgs.push({severity: 'warn', summary: 'Error' , detail: 'can\'t upload you submission at the moment'});
-    })
+    if(this.article.fileInfos.length === 0 || this.article.type == null || this.article.abstractt == null
+    || this.article.title == null ){
+      this.progressBar = false
+      this.msgs.push({severity: 'warn', summary: 'Please fill all the required fields'});
+      window.scrollTo(0,0)
+    }else {
+      return this.submissionService.submitAticle(this.article).then(data=>{
+        this.msgs = []
+        this.msgs.push({severity: 'success', summary: 'Your script has been submitted successfully and will be reviewed by the editorial board'});
+        this.progressBar=false
+        window.location.href = 'journal/user/author/statistics'
+        localStorage.removeItem('article-submission')
+      }, error=>{
+        this.msgs = []
+        this.progressBar=false
+        this.msgs.push({severity: 'warn', summary: 'Error' , detail: 'can\'t upload you submission at the moment'});
+      })
+    }
   }
 
   reset(){

@@ -44,10 +44,15 @@ export class SubmissionService implements CanActivate{
   }
 
   submitAticle(article: Article) {
-	 this.userArticleDetail.user = this.tokenStorage.getUser() ;
-	if(article.userArticleDetails[0].user.email !== this.tokenStorage.getUser().email){
-		article.userArticleDetails.unshift(this.userArticleDetail);
-	}
+	 this.userArticleDetail.user = this.tokenStorage.getUser()
+	 if(article.userArticleDetails.length !== 0){
+     if(article.userArticleDetails[0].user.email !== this.tokenStorage.getUser().email){
+       article.userArticleDetails.unshift(this.userArticleDetail);
+     }
+   }else {
+     article.userArticleDetails[0] = this.userArticleDetail
+   }
+
     const r = Math.random().toString(36).substring(7);
     article.reference = 'ref' + r
     return this.http.post(this.baseUrl + `/journal-api/article/save`, article).toPromise().then(data=>{return data})

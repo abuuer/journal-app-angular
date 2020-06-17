@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import {User} from '../model/user.model';
 import {CanActivate, Router} from '@angular/router';
-import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {AuthService} from './auth.service';
 import {TokenStorageService} from './token-storage.service';
-import {UserArticleDetail} from "../model/user-article-detail.model";
-import {Article} from "../model/article.model";
 import {environment} from '../../../environments/environment';
+import {Article} from '../model/article.model';
+import {Volume} from '../model/volume.model';
+import {Issue} from '../model/issue.model';
 
 const API_URL = 'http://localhost:8080/journal-api/test/';
 
@@ -17,10 +17,12 @@ const API_URL = 'http://localhost:8080/journal-api/test/';
   providedIn: 'root'
 })
 export class UserService implements CanActivate{
-  private baseUrl = environment.url
+  private _url = environment.url
   private _user : User ;
   private _author : User ;
   private _editor : User ;
+  private _article : Article
+  private _issue : Issue
   constructor(private route : Router, private http: HttpClient,private router: Router,  private authService: AuthService
   ,public tokenStorage: TokenStorageService) { }
 
@@ -32,6 +34,15 @@ export class UserService implements CanActivate{
   }
   set user(value: User) {
     this._user = value;
+  }
+  get issue(): Issue {
+    if(this._issue == null){
+      this._issue = new Issue()
+    }
+    return this._issue;
+  }
+  set issue(value: Issue) {
+    this._issue = value;
   }
   get editor(): User {
     if(this._editor == null) {
@@ -51,6 +62,16 @@ export class UserService implements CanActivate{
   set author(value: User) {
     this._author = value;
   }
+  get article(): Article {
+    if(this._article == null) {
+      this._article = new Article() ;
+    }
+    return this._article;
+  }
+
+  set article(value: Article) {
+    this._article = value;
+  }
 
   canActivate() {
     if (this.tokenStorage.getUser() != null) {
@@ -62,5 +83,18 @@ export class UserService implements CanActivate{
     }
   }
 
+  findAllPublishedVolumes() {
+    return this.http.get<Volume[]>(this._url +'/journal-api/volume/findAllPublished').toPromise().then(data=>{return data})
+  }
 
+  findByNumberAndVolumeNumber(issueNum: string, volNum: string) {
+    return this.http.get<Issue[]>(this._url +'/journal-api/issue/findByNumberAndVolume' +
+      '/issNumber/'+ issueNum+'/volNumber/'+ volNum).toPromise().then(data=>{return data})
+  }
+
+  findLatestIssue(){
+    this.http.get<Issue>(this._url +'/journal-api/issue/findLatestIssue').toPromise().then(data=>{
+      this.issue = data
+    })
+  }
 }

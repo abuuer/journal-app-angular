@@ -1,0 +1,96 @@
+<div class="container">
+  <mat-card>
+    <div class="body">
+      <div><h3>Create New Volume</h3></div>
+      <p-messages [value]="message"></p-messages>
+      <div class="row">
+        <p-confirmDialog [style]="{width: '40vw'}" [baseZIndex]="100000"></p-confirmDialog>
+        <div class="col-md-3">
+          <mat-form-field class="example-full-width">
+            <mat-label>New Volume Number</mat-label>
+            <input [(ngModel)]="volume.number" matInput type="number" placeholder="Enter the number">
+          </mat-form-field>
+        </div>
+        <div class="col-md-2">
+          <mat-form-field class="example-full-width">
+            <mat-label>New Volume Year</mat-label>
+            <input [(ngModel)]="volume.year" matInput type="number" placeholder="Enter the year">
+          </mat-form-field>
+        </div>
+        <div class="col-md-2 add">
+          <div class="example-button-container">
+            <button *ngIf="!spinner" mat-mini-fab color="primary" class="pi pi-plus" (click)="addVolume()"></button>
+            <p-progressSpinner *ngIf="spinner" [style]="{width:'30px', height:'30px'}" strokeWidth="4"></p-progressSpinner>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <table class="table col-md-9 float-right">
+            <thead class="thead-light">
+            <tr class="">
+              <th width="50px">Volume Number</th>
+              <th width="50px">Year</th>
+              <th width="5px" scope="col">Edit</th>
+            </tr>
+            </thead>
+            <tbody >
+            <tr *ngFor="let v of volumes; index as i">
+              <td width="50px">Vol. {{v.number}}</td>
+              <td width="50px">{{v.year}}</td>
+              <td width="5px"><button mat-mini-fab color="primary" class="pi pi-list" (click)="showDialog(i)"></button></td>
+            </tr>
+              <p-progressSpinner *ngIf="progress" [style]="{width:'20px', height:'20px'}" strokeWidth="4"></p-progressSpinner>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+    <p-dialog [(visible)]="display" [modal]="true" [style]="{width: '60vw'}" [maximizable]="true" [baseZIndex]="10000"
+              [draggable]="false" [resizable]="false" [closable]="true">
+      <p-header><h3 style="text-align: center; padding-top: 20px">
+        Full Volume's Details</h3></p-header>
+      <p-confirmDialog [style]="{width: '70vw'}" [baseZIndex]="100000"></p-confirmDialog>
+
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title><h2>Vol {{selectedVolume.number}}</h2></mat-card-title>
+          <mat-card-subtitle>View the full information about the volume</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="container dialogCon">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div><h5>Issues:</h5></div>
+                </div>
+                <div class="row" *ngFor="let i of selectedVolume.issues">
+                  <div class="col-md-2"><b>Issue No.{{i.number}}</b></div>
+                  <div class="col-md-3"><b>{{i.startMonth}} - {{i.endMonth}}</b></div>
+                  <div class="col-md-2"><b>{{i.issn}}</b></div>
+                  <div class="col-md-3"><b>{{i.status}}</b></div>
+                  <div class="col-md-2"><b>{{i.publishDate}}</b></div>
+                  <div class="row">
+                    <div class="col-md-12 sub-container">
+                      <div class="row" *ngFor="let a of i.articles">
+                        <div class="col-md-12"><b> > </b>{{a.title}}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+
+
+      </mat-card>
+      <div class="row" style="margin: 10px 0px">
+        <div *ngIf="!progress">
+          <button mat-raised-button color="warn"  label="Delete" (click)="delete()">Delete Volume</button>
+        </div>
+        <div *ngIf="progress"><mat-progress-bar mode="indeterminate" ></mat-progress-bar></div>
+      </div>
+    </p-dialog>
+  </mat-card>
+</div>

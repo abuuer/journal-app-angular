@@ -99,4 +99,13 @@ export class ReviewSubsComponent implements OnInit{
       this.table.filter('','status','equals')
     }
   }
+
+  scroll(target: HTMLDivElement, i) {
+    this.selectedArticle = this.articles[i]
+    target.scrollIntoView()
+  }
+
+  scrollToTop() {
+    window.scrollTo(0,0)
+  }
 }

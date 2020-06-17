@@ -7,6 +7,8 @@ import {User} from '../model/user.model';
 import {Article} from '../model/article.model';
 import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
+import {Volume} from '../model/volume.model';
+import {Issue} from '../model/issue.model';
 
 @Injectable({
   providedIn: 'root'
@@ -67,7 +69,6 @@ export class EditorService implements CanActivate {
   getAllAuthors() {
     return this.http.get<User[]>(this._url + '/journal-api/user-role/findAllAuthors').toPromise()
       .then(data => {
-        console.log(data)
         return data
       })
   }
@@ -93,6 +94,66 @@ export class EditorService implements CanActivate {
 
   submitFinalDecision(finalDecision: any, reference: string) {
     return this.http.put(this._url +'/journal-api/article/updateStatus/articleRef/'+ reference +'/status/' + finalDecision, '')
+      .toPromise().then(data=>{return data})
+  }
+
+  addToIssue(reference: string, chosenIssue: any) {
+    return this.http.put(this._url +'/journal-api/article/addToIssue/articleRef/'+ reference
+      + '/issueNumber/' + chosenIssue.number, '').toPromise().then(data=>{return data})
+  }
+
+  findByStatus() {
+    return this.http.get<Article[]>(this._url +'/journal-api/article/findByStatus/status/Accepted').toPromise().then(
+      data=>{return data}
+    )
+  }
+
+  findAllVolumes() {
+    return this.http.get<Volume[]>(this._url +'/journal-api/volume/findAll').toPromise().then(data=>{return data})
+  }
+
+  findAllIssues() {
+    return this.http.get<Issue[]>(this._url +'/journal-api/issue/findAll').toPromise().then(data=>{return data})
+  }
+
+  findByVolumeNumber(vnumber: number) {
+    return this.http.get<Issue[]>(this._url +'/journal-api/issue/findByVolume_Number/volumeNumber/'+vnumber)
+      .toPromise().then(data=>{return data})
+  }
+
+  createNewIssue(issue: Issue) {
+	  console.log(issue)
+    return this.http.post(this._url +'/journal-api/issue/createNewIssue',{
+		number : issue.number,
+        startMonth : issue.startMonth,
+        endMonth : issue.endMonth,
+        issn : issue.issn,
+        volume : issue.volume,
+        fileInfos : issue.fileInfos
+	})
+      .toPromise().then(data=>{return data})
+
+
+	  }
+
+  findByIssueNumber() {
+
+  }
+
+  addVolume(volume: Volume) {
+    return this.http.post(this._url+'/journal-api/volume/save',{
+      number : volume.number,
+      year : volume.year
+    }).toPromise().then(data=>{return data})
+  }
+
+  deleteArticle(article: Article) {
+    return this.http.put(this._url+'/journal-api/article/deleteArticleFromIssue/articleRef/'+article.reference,'')
+      .toPromise().then(data=>{return data})
+  }
+
+  publishIssue(issNumber: number,volNumber: number) {
+    return this.http.put(this._url+'/journal-api/issue/publishIssue/issNumber/'+issNumber +'/volNumber/'+volNumber,'')
       .toPromise().then(data=>{return data})
   }
 }

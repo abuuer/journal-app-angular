@@ -5,33 +5,16 @@
   <div class="collapse navbar-collapse" id="navbarCollapse">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" [routerLink]="['home']">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" [routerLink]="['mjt/home']">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" [routerLink]="['issue']" (click)="setLatestIssue()"> Latest Issue<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" [routerLink]="['all-issues']">Archive <span class="sr-only">(current)</span></a>
       </li>
 
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" id="dropdown8" data-toggle="dropdown" aria-haspopup="true"
-           aria-expanded="false" href="">Browse Issues</a>
-        <ul class="dropdown-menu" aria-labelledby="dropdown1">
-          <li class="dropdown-item " [routerLink]="['latest-issue']">
-            <a class="nav-link-dropdown" >
-              Latest Issue<span class="sr-only">(current)</span></a>
-          </li>
-          <li class="dropdown-item" [routerLink]="['all-issues']"><a>All Issues</a></li>
-        </ul>
-      </li>
 
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" id="dropdown1" data-toggle="dropdown" aria-haspopup="true"
-           aria-expanded="false" href="">Authors</a>
-        <ul class="dropdown-menu" aria-labelledby="dropdown1">
-          <li class="dropdown-item " [routerLink]="['user/author/author-board']">
-            <a class="nav-link-dropdown" >
-              Author's Board<span class="sr-only">(current)</span></a>
-          </li>
-          <li class="dropdown-item" [routerLink]="'../login'"><a>Submit a Manuscript</a></li>
-          <li class="dropdown-item" href="#"><a>Information & Guidelines</a></li>
-        </ul>
-      </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" id="dropdown2" data-toggle="dropdown" aria-haspopup="true"
            aria-expanded="false" href="">Editors</a>
@@ -52,6 +35,7 @@
           </li>
           <li class="dropdown-item" [routerLink]="['user/editor/manage-reviewers']"><a>Manage Reviewers</a></li>
           <li class="dropdown-item" [routerLink]="['user/editor/manage-authors']"><a>Manage Authors</a></li>
+          <li class="dropdown-item" [routerLink]="['user/editor/manage-issues/add']"><a>Manage Issues</a></li>
         </ul>
       </li>
       <li class="nav-item dropdown" *ngIf="roles.includes('ROLE_AUTHOR')">

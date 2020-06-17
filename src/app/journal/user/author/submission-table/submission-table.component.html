@@ -1,9 +1,9 @@
 <div class="container-fluid">
   <p-table #dt [value]="articles" [(selection)]="selectedArticle" dataKey="id"
-           styleClass="ui-table-submission" [rowHover]="true"
-           [showCurrentPageReport]="true" [loading]="loading"
-           [paginator]="false" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-           [filterDelay]="0" >
+           styleClass="ui-table-submission" [rowHover]="true" [rows]="5"
+           [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,25,50]" [loading]="loading"
+           [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+           [filterDelay]="0"  >
     <ng-template pTemplate="caption">
       List of Submission
     </ng-template>
@@ -42,10 +42,10 @@
         </th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-article>
+    <ng-template pTemplate="body" let-article let-i="rowIndex">
       <tr class="ui-selectable-row">
         <td>
-          <p-tableRadioButton [value]="article"></p-tableRadioButton>
+          <span (click)="scroll(target,i)" style="cursor: pointer; color: #007ad9; font-size: 12px">show details</span>
         </td>
         <td>
           <span class="ui-column-title">Title</span>
@@ -82,13 +82,15 @@
     </ng-template>
   </p-table>
 
-  <mat-card>
+  <div #target>
+
+  <mat-card *ngIf="selectedArticle" >
     <mat-card-header>
       <mat-card-title><h2>Submission</h2></mat-card-title>
       <mat-card-subtitle>View the full submission</mat-card-subtitle>
     </mat-card-header>
 
-    <div class="container" *ngIf="selectedArticle">
+    <div class="container" >
       <div >
         <header><h5>Author's Information</h5></header>
         <table class="table col-md-12" >
@@ -193,8 +195,9 @@
           </tbody>
         </table>
       </div>
-
+      <div><span (click)="scrollToTop()" style="color: #007ad9;cursor: pointer; font-size: 14px; padding-top: 10px">Top of the page</span></div>
     </div>
 
   </mat-card>
+  </div>
 </div>

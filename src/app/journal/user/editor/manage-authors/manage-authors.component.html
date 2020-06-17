@@ -11,18 +11,22 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th></th>
         <th ></th>
-        <th ></th>
+        <th pSortableColumn="lastName">Full Name <p-sortIcon field="lastName"></p-sortIcon></th>
+        <th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon></th>
         <th> </th>
-        <th pSortableColumn="institution">Institution <p-sortIcon field="institution"></p-sortIcon></th>
+        <th pSortableColumn="title">Institution <p-sortIcon field="title"></p-sortIcon></th>
         <th pSortableColumn="date">Date<p-sortIcon field="date"></p-sortIcon></th>
         <th ></th>
       </tr>
       <tr >
         <th></th>
-        <th>Full Name</th>
-        <th>Email</th>
+        <th>
+          <input pInputText type="text" (input)="dt.filter($event.target.value, ['lastName'], 'contains')" placeholder="Search by Last Name" class="ui-column-filter">
+        </th>
+        <th>
+          <input pInputText type="text" (input)="dt.filter($event.target.value, 'email', 'contains')" placeholder="Search by Email" class="ui-column-filter">
+        </th>
         <th>Specialities</th>
         <th>
           <input pInputText type="text" (input)="dt.filter($event.target.value, 'institution', 'contains')" placeholder="Search by Type" class="ui-column-filter">
@@ -30,13 +34,13 @@
         <th>
           <p-calendar (onSelect)="onDateSelect($event)" (onClearClick)="dt.filter('', 'date', 'equals')" [showButtonBar]="true" styleClass="ui-column-filter" placeholder="Registration Date" [readonlyInput]="true" dateFormat="yy-mm-dd"></p-calendar>
         </th>
-        <th>Fill Detail</th>
+        <th>Full Detail</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-author let-rowIndex="rowIndex">
       <tr class="ui-selectable-row"  >
         <td>
-          {{rowIndex +1}}
+          {{rowIndex+1}}
         </td>
         <td>
           <span class="ui-column-title">Full Name</span>
@@ -49,7 +53,7 @@
         <td>
           <span class="ui-column-title">Speacialities</span>
             <span class="tags" *ngFor="let s of author.userSpecialtyDetails">
-              <span *ngIf="s.tag !== null">{{s.tag.name}}</span>
+              {{s.tag.name}}
             </span>
 
         </td>
@@ -76,9 +80,10 @@
       Full Author's Details</h3></p-header>
     <p-confirmDialog [style]="{width: '70vw'}" [baseZIndex]="100000"></p-confirmDialog>
 
+    <div #target>
       <mat-card>
         <mat-card-header>
-          <mat-card-title><h2>Anouar Abouer</h2></mat-card-title>
+          <mat-card-title><h2>{{selectedAuthor.firstName}} {{selectedAuthor.lastName}}</h2></mat-card-title>
           <mat-card-subtitle>View the full information about the author</mat-card-subtitle>
         </mat-card-header>
 
@@ -94,7 +99,7 @@
               <br>
               <div class="row">
                 <div class="col-md-2"><b>Date</b></div>
-                <div class="col-md-3">2020-05-05</div>
+                <div class="col-md-3">{{selectedAuthor.registrationDate}}</div>
                 <div class="col-md-2"><b>Institution</b></div>
                 <div class="col-md-5">{{selectedAuthor.institution}}</div>
               </div>
@@ -111,16 +116,16 @@
               <div class="row">
                 <div class="col-md-2"><b>Submissions : </b></div>
               </div>
-              <div class="row">
-                <div class="col-md-2">Article 1</div>
-                <div class="col-md-9">Title TitleTitleTitle v Title Title Title Title Title Title Title Title Title Title Title Title Title </div>
+              <div class="row" *ngFor="let a of selectedAuthor.userArticleDetails">
+                <div class="col-md-2">Article </div>
+                <div class="col-md-9">{{a.article.title}}</div>
                 <div class="col-md-1"><a href="#" style="cursor: pointer;text-decoration: none"><span  class="pi pi-external-link"></span></a></div>
               </div>
             </mat-card-content>
           </div>
         </div>
       </mat-card>
-
+    </div>
     <div class="row" style="margin: 10px 0px">
       <div *ngIf="!showProgressBar()">
         <button mat-raised-button color="warn"  label="Delete" (click)="delete()">Delete User</button>

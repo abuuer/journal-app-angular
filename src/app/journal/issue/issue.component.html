@@ -1,9 +1,10 @@
 <div class="article">
-  <div class="article-title">Some Title Some TitleSome TitleSome Title Some Title Some Title Some Title
-    Some Title Some Title Some Title Some Title Some Title Some Title Some Title</div>
+  <div class="article-title">{{article.title}}</div>
   <div class="article-authors">
-    <a href="">Anouar Abouerraja</a>
+    <span *ngFor="let u of article.userArticleDetails">
+      <a href="">{{u.user.lastName}} {{u.user.lastName}}, </a>
+    </span>
   </div>
-  <div class="volume">Volume 1, Issue 1</div>
+  <div class="volume">Vol 1, Issue 1</div>
 </div>
 

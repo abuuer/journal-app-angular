@@ -1,0 +1,26 @@
+.container{
+  padding: 30px 30px;
+}
+.container div>div {
+  font-size: 25px;
+  cursor: pointer;
+  width: auto;
+  background-color: #005957;
+  color: #FFFFFF;
+  text-transform: uppercase;
+  padding-left: 5px;
+  box-shadow: 2px -1px 1px 1px rgba(0,0,0,0.75);
+}
+.container div {
+  margin-top: 25px;
+  width: 330px;
+}
+.container div>div:hover {
+  box-shadow: 2px -1px 4px 0px rgba(0,0,0,0.75);
+}
+.pi-chevron-circle-right{
+  margin-top: 10px;
+}
+.fa-chevron-circle-right:before {
+  font-size: 36px;
+}

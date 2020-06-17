@@ -32,7 +32,6 @@ export class PaperReviewComponent implements OnInit {
     if(this.reviewerService.getLocalStorageReview() != null){
       this.finalReview = this.reviewerService.getLocalStorageReview().articleReview
     }
-    console.log(typeof this.finalReview)
   }
 
   get article(): Article {
@@ -86,15 +85,15 @@ export class PaperReviewComponent implements OnInit {
     this.msg = []
     this.progressBar  = true
     this.finalReview.article = this.article
-    console.log(this.finalReview)
     this.reviewerService.submitAticle(this.finalReview).then(data=>{
       this.progressBar  = false
       this.msg.push({severity: 'success', summary: 'Your review has been submitted successfully and will be reviewed by the editorial board'});
       localStorage.removeItem(`final-review${this.reviewerService.getLocalStorage().article.ref}`)
       localStorage.removeItem(`article`)
+      window.scrollTo(0,0)
+      window.location.href = '../submissions'
     },error=> {
       this.msg.push({severity: 'warn', summary: 'Your review can\'t be submitted at the moment'});
-      console.log(error)
     })
   }
 

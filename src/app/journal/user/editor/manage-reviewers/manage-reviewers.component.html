@@ -3,24 +3,28 @@
            styleClass="ui-table-submission" [rowHover]="true" [rows]="10"
            [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading"
            [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-           [filterDelay]="0"  >
+           [filterDelay]="0" >
     <ng-template pTemplate="caption">
       List of Reviewers
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th></th>
         <th ></th>
-        <th ></th>
+        <th pSortableColumn="lastName">Full Name <p-sortIcon field="lastName"></p-sortIcon></th>
+        <th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon></th>
         <th> </th>
         <th pSortableColumn="title">Institution <p-sortIcon field="title"></p-sortIcon></th>
         <th pSortableColumn="date">Date<p-sortIcon field="date"></p-sortIcon></th>
         <th ></th>
       </tr>
       <tr >
-        <th>select</th>
-        <th>Full Name</th>
-        <th>Email</th>
+        <th></th>
+        <th>
+          <input pInputText type="text" (input)="dt.filter($event.target.value, ['lastName'], 'contains')" placeholder="Search by Last Name" class="ui-column-filter">
+        </th>
+        <th>
+          <input pInputText type="text" (input)="dt.filter($event.target.value, 'email', 'contains')" placeholder="Search by Email" class="ui-column-filter">
+        </th>
         <th>Specialities</th>
         <th>
           <input pInputText type="text" (input)="dt.filter($event.target.value, 'institution', 'contains')" placeholder="Search by Type" class="ui-column-filter">
@@ -28,13 +32,13 @@
         <th>
           <p-calendar (onSelect)="onDateSelect($event)" (onClearClick)="dt.filter('', 'date', 'equals')" [showButtonBar]="true" styleClass="ui-column-filter" placeholder="Registration Date" [readonlyInput]="true" dateFormat="yy-mm-dd"></p-calendar>
         </th>
-        <th>Fill Detail</th>
+        <th>Full Detail</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-reviewer let-rowIndex="rowIndex">
       <tr class="ui-selectable-row" >
         <td>
-          <p-tableRadioButton  ></p-tableRadioButton>
+          {{rowIndex+1}}
         </td>
         <td>
           <span class="ui-column-title">Full Name</span>
@@ -46,7 +50,9 @@
         </td>
         <td>
           <span class="ui-column-title">Speacialities</span>
-          <span class="tags" *ngFor="let s of reviewer.userSpecialtyDetails">{{s.tag.name}}</span>
+          <span class="tags" *ngFor="let s of reviewer.userSpecialtyDetails">
+            {{s.tag.name}}
+          </span>
         </td>
         <td>
           <span class="ui-column-title">Institution</span>
@@ -73,7 +79,7 @@
 
     <mat-card>
       <mat-card-header>
-        <mat-card-title><h2>Anouar Abouer</h2></mat-card-title>
+        <mat-card-title><h2>{{selectedReviewer.prefix}}. {{selectedReviewer.firstName}} {{selectedReviewer.lastName}}</h2></mat-card-title>
         <mat-card-subtitle>View the full information about the reviewer</mat-card-subtitle>
       </mat-card-header>
 
@@ -82,44 +88,56 @@
           <mat-card-content >
             <div class="row">
               <div class="col-md-2"><b>Full Name</b></div>
-              <div class="col-md-3">Anouar Abuer</div>
+              <div class="col-md-3" *ngIf="selectedReviewer.middleName !== null">{{selectedReviewer.firstName}} {{selectedReviewer.middleName}} {{selectedReviewer.lastName}}</div>
+              <div class="col-md-3" *ngIf="selectedReviewer.middleName === null">{{selectedReviewer.firstName}} {{selectedReviewer.lastName}}</div>
               <div class="col-md-2"><b>Email</b></div>
-              <div class="col-md-4">Anouar@gmal</div>
+              <div class="col-md-4">{{selectedReviewer.email}}</div>
             </div>
             <br>
             <div class="row">
               <div class="col-md-2"><b>Date</b></div>
-              <div class="col-md-3">2020-05-05</div>
+              <div class="col-md-3">{{selectedReviewer.registrationDate}}</div>
               <div class="col-md-2"><b>Institution</b></div>
-              <div class="col-md-5">FAculty of cdidcec and tchkldof Marrakesh cec and tchkldof Marrakesh</div>
+              <div class="col-md-5">{{selectedReviewer.institution}}</div>
             </div>
             <br>
             <div class="row">
               <div class="col-md-2"><b>departement</b></div>
-              <div class="col-md-3">Computer Sciences</div>
+              <div class="col-md-3" *ngIf="selectedReviewer.departement !== null">{{selectedReviewer.departement}}</div>
+              <div class="col-md-3" *ngIf="selectedReviewer.departement !== null">--</div>
               <div class="col-md-2"><b>Fields of Interest</b></div>
               <div class="col-md-5">
-                <span class="tags">IT</span><span class="tags">Machine Learning</span>
-                <span class="tags">AI</span><span class="tags">Cecurity</span></div>
+                <span class="tags" *ngFor="let s of selectedReviewer.userSpecialtyDetails">{{s.tag.name}}</span>
+            </div>
             </div>
             <br>
             <div class="row">
               <div class="col-md-2"><b>Reviews : </b></div>
             </div>
-            <div class="row">
-              <div class="col-md-2">Review 1</div>
-              <div class="col-md-9">Title TitleTitleTitle v Title Title Title Title Title Title Title Title Title Title Title Title Title </div>
-              <div class="col-md-1"><a href="#" style="cursor: pointer; text-decoration: none"><span  class="pi pi-external-link"></span></a></div>
+              <div class="row" *ngFor="let a of selectedReviewer.userArticleDetails">
+                <div *ngIf="a.article.type === 'Review'">
+                  <div class="col-md-2">Review </div>
+                  <div class="col-md-9">{{a.article.title}} </div>
+                  <div class="col-md-1"><a href="#" style="cursor: pointer; text-decoration: none"><span  class="pi pi-external-link"></span></a></div>
+                </div>
             </div>
             <br>
             <div class="row">
               <div class="col-md-2"><b>Submissions : </b></div>
             </div>
-            <div class="row">
-              <div class="col-md-2">Article 1</div>
-              <div class="col-md-9">Title TitleTitleTitle v Title Title Title Title Title Title Title Title Title Title Title Title Title </div>
-              <div class="col-md-1"><a href="#" style="cursor: pointer; text-decoration: none"><span  class="pi pi-external-link"></span></a></div>
+            <div>
+                <div class="row" *ngFor="let a of selectedReviewer.userArticleDetails">
+                  <div *ngIf="a.article.type !== 'Review'">
+                    <div class="col-md-2">Review </div>
+                    <div class="col-md-9">{{a.article.title}} </div>
+                    <div class="col-md-1"><a href="#" style="cursor: pointer; text-decoration: none"><span  class="pi pi-external-link"></span></a></div>
+                  </div>
+                </div>
             </div>
+            <div>
+              --
+            </div>
+
           </mat-card-content>
         </div>
       </div>

@@ -1,9 +1,13 @@
 .associations{
   text-align: center;
+  margin-top: 10px;
+}
+.foote{
+  background-color: #ccd4cc;
+  padding: 30px;
 }
 img {
   box-sizing: border-box;
-  margin-left: 10px;
 }
 .uca {
   width: 260px;
@@ -36,4 +40,12 @@ img {
   margin-top: 20px;
   text-decoration: none;
   color: black;
+}
+.infos div{
+  margin-top: 2px;
+}
+.associations .row a {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }

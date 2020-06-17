@@ -21,9 +21,11 @@ export class ManageSubsComponent implements OnInit {
   @ViewChild('dt') table: Table;
   selectedArticle : Article
   selectedUser : User[]
+  selectUsersIndex : number[]
   decisions: any[]
   finalDecision: any
   progress = false
+  spinner = false
   private _articles : Article[]
    _reviewers : User[]
   hideRejected  = false
@@ -39,7 +41,7 @@ export class ManageSubsComponent implements OnInit {
   reviewerStatuses = [
     {label: 'Available', value: 'qualified'},
     {label: 'Not available', value: 'unqualified'},
-    {label: 'Busy', value: 'negotiation'}
+    {label: 'Busy', value: 'proposal'}
   ];
 
 
@@ -76,7 +78,7 @@ export class ManageSubsComponent implements OnInit {
   }
 
   onDateSelect(value) {
-    this.table.filter(this.formatDate(value), 'date', 'equals')
+    this.table.filter(this.formatDate(value), 'submitDate', 'equals')
   }
 
   formatDate(date) {
@@ -123,12 +125,38 @@ export class ManageSubsComponent implements OnInit {
       }
     }
   }
+  getValueStatusRv(status: string) {
+    // tslint:disable-next-line:prefer-for-of
+    for(let i = 0 ; i < this.reviewerStatuses.length ; i++){
+      // tslint:disable-next-line:no-conditional-assignment
+      if(this.reviewerStatuses[i].label.toLowerCase() === status.toLowerCase()){
+        return this.reviewerStatuses[i].value
+      }
+    }
+  }
+
+  getLabelStatusRv(value: string) {
+    // tslint:disable-next-line:prefer-for-of
+    for(let i = 0 ; i < this.reviewerStatuses.length ; i++){
+      // tslint:disable-next-line:no-conditional-assignment
+      if(this.reviewerStatuses[i].value.toLowerCase() === value.toLowerCase()){
+        return this.reviewerStatuses[i].label
+      }
+    }
+  }
 
   fiterStatus(value: any) {
     if(value !== null){
       this.table.filter(this.getLabelStatus(value),'status','equals')
     } else {
       this.table.filter('','status','equals')
+    }
+  }
+  fiterStatusRv(value: any) {
+    if(value !== null){
+      this.table.filter(this.getLabelStatusRv(value),'availability','equals')
+    } else {
+      this.table.filter('','availability','equals')
     }
   }
 
@@ -165,7 +193,17 @@ export class ManageSubsComponent implements OnInit {
     )*/
   }
 
+  showSelectedUsers(){
+    this.selectedUser = []
+    for(let i = 0 ; i < this.reviewers.length ; i++){
+      if(this.selectUsersIndex.includes(i)){
+        this.selectedUser.push(this.reviewers[i])
+      }
+    }
+  }
+
   save() {
+    this.showSelectedUsers()
     this.confirmationService.confirm({
       message: 'Are you sure that you want to assign the selected reviewers?',
       header: 'Save',
@@ -195,11 +233,17 @@ export class ManageSubsComponent implements OnInit {
 
   deleteReviewer(email: string) {
     this.sucmsgs = []
+    this.spinner = true
     this.editorService.deleteReviewer(email, this.selectedArticle.reference).then(data=>{
       window.scrollTo(0,0)
       // @ts-ignore
       this.sucmsgs.push({severity:'success', summary: data.message})
-      this.ngOnInit()
+      this.spinner = false
+      window.location.reload()
+    }, error => {
+      this.spinner = false
+      window.scrollTo(0,0)
+      this.sucmsgs.push({severity:'warn', summary: 'Request not completed'})
     })
   }
 

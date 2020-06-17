@@ -82,7 +82,7 @@ export class SubmissionTableComponent implements OnInit {
     // tslint:disable-next-line:prefer-for-of
     for(let i = 0 ; i < this.statuses.length ; i++){
       // tslint:disable-next-line:no-conditional-assignment
-      if(this.statuses[i].label === status){
+      if(this.statuses[i].label.toLowerCase() === status.toLowerCase()){
         return this.statuses[i].value
       }
     }
@@ -102,6 +102,15 @@ export class SubmissionTableComponent implements OnInit {
     } else {
       this.table.filter('','status','equals')
     }
+  }
+
+  scroll(target: HTMLDivElement, i: any) {
+    this.selectedArticle = this.articles[i]
+    target.scrollIntoView()
+  }
+
+  scrollToTop() {
+    window.scrollTo(0,0)
   }
 }
 

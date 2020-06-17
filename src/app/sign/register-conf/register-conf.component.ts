@@ -2,7 +2,7 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from '@angular/forms';
 import {ErrorStateMatcher} from '@angular/material/core';
 import {ActivatedRoute} from '@angular/router';
-import {AuthService} from "../../controller/service/auth.service";
+import {AuthService} from '../../controller/service/auth.service';
 
 @Component({
   selector: 'app-register-conf',

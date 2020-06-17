@@ -15,7 +15,7 @@ export class NavComponent implements OnInit {
   private _roles : string[] = []
   article : Article
   constructor(private authService : AuthService, private tokenStorage: TokenStorageService
-              , private submissionService : SubmissionService) { }
+              , private submissionService : SubmissionService, private userService : UserService) { }
 
   ngOnInit(): void {
     this.roles = this.tokenStorage.getRoles()
@@ -33,4 +33,7 @@ export class NavComponent implements OnInit {
   }
 
 
+  setLatestIssue() {
+    this.userService.findLatestIssue()
+  }
 }

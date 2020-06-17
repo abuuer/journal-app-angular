@@ -1,0 +1,44 @@
+
+        <div class="row ">
+          <div class="col-md-12">
+            <p>
+              Moroocan Journal of Technology (MJT) is published by the Department of Technology, Faculty of Sciences and
+              Technologies (FST), Caddi Ayyad University (UCA). MJT  is a national, peer-reviewed journal that publishes
+              primary research papers and preliminary results in all areas of technology.
+            </p>
+            <p>
+              The Journal’s primary aim is to make every effort to contribute to the progress of the Moroccan technology scene.
+            </p>
+            <p>
+              Only review articles from experts in the field will be considered for publication. The journal does not
+              accept case reports.
+            </p>
+          </div>
+        </div>
+        <div class="row first-row">
+          <div class="col-md-12 latest-issue">
+            <span class="title">Latest Issue</span>
+          </div>
+          <div class="row block">
+            <div class="col-md-12">
+              <div class="issue">
+                <div class="row">
+                  <div class="col-md-12 "*ngFor="let a of latestIssues.articles; index as i">{{setArticle(a)}}
+                    <app-issue></app-issue>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row first-row">
+          <div class="col-md-12 latest-issue">
+            <span class="title">Most Read</span>
+          </div>
+          <div class="issue">
+          <div class="row">
+            <div class="col-md-12 "*ngFor="let a of mReadIssues.articles; index as i">{{setArticle(a)}}
+              <app-issue></app-issue>
+            </div>
+          </div>
+        </div>

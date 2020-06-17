@@ -1,0 +1,27 @@
+.body {
+  padding: 30px 50px;
+}
+
+.add .mat-mini-fab:not([class*=mat-elevation-z]){
+  margin-top: 10px;
+  margin-left: 50px;
+}
+
+table {
+  margin-top: 10px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+}
+
+.mat-card-content>:last-child:not(.mat-card-footer), .example-button-container p-progressSpinner{
+  padding: 10px 30px;
+}
+::ng-deep {
+  .ui-progress-spinner-svg {
+    margin-top: 10px;
+  }
+}
+
+
+.sub-container{
+  padding: 0px 0px 10px 50px
+}

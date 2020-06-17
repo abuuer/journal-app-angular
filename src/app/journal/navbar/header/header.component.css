@@ -7,10 +7,20 @@
 }
 
 h1 {
-  margin-left: -60px;
   margin-top: 8px;
   font-weight: bold;
-  color: #1E5991;
+  color: #3fb0ac;
+}
+@media (min-width: 1350px) {
+  h1 {
+    margin-left: -60px;
+  }
+}
+@media (max-width: 700px) {
+  h1 {
+    margin-left: 0px;
+    text-align: center;
+  }
 }
 
 .logoImg {

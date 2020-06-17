@@ -1,0 +1,252 @@
+:host ::ng-deep .ui-table-submission {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+
+  .submission-badge {
+    border-radius: 2px;
+    padding: .25em .5em;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .3px;
+
+    &.status-qualified {
+      background-color: #C8E6C9;
+      color: #256029;
+    }
+
+    &.status-unqualified {
+      background-color: #FFCDD2;
+      color: #C63737;
+    }
+
+    &.status-negotiation {
+      background-color: #1a237e;
+      color: #e6ffff;
+    }
+
+    &.status-new {
+      background-color: #B3E5FC;
+      color: #23547B;
+    }
+
+    &.status-renewal {
+      background-color: #ECCFFF;
+      color: #694382;
+    }
+
+    &.status-proposal {
+      background-color: #FFD8B2;
+      color: #805B36;
+    }
+  }
+
+  .flag {
+    vertical-align: middle;
+    width: 30px;
+    height: 20px;
+  }
+
+  .ui-multiselect-representative-option {
+    display: inline-block;
+    vertical-align: middle;
+
+    img {
+      vertical-align: middle;
+      width: 24px;
+    }
+
+    span {
+      margin-top: .125em;
+      vertical-align: middle;
+      margin-left: .5em
+    }
+  }
+
+  .ui-paginator {
+    .ui-dropdown {
+      float: left;
+    }
+
+    .ui-paginator-current {
+      float: right;
+    }
+  }
+
+  .ui-progressbar {
+    height: 8px;
+    background-color: #D8DADC;
+
+    .ui-progressbar-value {
+      background-color: #00ACAD;
+    }
+  }
+
+  .ui-column-filter {
+    display: block;
+
+    input {
+      width: 100%;
+    }
+  }
+
+  .ui-table-globalfilter-container {
+    float: right;
+
+    input {
+      width: 200px;
+    }
+  }
+
+  .ui-datepicker {
+    min-width: 25em;
+
+    td {
+      font-weight: 400;
+    }
+  }
+
+  .ui-table-caption {
+    border: 0 none;
+    padding: 12px;
+    text-align: left;
+    font-size: 20px;
+  }
+
+  .ui-paginator {
+    border: 0 none;
+    padding: 1em;
+  }
+
+  .ui-table-thead > tr > th {
+    border: 0 none;
+    text-align: left;
+
+    &.ui-filter-column {
+      border-top: 1px solid #c8c8c8;
+    }
+
+    &:first-child {
+      width: 5em;
+      text-align: center;
+    }
+
+    &:last-child {
+      width: auto;
+      text-align: center;
+    }
+  }
+
+  .ui-table-tbody > tr > td {
+    border: 0 none;
+    cursor: auto;
+
+    &:first-child {
+      width: 3em;
+      text-align: center;
+    }
+
+    &:last-child {
+      width: 8em;
+      text-align: center;
+    }
+  }
+
+  .ui-dropdown-label:not(.ui-placeholder) {
+    text-transform: uppercase;
+  }
+
+  .ui-table-tbody > tr > td .ui-column-title {
+    display: none;
+  }
+}
+
+/* Responsive */
+@media screen and (max-width: 64em) {
+  :host ::ng-deep .ui-table {
+    &.ui-table-submission {
+      .ui-table-thead > tr > th,
+      .ui-table-tfoot > tr > td {
+        display: none !important;
+      }
+
+      .ui-table-tbody > tr > td {
+        text-align: left;
+        display: block;
+        border: 0 none !important;
+        width: 100% !important;
+        float: left;
+        clear: left;
+        border: 0 none;
+
+        .ui-column-title {
+          padding: .4em;
+          min-width: 30%;
+          display: inline-block;
+          margin: -.4em 1em -.4em -.4em;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
+
+.body {
+  padding: 30px 50px;
+}
+
+h3 {
+  padding: 10px 20px;
+}
+::ng-deep{
+  body .ui-fileupload .ui-fileupload-buttonbar {
+    background-color: #f3f6f8;
+    border: none;
+  }
+}
+::ng-deep{
+  body .ui-fileupload .ui-fileupload-content{
+    border: none;
+    background-color: #f3f6f8;
+    margin-bottom: 30px;
+  }
+}
+::ng-deep{
+  .ui-fileupload-row>div {
+    padding-top: 5px;
+  }
+}
+
+.uploadImg {
+  margin-top: 13px;
+}
+.mat-card:not([class*=mat-elevation-z]) {
+  background-color: #f3f6f8;
+}
+.titles div>div {
+  font-size: 15px;
+  cursor: pointer;
+  width: auto;
+  background-color: #005957;
+  color: #FFFFFF;
+  text-transform: uppercase;
+  padding-left: 5px;
+  box-shadow: 2px -1px 1px 1px rgba(0,0,0,0.75);
+}
+.titles div {
+  margin-top: 25px;
+  padding-left: 10px;
+}
+.fa-chevron-right:before{
+  font-size: 22px;
+}
+mat-card {
+  margin-top: 23px;
+  background-color: #f3f6f8;
+}
+table {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+}
+.mat-fab:not([class*=mat-elevation-z]), .mat-mini-fab:not([class*=mat-elevation-z]) {
+  display: block;
+  margin: auto;
+}

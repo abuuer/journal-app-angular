@@ -106,4 +106,13 @@ export class ManageAuthorsComponent implements OnInit {
   showProgressBar() {
     return this.progress
   }
+
+  scroll(target: HTMLDivElement, rowIndex) {
+    this.selectedAuthor = this.authors[rowIndex]
+    target.scrollIntoView()
+  }
+
+  scrollToTop() {
+    window.scrollTo(0,0)
+  }
 }

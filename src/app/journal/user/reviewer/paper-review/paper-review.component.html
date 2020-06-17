@@ -6,30 +6,6 @@
         <mat-card-subtitle>full submission</mat-card-subtitle>
     </mat-card-header>
     <div class="container" *ngIf="article">
-      <div >
-        <header><h5>Author's Information</h5></header>
-        <table class="table col-md-12">
-          <thead class="thead-light">
-          <tr class="d-flex">
-            <th class="col-md-2" scope="col">Field</th>
-            <th class="col-md-10" scope="col">Info</th>
-          </tr>
-          </thead>
-          <tbody *ngFor="let a of article.userArticleDetails; index as i">
-          <tr class="d-flex" *ngIf="a.function === 'Author'" >
-            <td class="col-md-2">Author {{i+1}}</td>
-            <td class="col-md-10">
-              <div ><a href="" class="authors">{{a.user.firstName}} {{a.user.firstName}}</a></div>
-              <mat-divider></mat-divider>
-              <div class="email">{{a.user.email}}</div>
-              <mat-divider></mat-divider>
-              <div class="institution">{{a.user.institution}}</div>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-
       <div>
         <header><h5>Type, Title & Abstract</h5></header>
         <table class="table col-md-12">
@@ -74,10 +50,10 @@
             <th class="col-md-8" scope="col">Link</th>
           </tr>
           </thead>
-          <tbody>
-          <tr class="d-flex" *ngFor="let f of article.fileInfos; index as i">
+          <tbody *ngFor="let f of article.fileInfos; index as i">
+          <tr class="d-flex" *ngIf="f.type !== 'review'">
             <td class="col-md-2">File {{i+1}}</td>
-            <td class="col-md-2"> Main Manuscript</td>
+            <td class="col-md-2"> {{f.type}}</td>
             <td class="col-md-8"><a href="{{f.url}}" target="_blank">{{f.url}}</a></td>
           </tr>
           </tbody>

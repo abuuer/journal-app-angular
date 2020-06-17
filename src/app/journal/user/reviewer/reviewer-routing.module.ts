@@ -7,8 +7,8 @@ import {MatDividerModule} from '@angular/material/divider';
 import {PaperReviewComponent} from './paper-review/paper-review.component';
 import {CommonModule} from '@angular/common';
 import {MatButtonModule} from '@angular/material/button';
-import {FormsModule} from "@angular/forms";
-import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {FormsModule} from '@angular/forms';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 
 const routes: Routes = [

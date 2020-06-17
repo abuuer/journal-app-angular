@@ -69,3 +69,45 @@
 .latest app-issue::ng-deep .article-title {
   font-size: 16px ;
 }
+.year{
+  padding: 5px 20px;
+  cursor: pointer;
+}
+.issue{
+  padding: 5px 50px;
+}
+.vol {
+  color: #1E5991;
+  cursor: pointer;
+  margin-right: 15px;
+}
+
+.latest-issue::before {
+  content: '';
+  position: absolute;
+  top: 22px;
+  left: 0;
+  width: 100%;
+  border-top: 1px solid #005957;
+  z-index: -1;
+}
+.latest-issue {
+  font-size: 25px;
+  padding: 0px;
+  text-transform: uppercase;
+}
+.title {
+  background-color: #005957;
+  color: #FFFFFF;
+  text-transform: uppercase;
+  font-size: 20px;
+  padding: 0px 40px 7px 7px;
+  box-shadow: 2px -1px 1px 1px rgba(0,0,0,0.75);
+}
+::ng-deep{
+  .ui-progress-spinner{
+    display: block;
+    margin-left: auto;
+  }
+}
+

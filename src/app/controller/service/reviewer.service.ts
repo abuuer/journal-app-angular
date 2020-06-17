@@ -53,7 +53,6 @@ export class ReviewerService implements CanActivate{
   getArticles(email) {
     return this.http.get<any>(this.url + '/journal-api/user-article/findAllArticlesByReviewer/email/'+ email)
       .toPromise().then(data =>{
-        console.log(data)
         return data})
   }
 

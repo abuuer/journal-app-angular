@@ -1,10 +1,10 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-2 col-xs-12">
-      <a [routerLink]="['home']"><img class="logoImg" src="../../../../assets/pictures/logo.png" alt=""></a>
+      <a [routerLink]="['/mjt/home']"><img class="logoImg" src="../../../../assets/pictures/logo.png" alt=""></a>
     </div>
     <div class="col-md-7 col-xs-12">
-      <h1>FSTG Journal of Technology</h1>
+      <h1>Moroccan Journal of Technology</h1>
       <!--<form action="" class="float-md-right">
         <div class="bg-light rounded rounded-pill shadow-sm ">
           <div class="input-group ">
@@ -23,7 +23,7 @@
         <a class="float-right" *ngIf="!authenticate()" [routerLink]="['../login']" id="login" style="margin-left: 5px"> Login</a></div>
       <div class="col-md-3" style=" padding-left: 0px">
         <a *ngIf="!authenticate()" [routerLink]="['../register']" class="float-right" id="register" style="margin-left: 5px;">Sign up</a>
-        <a *ngIf="authenticate()" [routerLink]="['home']"  id="logout" style="margin-left: 5px;"
+        <a *ngIf="authenticate()" [routerLink]="['journal/mjt/home']"  id="logout" style="margin-left: 5px;"
            (click)="tokenStorage.logOut()">Log out</a>
       </div>
     </div>

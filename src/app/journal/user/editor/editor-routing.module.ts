@@ -3,13 +3,13 @@ import { Routes, RouterModule } from '@angular/router';
 import {ManageSubsComponent} from './manage-subs/manage-subs.component';
 import {TableModule} from 'primeng/table';
 import {
-  CalendarModule,
-  CardModule,
-  ConfirmDialogModule,
-  DialogModule,
-  DropdownModule,
-  MessagesModule,
-  TabViewModule, TreeTableModule
+    CalendarModule,
+    CardModule, CheckboxModule,
+    ConfirmDialogModule,
+    DialogModule,
+    DropdownModule,
+    MessagesModule, ProgressSpinnerModule,
+    TabViewModule, TreeTableModule
 } from 'primeng';
 import {MatCardModule} from '@angular/material/card';
 import {MatTableModule} from '@angular/material/table';
@@ -21,20 +21,21 @@ import {ManageAuthorsComponent} from './manage-authors/manage-authors.component'
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatRadioModule} from '@angular/material/radio';
 import {FormsModule} from '@angular/forms';
-import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 const routes: Routes = [
   {path: 'manage-subs' , component: ManageSubsComponent},
   {path: 'manage-reviewers' , component: ManageReviewersComponent},
   {path: 'manage-authors' , component: ManageAuthorsComponent},
+  { path : 'manage-issues', loadChildren : () => import('./manage-issues/manage-issues.module').then(m => m.ManageIssuesModule)}
 ];
 
 @NgModule({
   declarations: [
     ManageSubsComponent,
     ManageReviewersComponent,
-    ManageAuthorsComponent,
+    ManageAuthorsComponent
   ],
     imports: [RouterModule.forChild(routes),
         TableModule,
@@ -45,7 +46,19 @@ const routes: Routes = [
         MatDividerModule,
         DialogModule,
         CardModule,
-        MatButtonModule, CommonModule, MessagesModule, ConfirmDialogModule, MatProgressBarModule, TabViewModule, TreeTableModule, MatRadioModule, FormsModule, MatCheckboxModule],
+        MatButtonModule,
+      CommonModule,
+      MessagesModule,
+      ConfirmDialogModule,
+      MatProgressBarModule,
+      TabViewModule,
+      TreeTableModule,
+      MatRadioModule,
+      FormsModule,
+      MatCheckboxModule,
+      CheckboxModule,
+      ProgressSpinnerModule
+    ],
   exports: [RouterModule]
 })
 

@@ -6,14 +6,32 @@
         <div class="row first-row">
           <div class="col-md-12">
             <div class="row">
-              <div class="col-md-12 title">
-                <span >All Issues</span>
+              <div class="col-md-12 latest-issue">
+                <span class="title">All Issues</span>
               </div></div>
             <div class="row first-row-block ">
-              <div class="col-md-12 block">
-                  <p-accordion>
-                    <p-accordionTab header="2020" [selected]="true">
-                      <p-tree [value]="years" (onNodeSelect)="show($event)"></p-tree>
+              <div class="col-md-12" style="margin-top: 20px" *ngIf="spinner">
+                <div style="display: block;text-align: center">Loading Issues ...</div>
+                <p-progressSpinner></p-progressSpinner>
+              </div>
+              <div *ngIf="!spinner" class="col-md-12 block" >
+                  <p-accordion *ngFor="let d of decades">
+                    <p-accordionTab [header]="d" >
+                      <div *ngFor="let v of volumes">
+                        <div *ngIf="d.substr(0,3) === v.year.toString().substr(0,3)">
+                          <div class="year" (click)="show(v.year)">
+                            <span *ngIf="!(expand && year == v.year)" class="pi pi-caret-right"></span>
+                            <span *ngIf="expand && year == v.year" class="pi pi-caret-down"></span>
+                            {{v.year}}</div>
+                          <div *ngIf="expand && year == v.year">
+                            <div *ngFor="let i of v.issues">
+                              <div class="issue" [routerLink]="['../issue']" (click)="getIssue(i)">
+                                <b class="vol">Volume {{v.number}}, Issue {{i.number}}  </b>
+                                 {{i.startMonth}} - {{i.endMonth}}
+                                {{v.year}}</div></div>
+                          </div>
+                        </div>
+                      </div>
                     </p-accordionTab>
                   </p-accordion>
               </div>
@@ -24,20 +42,20 @@
       </div>
       <div class="col-md-4 article">
         <div class="row">
-              <div class="col-md-12 title">
-                Current Issue
+              <div class="col-md-12 latest-issue">
+                <span class="title">Current Issue</span>
               </div>
               <div class="row current">
-                <div class="col-md-12">
-                  <a [routerLink]="['latest-issue']"><b>Go To Current Issue</b></a>
+                <div class="col-md-12" style="padding-top: 10px">
+                  <a [routerLink]="['../issue']"><b>Go To Current Issue</b></a>
                 </div>
               </div>
         </div>
         <div class="row latest-side">
           <div class="col-md-12">
             <div class="row">
-              <div class="col-md-12 title">
-                Latest Article
+              <div class="col-md-12 latest-issue">
+                <span class="title">Latest Article</span>
               </div>
             </div>
             <div class="row latest">

@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
           this.tokenStorage.saveToken(data.accessToken)
           this.authService.getUserInfos(data.email).then(user => {
             this.tokenStorage.saveUser(user)
-             window.location.href = 'journal/home'
+             window.location.href = 'journal/mjt/home'
           }, error => {
 
           })

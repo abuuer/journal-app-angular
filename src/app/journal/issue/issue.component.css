@@ -18,7 +18,4 @@ a {
   font-weight: 700;
   padding-bottom: 5px;
 }
-.article:hover {
-  box-shadow: inset 1px 1px 4px -1px rgba(30,89,145,0.42);
-}
 

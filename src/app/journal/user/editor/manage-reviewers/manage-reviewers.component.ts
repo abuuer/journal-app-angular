@@ -23,7 +23,6 @@ export class ManageReviewersComponent implements OnInit {
 
   ngOnInit(): void {
     this.editorService.getAllReviewers().then(reviewers => {
-      console.log(reviewers)
       this.reviewers = reviewers
       this.loading = false
     })

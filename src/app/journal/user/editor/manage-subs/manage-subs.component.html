@@ -18,7 +18,7 @@
         <th></th>
         <th pSortableColumn="title">Title <p-sortIcon field="title"></p-sortIcon></th>
         <th pSortableColumn="type">Type <p-sortIcon field="type"></p-sortIcon></th>
-        <th pSortableColumn="date">Date <p-sortIcon field="date"></p-sortIcon></th>
+        <th pSortableColumn="submitDate">Date <p-sortIcon field="submitDate"></p-sortIcon></th>
         <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
         <th >Author </th>
         <th >Reviewer </th>
@@ -34,7 +34,7 @@
           <input pInputText type="text" (input)="dt.filter($event.target.value, 'type', 'contains')" placeholder="Search by Type" class="ui-column-filter">
         </th>
         <th>
-          <p-calendar (onSelect)="onDateSelect($event)" (onClearClick)="dt.filter('', 'date', 'equals')" [showButtonBar]="true" styleClass="ui-column-filter" placeholder="Registration Date" [readonlyInput]="true" dateFormat="yy-mm-dd"></p-calendar>
+          <p-calendar (onSelect)="onDateSelect($event)" (onClearClick)="dt.filter('', 'submitDate', 'equals')" [showButtonBar]="true" styleClass="ui-column-filter" placeholder="Registration Date" [readonlyInput]="true" dateFormat="yy-mm-dd"></p-calendar>
         </th>
         <th class="side">
           <p-dropdown [options]="statuses"  (onChange)="fiterStatus($event.value)" styleClass="ui-column-filter" placeholder="Select a Status" [showClear]="true">
@@ -201,7 +201,10 @@
                   <mat-divider></mat-divider>
                   <div class="institution">{{a.user.institution}}</div>
                 </td>
-                <td class="col-md-1"><button mat-mini-fab color="warn" class="pi pi-trash trashBtn" (click)="deleteReviewer(a.user.email)"></button></td>
+                <td class="col-md-1">
+                  <button *ngIf="!spinner" mat-mini-fab color="warn" class="pi pi-trash trashBtn" (click)="deleteReviewer(a.user.email)"></button>
+                  <p-progressSpinner strokeWidth="3" [style]="{width: '30px', height: '30px'}" *ngIf="spinner"></p-progressSpinner>
+                </td>
               </tr>
               </tbody>
               <tfoot>
@@ -214,18 +217,18 @@
                 Assign Reviewer</h3></p-header>
               <p-card>
                 <p-confirmDialog [style]="{width: '60vw'}" [baseZIndex]="100000"></p-confirmDialog>
-                <p-table #dt [value]="_reviewers"  dataKey="id" selectionMode="multiple"
-                         styleClass="ui-table-submission" [rowHover]="true"
-                         [showCurrentPageReport]="true" [loading]="loadingSec"
-                         [paginator]="false" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                <p-table #dt [value]="reviewers"  dataKey="id" selectionMode="multiple"
+                         styleClass="ui-table-submission" [rowHover]="true" [rows]="10"
+                         [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading"
+                         [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                          [filterDelay]="0" >
                   <ng-template pTemplate="header">
                     <tr>
                       <th></th>
                       <th pSortableColumn="lastName">Full Name <p-sortIcon field="lastName"></p-sortIcon></th>
                       <th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon></th>
-                      <th pSortableColumn="specialty">Specialty <p-sortIcon field="specialty"></p-sortIcon></th>
-                      <th pSortableColumn="status">Availability <p-sortIcon field="status"></p-sortIcon></th>
+                      <th></th>
+                      <th pSortableColumn="availability">Availability <p-sortIcon field="availability"></p-sortIcon></th>
                     </tr>
                     <tr>
                       <th>
@@ -236,11 +239,9 @@
                       <th>
                         <input pInputText type="text" (input)="dt.filter($event.target.value,'email', 'contains')" placeholder="Search by email" class="ui-column-filter">
                       </th>
-                      <th>
-                        <input pInputText type="text" (input)="dt.filter($event.target.value, 's.tag.name', 'contains')" placeholder="Search by Specialty" class="ui-column-filter">
-                      </th>
+                      <th>Specialty</th>
                       <th class="side">
-                        <p-dropdown [options]="reviewerStatuses" (onChange)="dt.filter($event.value, 'status.value', 'equals')" styleClass="ui-column-filter" placeholder="Select a Status" [showClear]="true">
+                        <p-dropdown [options]="reviewerStatuses" (onChange)="fiterStatusRv($event.value)" styleClass="ui-column-filter" placeholder="Select a Status" [showClear]="true">
                           <ng-template let-option pTemplate="item">
                             <span [class]="'submission-badge status-' + option.value">{{option.label}}</span>
                           </ng-template>
@@ -251,32 +252,29 @@
                   <ng-template pTemplate="body" let-reviewer let-i="rowIndex">
                     <tr class="ui-selectable-row" >
                       <td>
-                        <p-tableCheckbox [value]="reviewer"></p-tableCheckbox>
+                        <p-checkbox [(ngModel)]="selectUsersIndex"  [value]="i" ></p-checkbox>
                       </td>
                       <td>
                         <span class="ui-column-title">Full Name</span>
                         {{reviewer.firstName}} {{reviewer.lastName}}
                       </td>
                       <td>
-                        <span class="ui-column-title">Full Name</span>
+                        <span class="ui-column-title">Email</span>
                         {{reviewer.email}}
                       </td>
                       <td>
                         <span class="ui-column-title">Specialty</span>
-                        <span class="tags" *ngFor="let s of reviewer.userSpecialtyDetails">{{s.tag.name}} </span>
+                        <span *ngIf="reviewer.userSpecialtyDetails !== null"><span class="tags" *ngFor="let s of reviewer.userSpecialtyDetails">{{s.tag.name}} </span></span>
+
                       </td>
                       <td>
                         <span class="ui-column-title">Status</span>
-                        <span [class]="'submission-badge status-'">available</span>
+                        <span [class]="'submission-badge status-'+ getValueStatusRv(reviewer.availability)">{{reviewer.availability}}</span>
                       </td>
                     </tr>
                   </ng-template>
                 </p-table>
                 <hr>
-                <p-card *ngIf="selectedUser !== null">
-                  <p-header><h5>Selected Reviewers :</h5></p-header>
-                  <div><span class="tags" *ngFor="let r of selectedUser">{{r.firstName}} {{r.lastName}}</span></div>
-                </p-card>
                 <button mat-raised-button color="primary"  class="float-right" (click)="save()" style="margin-top: 20px; margin-right: 5px" label="Save">save</button>
                 <button mat-stroked-button  class="float-right" (click)="cancel()" style="margin-top: 20px; margin-right: 5px" label="Cancel">Cancel</button>
               </p-card>

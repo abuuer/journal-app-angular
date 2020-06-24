@@ -39,7 +39,7 @@ export class TokenStorageService {
   }
 
   public logOut(){
-    window.location.href = 'journal/home'
+    window.location.href = 'journal/mjt/home'
     window.sessionStorage.clear()
   }
   reloadPage() {

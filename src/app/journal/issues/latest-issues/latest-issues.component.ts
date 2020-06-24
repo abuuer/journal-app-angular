@@ -28,7 +28,6 @@ export class LatestIssuesComponent implements OnInit {
       latest
     }*/
     this.issue = this.userService.issue
-    console.log(this.issue)
   }
 
   get issue(): Issue {

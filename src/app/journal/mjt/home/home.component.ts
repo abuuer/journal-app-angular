@@ -11,31 +11,13 @@ import {Article} from '../../../controller/model/article.model';
 })
 export class HomeComponent implements OnInit {
 
-  private _latestIssues : Issue
+  private _latestIssue : Issue
   private _mReadIssues : Issue
   constructor(private userService : UserService) { }
 
   ngOnInit(): void {
-    this.latestIssues =
-      { number : 1,
-        publishDate: new Date('2020-01-01'), status:'published',startMonth: 'Jan',endMonth: 'Feb',issn:'562-56',
-        articles:[
-          {title : 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAA  AAAAAAAAAAAAA AAAAAAAAAAAAA AAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAAAAAAAAA',
-            // @ts-ignore
-            userArticleDetails : [{user:{lastName:'Abouerraja'}},{user:{lastName:'Sfrouisd'}}]
-          },
-          {title : 'BBBBBBBBBBBBBBB BBBBBBBBBBBBB BBBBBBBBBBBBBBBBBBBBBBBB BBBBBBBBBBBBBBB BBBBBBBBBBBBBBBB',
-            // @ts-ignore
-            userArticleDetails : [{user:{lastName:'Halima'}},{user:{lastName:'khlidfs'}}]
-          },
-          {title : 'DDDDDDDDDDDDDD DDDDDDDDDDDDDDDDDDDDDDDDDD DDDDDDDDDDDDDDDDDDDDDDDD DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD',
-            // @ts-ignore
-            userArticleDetails : [{user:{lastName:'Bcivjd'}},{user:{lastName:'XXX'}}]
-          }
-        ],
-        // @ts-ignore
-        volume: {number: 1}
-      }
+    this.userService.findLatestIssue()
+    this.latestIssue = this.userService.issue
     this.mReadIssues =
       { number : 1,
         publishDate: new Date('2020-01-01'), status:'published',startMonth: 'Jan',endMonth: 'Feb',issn:'562-56',
@@ -54,14 +36,14 @@ export class HomeComponent implements OnInit {
       }
   }
 
-  get latestIssues(): Issue {
-    if(this._latestIssues == null){
-      this._latestIssues = new Issue()
+  get latestIssue(): Issue {
+    if(this._latestIssue == null){
+      this._latestIssue = new Issue()
     }
-    return this._latestIssues;
+    return this._latestIssue;
   }
-  set latestIssues(value: Issue) {
-    this._latestIssues = value;
+  set latestIssue(value: Issue) {
+    this._latestIssue = value;
   }
   get mReadIssues(): Issue {
     if(this._mReadIssues == null){

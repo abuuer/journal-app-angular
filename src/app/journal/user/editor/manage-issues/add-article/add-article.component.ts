@@ -101,7 +101,7 @@ export class AddArticleComponent implements OnInit {
       this.progress = false
       this.message.push({severity:'error', summary: 'You muse select an issue'})
     }else {
-      this.editorService.addToIssue(this.selectedArticle.reference, this.chosenIssue).then(data=>{
+      this.editorService.addToIssue(this.selectedArticle.reference, this.chosenIssue.number,this.chosenVolume.number).then(data=>{
         // @ts-ignore
         this.message.push({severity:'success', summary: data.message})
         this.progress = false

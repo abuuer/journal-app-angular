@@ -9,6 +9,7 @@ import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {Volume} from '../model/volume.model';
 import {Issue} from '../model/issue.model';
+import {UserArticleDetail} from "../model/user-article-detail.model";
 
 @Injectable({
   providedIn: 'root'
@@ -48,7 +49,6 @@ export class EditorService implements CanActivate {
   getAllReviewers() {
     return this.http.get<User[]>(this._url + '/journal-api/user-role/findAllReviewers').toPromise().then(
       data => {
-        console.log(data)
         return data
       }
     )
@@ -97,9 +97,9 @@ export class EditorService implements CanActivate {
       .toPromise().then(data=>{return data})
   }
 
-  addToIssue(reference: string, chosenIssue: any) {
+  addToIssue(reference: string, issueNumber: number, volNumber: number) {
     return this.http.put(this._url +'/journal-api/article/addToIssue/articleRef/'+ reference
-      + '/issueNumber/' + chosenIssue.number, '').toPromise().then(data=>{return data})
+      + '/issueNumber/' + issueNumber + '/volNumber/'+ volNumber, '').toPromise().then(data=>{return data})
   }
 
   findByStatus() {

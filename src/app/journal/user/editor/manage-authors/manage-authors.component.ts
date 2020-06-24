@@ -3,6 +3,7 @@ import {ConfirmationService, Table} from 'primeng';
 import {User} from '../../../../controller/model/user.model';
 import {EditorService} from '../../../../controller/service/editor.service';
 import {Message} from 'primeng/api';
+import {UserArticleDetail} from '../../../../controller/model/user-article-detail.model';
 
 @Component({
   selector: 'app-manage-authors',

@@ -6,8 +6,8 @@ import {Issue} from '../../../../../controller/model/issue.model';
 import {Article} from '../../../../../controller/model/article.model';
 import {EditorService} from '../../../../../controller/service/editor.service';
 import {MessageService} from 'primeng/api';
-import {Volume} from "../../../../../controller/model/volume.model";
-import {FileInfo} from "../../../../../controller/model/file.model";
+import {Volume} from '../../../../../controller/model/volume.model';
+import {FileInfo} from '../../../../../controller/model/file.model';
 
 @Component({
   selector: 'app-add-issue',
@@ -71,7 +71,6 @@ export class AddIssueComponent implements OnInit {
     })
     this.editorService.findAllIssues().then(data=>{
       this.issues = data
-      console.log(this.issues)
       this.loadingIssues = false
     })
   }
@@ -83,22 +82,22 @@ export class AddIssueComponent implements OnInit {
     this.submissionService.upload(this.currentFile, 'Cover page').subscribe(
       data => {
         if (data.type === HttpEventType.UploadProgress) {
-          this.progress = this.progress + Math.floor(Math.random() * 10) + 1;
-        }else if(this.progress >=100){
-          this.progress = 100
+          this.progress = Math.round(100 * data.loaded / data.total);
         } else if (data instanceof HttpResponse) {
-          this.progress = 100;
+          this.progress = 0;
           this.progressId = 0
           this.message = [];
-          this.message.push({severity: 'success', summary: 'Warn Message', detail: `Uploaded ${data.body.name} Successfully`});
+          this.message.push({severity: 'success', detail: `Uploaded ${data.body.name} Successfully`});
            this.issue.fileInfos.push(this.cloneFile(data.body))
+          window.scrollTo(0,0)
         }
       },
       err => {
         this.progress = 100;
         this.progressId = 0
         this.message = [];
-        this.message.push({severity: 'warn', summary: 'Warn Message', detail: `Could not upload the file!`});
+        this.message.push({severity: 'warn', detail: `Could not upload the file!`});
+        window.scrollTo(0,0)
       })
   }
 
@@ -120,14 +119,16 @@ export class AddIssueComponent implements OnInit {
          this.editorService.createNewIssue(this.issue).then(data=>{
            this.message = [];
            this.progressBar = false
+           window.scrollTo(0,0)
            // @ts-ignore
-           this.message.push({severity: 'success', summary: 'Warn Message', detail: data.message});
+           this.message.push({severity: 'success', detail: data.message});
            window.location.reload()
          }, error=>{
            this.message = [];
            this.progressBar = false
+           window.scrollTo(0,0)
            // @ts-ignore
-           this.message.push({severity: 'warn', summary: 'Warn Message', detail: error.error.message});
+           this.message.push({severity: 'warn', detail: error.error.message});
            window.scrollTo(0,0)
          })
       },
@@ -191,14 +192,40 @@ export class AddIssueComponent implements OnInit {
         this.editorService.deleteArticle(this.selectedIssue.articles[i]).then(data=>{
           this.message = [];
           this.progressBar = false
+          window.scrollTo(0,0)
           // @ts-ignore
-          this.message.push({severity: 'success', summary: 'Warn Message', detail: data.message});
-          //window.location.reload()
+          this.message.push({severity: 'success', detail: data.message});
+           window.location.reload()
         }, error=>{
           this.message = [];
           this.progressBar = false
           // @ts-ignore
-          this.message.push({severity: 'warn', summary: 'Warn Message', detail: error.error.message});
+          this.message.push({severity: 'warn', detail: error.error.message});
+          window.scrollTo(0,0)
+        })
+      },
+      reject: () => {}
+    });
+  }
+
+  publishIssue() {
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to publish this issue?',
+      header: 'Save',
+      icon: 'pi pi-check-circle',
+      accept: () => {
+        this.progressBar = true
+        this.editorService.publishIssue(this.selectedIssue.number,1).then(data=>{
+          this.message = [];
+          this.progressBar = false
+          // @ts-ignore
+          this.message.push({severity: 'success', detail: data.message});
+          window.scrollTo(0,0)
+        }, error=>{
+          this.message = [];
+          this.progressBar = false
+          // @ts-ignore
+          this.message.push({severity: 'warn', detail: error.error.message});
           window.scrollTo(0,0)
         })
       },

@@ -200,9 +200,7 @@ export class SubmissionComponent implements OnInit {
    this.submissionService.upload(this.currentFile, this.fileType).subscribe(
       data => {
         if (data.type === HttpEventType.UploadProgress) {
-          this.progress = this.progress + Math.floor(Math.random() * 10) + 1;
-        }else if(this.progress >=100){
-          this.progress = 100
+          this.progress = Math.round(100 * data.loaded / data.total);
         } else if (data instanceof HttpResponse) {
           this.progress = 100;
           this.message = 'Uploaded ' + data.body.name + ' Successfully'
@@ -210,7 +208,7 @@ export class SubmissionComponent implements OnInit {
         }
       },
       err => {
-        this.progress = 100;
+        this.progress = 0;
         this.message = 'Could not upload the file!';
         this.currentFile = undefined;
       })

@@ -14,7 +14,6 @@
         <th pSortableColumn="type">Type <p-sortIcon field="type"></p-sortIcon></th>
         <th pSortableColumn="date">Date <p-sortIcon field="date"></p-sortIcon></th>
         <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
-        <th pSortableColumn="firstName">Author </th>
         <th pSortableColumn="reviewer">Reviewer </th>
       </tr>
       <tr >
@@ -36,8 +35,6 @@
               <span  [class]="'submission-badge status-' + option.value">{{option.label}}</span>
             </ng-template>
           </p-dropdown>
-        </th>
-        <th>
         </th>
         <th>
         </th>
@@ -65,11 +62,6 @@
           <span [class]="'submission-badge status-' + getValueStatus(article.status)">{{article.status}}</span>
         </td>
         <td>
-          <span class="ui-column-title">Author</span>
-          <div  style="vertical-align: middle;" *ngFor="let a of article.userArticleDetails; index as i" >
-            <a href="" class="authors tags" *ngIf="a.function === 'Author'">{{a.user.firstName}} {{a.user.lastName}}</a></div>
-        </td>
-        <td>
           <span class="ui-column-title">Reviewer</span>
           <div  style="vertical-align: middle;" *ngFor="let a of article.userArticleDetails" psel>
             <a href="" class="authors" *ngIf="a.function === 'Reviewer'"> {{a.user.firstName}} {{a.user.lastName}}</a></div>
@@ -78,7 +70,7 @@
     </ng-template>
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td colspan="7" style="text-align:left">No submissions are assigned to you at the moment</td>
+        <td colspan="6" style="text-align:left">No submissions are assigned to you at the moment</td>
       </tr>
     </ng-template>
   </p-table>

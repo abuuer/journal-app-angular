@@ -25,7 +25,7 @@
                             {{v.year}}</div>
                           <div *ngIf="expand && year == v.year">
                             <div *ngFor="let i of v.issues">
-                              <div class="issue" [routerLink]="['../issue']" (click)="getIssue(i)">
+                              <div class="issue" [routerLink]="['../issue']" [queryParams]="{issueNum: i.number,volNum: v.number}" (click)="getIssue(i)">
                                 <b class="vol">Volume {{v.number}}, Issue {{i.number}}  </b>
                                  {{i.startMonth}} - {{i.endMonth}}
                                 {{v.year}}</div></div>

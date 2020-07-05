@@ -150,17 +150,19 @@
                 </td>
                 <td>
                   <span class="ui-column-title">Volume Number</span>
-                  Vol No.1
+                  Vol No.{{issue.volume.number}}
                 </td>
                 <td>
                   <span class="ui-column-title">Status</span>
                   <span [class]="'submission-badge status-'+ getValueStatus(issue.status)">{{issue.status}}</span>
                 </td>
                 <td>
-                  <span class="ui-column-title">Volume Number</span>
-                  {{issue.articles.length}}
+                  <span class="ui-column-title">Article Number</span>
+                  {{issue.publisheds.length}}
                 </td>
-                <td><span (click)="show(i)" style="cursor: pointer; color: #007ad9; font-size: 12px">show details</span></td>
+                <td><span *ngIf="issue.publisheds.length > 0" (click)="show(i)" style="cursor: pointer; color: #007ad9; font-size: 12px">show articles</span>
+                <span *ngIf="issue.publisheds.length === 0">--</span>
+                </td>
               </tr>
             </ng-template>
           </p-table>
@@ -169,20 +171,20 @@
         <mat-card>
           <p-confirmDialog [style]="{width: '40vw'}" [baseZIndex]="100000"></p-confirmDialog>
           <div class="col-md-12" *ngIf="selectedIssue">
-            <p-table [scrollable]="true" [value]="selectedIssue.articles" scrollHeight="100px">
+            <p-table [scrollable]="true" [value]="selectedIssue.publisheds" scrollHeight="400px">
               <ng-template pTemplate="header">
                 <tr>
                   <th width="5px"></th>
-                  <th width="80px" pSortableColumn="number">Article <p-sortIcon field="number"></p-sortIcon></th>
-                  <th width="20px" pSortableColumn="number">Submission Date <p-sortIcon field="number"></p-sortIcon></th>
+                  <th width="80px" pSortableColumn="article.title">Article <p-sortIcon field="article.title"></p-sortIcon></th>
+                  <th width="20px" pSortableColumn="publishDate">Publish Date <p-sortIcon field="publishDate"></p-sortIcon></th>
                   <th width="5px"></th>
                 </tr>
               </ng-template>
-              <ng-template pTemplate="body" let-article let-i="rowIndex">
+              <ng-template pTemplate="body" let-published let-i="rowIndex">
                 <tr>
                   <td width="5px">{{i+1}}</td>
-                  <td width="80px">{{article.title}}</td>
-                  <td width="20px">{{article.submitDate}}</td>
+                  <td width="80px">{{published.article.title}}</td>
+                  <td width="20px">{{published.publishDate}}</td>
                   <td width="5px"><button mat-mini-fab color="warn" class="pi pi-trash trashBtn" (click)="deleteArticle(i)"></button></td>
                 </tr>
               </ng-template>

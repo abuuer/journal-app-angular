@@ -16,8 +16,10 @@ export class HomeComponent implements OnInit {
   constructor(private userService : UserService) { }
 
   ngOnInit(): void {
-    this.userService.findLatestIssue()
-    this.latestIssue = this.userService.issue
+    this.userService.findLatestIssue().then(data=> {
+      this.latestIssue = data
+    })
+
     this.mReadIssues =
       { number : 1,
         publishDate: new Date('2020-01-01'), status:'published',startMonth: 'Jan',endMonth: 'Feb',issn:'562-56',

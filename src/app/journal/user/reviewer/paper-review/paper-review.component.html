@@ -88,7 +88,7 @@
   </mat-card>
   <br>
   <br>
-  <mat-card >
+  <mat-card style="background-color: #eceff1">
     <mat-card-header>
         <mat-card-title><h2>Reviewer Space</h2></mat-card-title>
         <mat-card-subtitle style="color: red; opacity: 60%;">Note: entries are saved automatically but not submitted until you click the 'submit'
@@ -129,35 +129,24 @@
     </div>
   </div>
   <br>
-  <!-- <mat-divider></mat-divider>
-  <br>
-  <mat-card-title><h4>Select your decision:</h4></mat-card-title>
-  <div class="row" style="margin-top: 25px;">
-    <div class="col-md-4">
-      <div class="sub-card">
-        <p-dropdown [options]="decisions" [(ngModel)]="finalDecision" name="decision" placeholder="Select your decision"
-                    [showClear]="true" (onChange)="saveDecision()"></p-dropdown>
-      </div>
-    </div>
-    <div class="col-md-4" *ngIf="finalReview.finalDecision !== null">
-     <b>selected decision :</b>  {{finalReview.finalDecision}}
-    </div>
-    <div class="col-md-4"></div>
-  </div>
-  <br>
-  <mat-divider></mat-divider>
-  <br>
-  <mat-card-title><h4>Additional notes:</h4></mat-card-title>
-  <div class="row" style="margin-top: 25px; padding-left: 14px">
-    <div class="col-md-12">
-      <div class="sub-card">
-        <span class="ui-float-label">
-                  <textarea [(ngModel)]="finalNotes" name="notes"  id="float-input-abs" rows="4" pInputTextarea style="width: 100% " ></textarea>
-                  <label  for="float-input-abs">Enter additional notes (optional)</label>
+     <mat-card-content>
+       <div>
+         <div class="card-title"><h4>Final Decision</h4></div>
+         <div class="ui-float-label">
+           <p-dropdown [options]="decisions" [(ngModel)]="finalDecision" name="type" placeholder="Select the final decision"
+                       [showClear]="true"></p-dropdown>
+         </div>
+       </div>
+       <br>
+       <br>
+       <div class="card-title"><h4>Additional Notes</h4></div>
+       <div>
+                <span class="ui-float-label" style="margin-left: 14px;">
+                  <textarea name="abstract" id="float-input-abs" rows="4" pInputTextarea style="width: 100% " ></textarea>
+                  <label for="float-input-abs">This field is optional</label>
                 </span>
-      </div>
-    </div>
-  </div> -->
+       </div>
+     </mat-card-content>
 </div>
   </mat-card>
   <div *ngIf="!progressBar">

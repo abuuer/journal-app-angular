@@ -83,6 +83,18 @@ swiper {
 .first-row-block .row {
   margin-top: 20px;
 }
-.issue .row div {
-  margin-top: 15px;
+
+
+.article-title {
+  font-family: Volkhov,serif;
+  font-weight: bold;
+  font-size: 20px;
+}
+a {
+  text-decoration: none;
+  color: black;
+}
+.volume {
+  font-size: .75rem;
+  font-weight: 700;
 }

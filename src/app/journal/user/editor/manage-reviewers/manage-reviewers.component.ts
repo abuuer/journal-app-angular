@@ -3,6 +3,7 @@ import {ConfirmationService, Table} from 'primeng';
 import {User} from '../../../../controller/model/user.model';
 import {EditorService} from '../../../../controller/service/editor.service';
 import {Message} from 'primeng/api';
+import {UserArticleDetail} from "../../../../controller/model/user-article-detail.model";
 
 @Component({
   selector: 'app-manage-reviewers',
@@ -15,15 +16,18 @@ export class ManageReviewersComponent implements OnInit {
   @ViewChild('dt') table: Table;
   display = false
   selectedReviewer = new User()
-  reviewers = new Array<User>()
+  reviewers = new Array<UserArticleDetail>()
   sucmsgs: Message[] = []
   warnmsgs: Message[] = []
   progress = false
-  constructor(private editorService : EditorService, private confirmationService: ConfirmationService) { }
+
+  constructor(private editorService: EditorService, private confirmationService: ConfirmationService) {
+  }
 
   ngOnInit(): void {
     this.editorService.getAllReviewers().then(reviewers => {
       this.reviewers = reviewers
+      console.log(reviewers)
       this.loading = false
     })
   }
@@ -31,6 +35,7 @@ export class ManageReviewersComponent implements OnInit {
   onDateSelect(value) {
     this.table.filter(this.formatDate(value), 'date', 'equals')
   }
+
   formatDate(date) {
     let month = date.getMonth() + 1;
     let day = date.getDate();
@@ -48,8 +53,8 @@ export class ManageReviewersComponent implements OnInit {
 
   showDialog(rowIndex) {
     this.progress = false
-    this.selectedReviewer = this.reviewers[rowIndex]
-    this.display = true ;
+    this.selectedReviewer = this.reviewers[rowIndex].user
+    this.display = true;
   }
 
   delete() {
@@ -62,20 +67,21 @@ export class ManageReviewersComponent implements OnInit {
       accept: () => {
         this.progress = true
         this.warnmsgs = []
-        this.editorService.deleteAccount(this.selectedReviewer.email).then(data=>{
+        this.editorService.deleteAccount(this.selectedReviewer.email).then(data => {
           this.display = false
           this.progress = false
-          window.scrollTo(0,0)
+          window.scrollTo(0, 0)
           // @ts-ignore
-          this.sucmsgs.push({severity:'success', summary: data.message})
+          this.sucmsgs.push({severity: 'success', summary: data.message})
           this.ngOnInit()
-        }, error=>{
+        }, error => {
           this.progress = false
           this.display = false
-          this.warnmsgs.push({severity:'warn', summary: error.error.message})
+          this.warnmsgs.push({severity: 'warn', summary: error.error.message})
         })
       },
-      reject: () => {}
+      reject: () => {
+      }
     });
   }
 
@@ -88,20 +94,21 @@ export class ManageReviewersComponent implements OnInit {
       header: 'delete',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.editorService.dismissReviewer(this.selectedReviewer.email).then(data=>{
-          this.progress=false
-          this.display= false
-          window.scrollTo(0,0)
-          // @ts-ignore
-          this.sucmsgs.push({severity:'success', summary: data.message})
-          this.ngOnInit()
-        }, error=>{
-          this.progress=false
+        this.editorService.dismissReviewer(this.selectedReviewer.email).then(data => {
+          this.progress = false
           this.display = false
-          this.warnmsgs.push({severity:'warn', summary: error.error.message})
+          window.scrollTo(0, 0)
+          // @ts-ignore
+          this.sucmsgs.push({severity: 'success', summary: data.message})
+          this.ngOnInit()
+        }, error => {
+          this.progress = false
+          this.display = false
+          this.warnmsgs.push({severity: 'warn', summary: error.error.message})
         })
       },
-      reject: () => {}
+      reject: () => {
+      }
     });
   }
 

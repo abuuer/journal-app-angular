@@ -14,7 +14,7 @@
         <th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon></th>
         <th> </th>
         <th pSortableColumn="title">Institution <p-sortIcon field="title"></p-sortIcon></th>
-        <th pSortableColumn="date">Date<p-sortIcon field="date"></p-sortIcon></th>
+        <th pSortableColumn="date">Registration Date<p-sortIcon field="date"></p-sortIcon></th>
         <th ></th>
       </tr>
       <tr >
@@ -42,25 +42,25 @@
         </td>
         <td>
           <span class="ui-column-title">Full Name</span>
-          {{reviewer.prefix}}. {{reviewer.firstName}} {{reviewer.lastName}}
+          {{reviewer.user.pseudo}}. {{reviewer.user.firstName}} {{reviewer.user.lastName}}
         </td>
         <td>
           <span class="ui-column-title">Email</span>
-          <span style="vertical-align: middle; margin-left: .5em">{{reviewer.email}}</span>
+          <span style="vertical-align: middle; margin-left: .5em">{{reviewer.user.email}}</span>
         </td>
         <td>
           <span class="ui-column-title">Speacialities</span>
-          <span class="tags" *ngFor="let s of reviewer.userSpecialtyDetails">
+          <span class="tags" *ngFor="let s of reviewer.user.userSpecialtyDetails">
             {{s.tag.name}}
           </span>
         </td>
         <td>
           <span class="ui-column-title">Institution</span>
-          {{reviewer.institution}}
+          {{reviewer.user.institution}}
         </td>
         <td>
           <span class="ui-column-title">Registration Date</span>
-          2020-06-15
+          {{reviewer.user.registrationDate}}
         </td>
         <td> <button mat-mini-fab color="primary" class="pi pi-list" (click)="showDialog(rowIndex)" ></button></td>
       </tr>
@@ -104,7 +104,7 @@
             <div class="row">
               <div class="col-md-2"><b>departement</b></div>
               <div class="col-md-3" *ngIf="selectedReviewer.departement !== null">{{selectedReviewer.departement}}</div>
-              <div class="col-md-3" *ngIf="selectedReviewer.departement !== null">--</div>
+              <div class="col-md-3" *ngIf="selectedReviewer.departement == null">--</div>
               <div class="col-md-2"><b>Fields of Interest</b></div>
               <div class="col-md-5">
                 <span class="tags" *ngFor="let s of selectedReviewer.userSpecialtyDetails">{{s.tag.name}}</span>
@@ -112,32 +112,22 @@
             </div>
             <br>
             <div class="row">
-              <div class="col-md-2"><b>Reviews : </b></div>
-            </div>
-              <div class="row" *ngFor="let a of selectedReviewer.userArticleDetails">
-                <div *ngIf="a.article.type === 'Review'">
-                  <div class="col-md-2">Review </div>
-                  <div class="col-md-9">{{a.article.title}} </div>
-                  <div class="col-md-1"><a href="#" style="cursor: pointer; text-decoration: none"><span  class="pi pi-external-link"></span></a></div>
+                <div class="col-md-2"><b>Reviews : </b></div>
+              <div class="col-md-10">
+                <div *ngFor="let a of selectedReviewer.userArticleDetails">
+                  <div class="col-md-12" *ngIf="a.function === 'Reviewer'">- {{a.article.title}}  <a href="#" style="cursor: pointer; text-decoration: none"><span  class="pi pi-external-link"></span></a></div>
                 </div>
+              </div>
             </div>
             <br>
             <div class="row">
               <div class="col-md-2"><b>Submissions : </b></div>
-            </div>
-            <div>
-                <div class="row" *ngFor="let a of selectedReviewer.userArticleDetails">
-                  <div *ngIf="a.article.type !== 'Review'">
-                    <div class="col-md-2">Review </div>
-                    <div class="col-md-9">{{a.article.title}} </div>
-                    <div class="col-md-1"><a href="#" style="cursor: pointer; text-decoration: none"><span  class="pi pi-external-link"></span></a></div>
+                <div class="col-md-10" >
+                  <div *ngFor="let a of selectedReviewer.userArticleDetails">
+                    <div class="col-md-12" *ngIf="a.function === 'Author'">- {{a.article.title}}  <a href="#" style="cursor: pointer; text-decoration: none"><span  class="pi pi-external-link"></span></a></div>
                   </div>
                 </div>
             </div>
-            <div>
-              --
-            </div>
-
           </mat-card-content>
         </div>
       </div>

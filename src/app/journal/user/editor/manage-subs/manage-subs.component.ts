@@ -5,6 +5,7 @@ import {Article} from '../../../../controller/model/article.model';
 import {EditorService} from '../../../../controller/service/editor.service';
 import {User} from '../../../../controller/model/user.model';
 import {Message} from 'primeng/api';
+import {UserArticleDetail} from '../../../../controller/model/user-article-detail.model';
 
 @Component({
   selector: 'app-manage-subs',
@@ -15,7 +16,7 @@ import {Message} from 'primeng/api';
 export class ManageSubsComponent implements OnInit {
   loading = true;
   display = false ;
-  loadingSec =  false;
+  loadingSec =  true;
   warnmsgs: Message[] = []
   sucmsgs: Message[] = []
   @ViewChild('dt') table: Table;
@@ -27,7 +28,7 @@ export class ManageSubsComponent implements OnInit {
   progress = false
   spinner = false
   private _articles : Article[]
-   _reviewers : User[]
+   _reviewers : UserArticleDetail[]
   hideRejected  = false
 
   statuses = [
@@ -70,10 +71,10 @@ export class ManageSubsComponent implements OnInit {
   set articles(value: Article[]) {
     this._articles = value;
   }
-  get reviewers(): User[] {
+  get reviewers(): UserArticleDetail[] {
     return this._reviewers;
   }
-  set reviewers(value: User[]) {
+  set reviewers(value: UserArticleDetail[]) {
     this._reviewers = value;
   }
 
@@ -99,7 +100,6 @@ export class ManageSubsComponent implements OnInit {
   showDialog() {
     this.selectedUser = []
     this.display = true ;
-    this.loadingSec = true
     this.editorService.getAllReviewers().then(reviewers=>{
       this.reviewers = reviewers
       this.loadingSec = false
@@ -197,7 +197,7 @@ export class ManageSubsComponent implements OnInit {
     this.selectedUser = []
     for(let i = 0 ; i < this.reviewers.length ; i++){
       if(this.selectUsersIndex.includes(i)){
-        this.selectedUser.push(this.reviewers[i])
+        this.selectedUser.push(this.reviewers[i].user)
       }
     }
   }
@@ -247,28 +247,44 @@ export class ManageSubsComponent implements OnInit {
     })
   }
 
+  getLabelDecision(value: string) {
+    // tslint:disable-next-line:prefer-for-of
+    for(let i = 0 ; i < this.decisions.length ; i++){
+      // tslint:disable-next-line:no-conditional-assignment
+      if(this.decisions[i].value === value){
+        return this.decisions[i].label
+      }
+    }
+  }
+
   submitFinalDecision() {
     this.sucmsgs = []
-    this.confirmationService.confirm({
-      message: `Are you sure you want to ${this.finalDecision} this paper?`,
-      header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.progress = true
-        this.editorService.submitFinalDecision(this.finalDecision, this.selectedArticle.reference).then(data=>{
-          this.progress = false
-          // @ts-ignore
-          this.sucmsgs.push({severity:'success', summary: 'Your decision has been saved successfully'})
-          window.scrollTo(0,0)
-          window.location.reload()
-        }, error=> {
-          this.progress = false
-          this.sucmsgs.push({severity:'warn', summary: 'We can\'t save your decision at the moment'})
-          window.scrollTo(0,0)
-        })
-      },
-      reject: () => {}
-    });
+    if(this.finalDecision == null){
+      this.sucmsgs.push({severity:'warn', summary: 'Please choose the final decision'})
+      window.scrollTo(0,0)
+    }else {
+      this.confirmationService.confirm({
+        message: `Are you sure you want to ${this.finalDecision} this paper?`,
+        header: 'Confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          this.progress = true
+          this.editorService.submitFinalDecision(this.finalDecision, this.selectedArticle.reference,
+            this.getLabelDecision(this.finalDecision)).then(data=>{
+            this.progress = false
+            // @ts-ignore
+            this.sucmsgs.push({severity:'success', summary: 'Your decision has been saved successfully'})
+            window.scrollTo(0,0)
+            window.location.reload()
+          }, error=> {
+            this.progress = false
+            this.sucmsgs.push({severity:'warn', summary: 'We can\'t save your decision at the moment'})
+            window.scrollTo(0,0)
+          })
+        },
+        reject: () => {}
+      });
+    }
   }
 
   scroll(target: HTMLDivElement, i) {

@@ -71,6 +71,7 @@ export class AddIssueComponent implements OnInit {
     })
     this.editorService.findAllIssues().then(data=>{
       this.issues = data
+      console.log(data)
       this.loadingIssues = false
     })
   }

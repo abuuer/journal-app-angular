@@ -11,6 +11,7 @@ export class Article {
   abstractt : string
   funding : boolean
   status : string
+  decision : string
   submitDate : Date
   articleFunds = new Array<ArticleFunds>()
   fileInfos = new Array <FileInfo>()

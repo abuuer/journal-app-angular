@@ -13,16 +13,16 @@
                     <span class="title">Latest Issue</span>
                   </div></div>
                     <div class="row first-row-block" >
-                      <div class="col-md-12" *ngFor="let a of issue.articles; index as i">
+                      <div class="col-md-12" *ngFor="let a of issue.publisheds; index as i">
                         <div class="row main-article">
                           <div class="col-md-12 issue">
-                            {{setArticle(a)}}
+                            {{setArticle(a.article)}}
                               <app-issue></app-issue>
                               <div class="row options">
                                 <div class="col-md-12 ">
                                   <div class="row">
                                     <div class="col-md-6">
-                                      {{a.submitDate}}
+                                      {{a.article.submitDate}}
                                     </div>
                                     <div class="col-md-6">
                                       <button class="btn btn-outline-dark fa fa-file-pdf-o float-right"> PDF</button>
@@ -32,7 +32,7 @@
 
                                     </div>
                                     <div class="col-md-12 collapse abstract" id="collapseExample-{{i}}">
-                                      {{a.abstractt}}
+                                      {{a.article.abstractt}}
                                     </div>
                                   </div>
                                 </div>

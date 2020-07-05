@@ -49,12 +49,13 @@ export class AllIssuesComponent implements OnInit {
         this.decades.push(this.getDecade(this.volumes[i].year))
       }
     }
+    this.decades.sort((a: any,b: any)=> b - a)
   }
 
-  getDecade(year: number) {
+  getDecade(year: number){
     const d = year.toString()
     const r = d.substr(0,3) + '0'
-    return r + 's'
+    return r
   }
 
   getIssue(issue: Issue) {

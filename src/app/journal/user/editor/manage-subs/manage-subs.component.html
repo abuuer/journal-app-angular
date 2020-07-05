@@ -20,8 +20,10 @@
         <th pSortableColumn="type">Type <p-sortIcon field="type"></p-sortIcon></th>
         <th pSortableColumn="submitDate">Date <p-sortIcon field="submitDate"></p-sortIcon></th>
         <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
-        <th >Author </th>
-        <th >Reviewer </th>
+        <th>
+        </th>
+        <th>
+        </th>
       </tr>
       <tr >
         <th>
@@ -43,10 +45,8 @@
             </ng-template>
           </p-dropdown>
         </th>
-        <th>
-        </th>
-        <th>
-        </th>
+        <th >Author </th>
+        <th >Reviewer </th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-article let-i="rowIndex">
@@ -114,7 +114,7 @@
               <tr class="d-flex"   *ngIf="a.function === 'Author'">
                 <td class="col-md-2">Author</td>
                 <td class="col-md-10">
-                  <div class="fullName">{{a.user.firstName}} {{a.user.firstName}}</div>
+                  <div class="fullName">{{a.user.firstName}} {{a.user.lastName}}</div>
                   <mat-divider></mat-divider>
                   <div class="email">{{a.user.email}}</div>
                   <mat-divider></mat-divider>
@@ -219,7 +219,7 @@
                 <p-confirmDialog [style]="{width: '60vw'}" [baseZIndex]="100000"></p-confirmDialog>
                 <p-table #dt [value]="reviewers"  dataKey="id" selectionMode="multiple"
                          styleClass="ui-table-submission" [rowHover]="true" [rows]="10"
-                         [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loading"
+                         [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [loading]="loadingSec"
                          [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                          [filterDelay]="0" >
                   <ng-template pTemplate="header">
@@ -256,20 +256,20 @@
                       </td>
                       <td>
                         <span class="ui-column-title">Full Name</span>
-                        {{reviewer.firstName}} {{reviewer.lastName}}
+                        {{reviewer.user.pseudo}}. {{reviewer.user.firstName}} {{reviewer.user.lastName}}
                       </td>
                       <td>
                         <span class="ui-column-title">Email</span>
-                        {{reviewer.email}}
+                        {{reviewer.user.email}}
                       </td>
                       <td>
                         <span class="ui-column-title">Specialty</span>
-                        <span *ngIf="reviewer.userSpecialtyDetails !== null"><span class="tags" *ngFor="let s of reviewer.userSpecialtyDetails">{{s.tag.name}} </span></span>
+                        <span *ngIf="reviewer.user.userSpecialtyDetails !== null"><span class="tags" *ngFor="let s of reviewer.user.userSpecialtyDetails">{{s.tag.name}} </span></span>
 
                       </td>
                       <td>
                         <span class="ui-column-title">Status</span>
-                        <span [class]="'submission-badge status-'+ getValueStatusRv(reviewer.availability)">{{reviewer.availability}}</span>
+                        <span [class]="'submission-badge status-'+ getValueStatusRv(reviewer.user.availability)">{{reviewer.user.availability}}</span>
                       </td>
                     </tr>
                   </ng-template>
@@ -353,7 +353,6 @@
                   <label for="float-input-abs">This field is optional</label>
                 </span>
               </div>
-
             </mat-card-content>
             <mat-card-footer>
               <mat-progress-bar mode="indeterminate" *ngIf="progress"></mat-progress-bar>

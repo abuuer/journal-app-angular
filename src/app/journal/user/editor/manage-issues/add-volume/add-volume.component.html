@@ -24,7 +24,7 @@
           </div>
         </div>
         <div class="col-md-5">
-          <table class="table col-md-9 float-right">
+        <!--  <table class="table col-md-9 float-right" scrollHeight="200px">
             <thead class="thead-light">
             <tr class="">
               <th width="50px">Volume Number</th>
@@ -40,7 +40,31 @@
             </tr>
               <p-progressSpinner *ngIf="progress" [style]="{width:'20px', height:'20px'}" strokeWidth="4"></p-progressSpinner>
             </tbody>
-          </table>
+          </table> -->
+
+
+          <p-table [scrollable]="true" [value]="volumes" scrollHeight="400px" [loading]="spinner">
+            <ng-template pTemplate="header">
+              <tr>
+                <th width="5px"></th>
+                <th width="80px" pSortableColumn="number">Volume Number <p-sortIcon field="number"></p-sortIcon></th>
+                <th width="20px" pSortableColumn="year">Year <p-sortIcon field="year"></p-sortIcon></th>
+                <th width="5px">Edit</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-vol let-i="rowIndex">
+              <tr>
+                <td width="5px">{{i+1}}</td>
+                <td width="80px">Vol. {{vol.number}}</td>
+                <td width="20px">{{vol.year}}</td>
+                <td width="5px"><button mat-mini-fab color="primary" class="pi pi-list" (click)="showDialog(i)"></button></td>
+              </tr>
+            </ng-template>
+          </p-table>
+
+
+
+
         </div>
 
       </div>
@@ -64,19 +88,19 @@
                 <div class="row">
                   <div><h5>Issues:</h5></div>
                 </div>
+                <div class="row">
+                  <div class="col-md-2"><i>Number</i></div>
+                  <div class="col-md-3"><i>From - To</i></div>
+                  <div class="col-md-2"><i>ISSN</i></div>
+                  <div class="col-md-3"><i>Status</i></div>
+                  <div class="col-md-2"><i>Publish Date</i></div>
+                </div>
                 <div class="row" *ngFor="let i of selectedVolume.issues">
                   <div class="col-md-2"><b>Issue No.{{i.number}}</b></div>
                   <div class="col-md-3"><b>{{i.startMonth}} - {{i.endMonth}}</b></div>
                   <div class="col-md-2"><b>{{i.issn}}</b></div>
                   <div class="col-md-3"><b>{{i.status}}</b></div>
                   <div class="col-md-2"><b>{{i.publishDate}}</b></div>
-                  <div class="row">
-                    <div class="col-md-12 sub-container">
-                      <div class="row" *ngFor="let a of i.articles">
-                        <div class="col-md-12"><b> > </b>{{a.title}}</div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>

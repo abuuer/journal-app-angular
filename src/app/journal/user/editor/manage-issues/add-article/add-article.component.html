@@ -175,37 +175,43 @@
                  </ng-template>
                </p-table>
              </div>
-             <div class="col-md-5">
-               <p-table [scrollable]="true" [value]="issues"  scrollHeight="200px">
-                 <ng-template pTemplate="header">
-                   <tr>
-                     <th pSortableColumn="number" width="50">Issue Number <p-sortIcon field="number"></p-sortIcon></th>
-                     <th pSortableColumn="status" width="40">Status <p-sortIcon field="status"></p-sortIcon></th>
-                     <th pSortableColumn="articles.length" width="40">article Numbers<p-sortIcon field="articles.length"></p-sortIcon></th>
-                     <th width="20">select</th>
-                   </tr>
-                 </ng-template>
-                 <ng-template pTemplate="body" let-issue let-i="rowIndex">
-                   <tr>
-                     <td width="50">Issue {{issue.number}}</td>
-                     <td width="40">{{issue.status}}</td>
-                     <td width="40">{{issue.articles.length}}</td>
-                     <td width="20"><span (click)="selectIssues(i)" class="select">select</span></td>
-                   </tr>
-                 </ng-template>
-               </p-table>
-             </div>
-             <div class="col-md-2">
-               <div class="row" *ngIf="chosenVolume">
-                 Selected Issue:
-               </div>
-               <div class="row" *ngIf="chosenVolume">
-                 <div class="col-md-6"><b>Vol. {{chosenVolume.number}}</b></div>
-                 <div class="col-md-6">{{chosenVolume.year}}</div>
-               </div>
-               <div class="row" *ngIf="chosenIssue">
-                 <div class="col-md-6"><b>{{chosenIssue.number}}</b></div>
-                 <div class="col-md-6">{{chosenIssue.status}}</div>
+             <div *ngIf="issues" class="col-md-7">
+               <div *ngIf="issues.length === 0">This volumes doesn't contain any issue at the moment!</div>
+               <div *ngIf="issues.length !== 0" >
+                 <div class="col-md-12">
+                   <p-table [scrollable]="true" [value]="issues"  scrollHeight="200px">
+                     <ng-template pTemplate="header">
+                       <tr>
+                         <th pSortableColumn="number" width="50">Issue Number <p-sortIcon field="number"></p-sortIcon></th>
+                         <th pSortableColumn="status" width="40">Status <p-sortIcon field="status"></p-sortIcon></th>
+                         <th pSortableColumn="articles.length" width="40">article Numbers<p-sortIcon field="articles.length"></p-sortIcon></th>
+                         <th width="20">select</th>
+                       </tr>
+                     </ng-template>
+                     <ng-template pTemplate="body" let-issue let-i="rowIndex">
+                       <tr>
+                         <td width="50">Issue {{issue.number}}</td>
+                         <td width="40">{{issue.status}}</td>
+                         <td width="40">{{issue.publisheds.length}}</td>
+                         <td width="20"><span (click)="selectIssues(i)" class="select">select</span></td>
+                       </tr>
+                     </ng-template>
+                   </p-table>
+                 </div>
+                 <br>
+                 <div class="col-md-12">
+                   <div *ngIf="chosenVolume">
+                     <h5>Selected Issue :</h5>
+                   </div>
+                   <div class="row" *ngIf="chosenVolume">
+                     <div class="col-md-6">Volume's number : <b>{{chosenVolume.number}}</b></div>
+                     <div class="col-md-6">Volume's year : <b>{{chosenVolume.year}}</b></div>
+                   </div>
+                   <div class="row" *ngIf="chosenIssue">
+                     <div class="col-md-6">Issue's number : <b>{{chosenIssue.number}}</b></div>
+                     <div class="col-md-6">Issue's status : <b>{{chosenIssue.status}}</b></div>
+                   </div>
+                 </div>
                </div>
              </div>
            </div>

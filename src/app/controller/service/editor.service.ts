@@ -27,7 +27,7 @@ export class EditorService implements CanActivate {
 
   canActivate() {
     if (this.tokenStorage.getRoles() == null) {
-      this.router.navigate(['/home'])
+      this.router.navigate(['/mjt/home'])
       return false
     } else {
       if (this.tokenStorage.getRoles().includes('ROLE_EDITOR')) {
@@ -47,7 +47,7 @@ export class EditorService implements CanActivate {
   }
 
   getAllReviewers() {
-    return this.http.get<User[]>(this._url + '/journal-api/user-role/findAllReviewers').toPromise().then(
+    return this.http.get<UserArticleDetail[]>(this._url + '/journal-api/user-role/findAllReviewers').toPromise().then(
       data => {
         return data
       }
@@ -92,13 +92,14 @@ export class EditorService implements CanActivate {
     return this.http.delete(this._url +'/journal-api/user/dismissReviewer/email/'+ email).toPromise().then(data=>{return data})
   }
 
-  submitFinalDecision(finalDecision: any, reference: string) {
-    return this.http.put(this._url +'/journal-api/article/updateStatus/articleRef/'+ reference +'/status/' + finalDecision, '')
+  submitFinalDecision(status: string, reference: string,finalDecision :string) {
+    return this.http.put(this._url +'/journal-api/article/updateStatus/articleRef/'+ reference +'/status/' + status
+      + '/decision/' + finalDecision, '')
       .toPromise().then(data=>{return data})
   }
 
   addToIssue(reference: string, issueNumber: number, volNumber: number) {
-    return this.http.put(this._url +'/journal-api/article/addToIssue/articleRef/'+ reference
+    return this.http.post(this._url +'/journal-api/published/addToIssue/articleRef/'+ reference
       + '/issueNumber/' + issueNumber + '/volNumber/'+ volNumber, '').toPromise().then(data=>{return data})
   }
 

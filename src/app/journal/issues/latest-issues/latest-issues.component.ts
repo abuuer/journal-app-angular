@@ -13,21 +13,26 @@ import {ActivatedRoute} from '@angular/router';
 
 export class LatestIssuesComponent implements OnInit {
   private _issue : Issue
-  issueNum : string
-  volNum : string
+  issueNum = ''
+  volNum = ''
   constructor(private userService : UserService,private route : ActivatedRoute) { }
   ngOnInit(): void {
-    this.route.queryParams.subscribe(token=> {
-      this.issueNum = token.issue,
-      this.volNum = token.volume
+    console.log('sballlalff')
+    this.route.queryParams.subscribe(token=>{
+      this.issueNum = token.issueNum
+      this.volNum = token.volNum
     })
-    // this.userService.findByNumberAndVolumeNumber(this.issueNum, this.volNum)
-   /* if(issueNum or volNum){
-      find by number
-    }else {
-      latest
-    }*/
-    this.issue = this.userService.issue
+    if(this.issueNum && this.volNum){
+      this.userService.findByNumberAndVolumeNumber(this.issueNum, this.volNum).then(data=> {
+        this.issue = data
+      })
+    } else{
+       this.userService.findLatestIssue().then(dataSec=> {
+         this.issue = dataSec
+         this.issueNum = this.issue.number.toString()
+       //  this.volNum = this.issue.volume.number.toString()
+       })
+    }
   }
 
   get issue(): Issue {

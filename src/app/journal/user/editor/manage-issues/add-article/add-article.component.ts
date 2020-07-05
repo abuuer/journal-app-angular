@@ -116,6 +116,7 @@ export class AddArticleComponent implements OnInit {
     this.loadingi = true
     this.chosenVolume = this.volumes[i]
     this.issues = this.chosenVolume.issues
+    this.chosenIssue = null
     /*this.editorService.findByVolumeNumber(this.volumes[i].number).then(data=>{
       this.issues = data
       this.loadingi =false

@@ -65,13 +65,13 @@ export class SubmissionService implements CanActivate{
 
   canActivate() {
     if(this.tokenStorage.getRoles() == null){
-      this.router.navigate(['/journal/home'])
+      this.router.navigate(['/mjt/home'])
       return false
     } else {
-      if (this.tokenStorage.getRoles().includes('ROLE_AUTHOR')) {
+      if (this.tokenStorage.getRoles().includes('ROLE_AUTHOR') || this.tokenStorage.getRoles().includes('ROLE_REVIEWER')) {
         return true
       }else {
-        this.router.navigate(['/journal/home'])
+        this.router.navigate(['/'])
         return false
       }
     }

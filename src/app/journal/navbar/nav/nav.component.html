@@ -38,7 +38,7 @@
           <li class="dropdown-item" [routerLink]="['user/editor/manage-issues/add']"><a>Manage Issues</a></li>
         </ul>
       </li>
-      <li class="nav-item dropdown" *ngIf="roles.includes('ROLE_AUTHOR')">
+      <li class="nav-item dropdown" *ngIf="roles.includes('ROLE_AUTHOR') && !roles.includes('ROLE_REVIEWER')">
         <a class="nav-link dropdown-toggle" id="dropdown4" data-toggle="dropdown" aria-haspopup="true"
            aria-expanded="false" href="">Author space</a>
         <ul class="dropdown-menu sec" aria-labelledby="dropdown1">
@@ -51,7 +51,7 @@
       </li>
       <li class="nav-item dropdown" *ngIf="roles.includes('ROLE_REVIEWER')">
         <a class="nav-link dropdown-toggle" id="dropdown5" data-toggle="dropdown" aria-haspopup="true"
-           aria-expanded="false" href="">Author space</a>
+           aria-expanded="false" href="">Reviewer space</a>
         <ul class="dropdown-menu sec" aria-labelledby="dropdown1">
           <li class="dropdown-item " [routerLink]="['user/reviewer/submissions']">
             <a class="nav-link-dropdown" >Manage Assigned Submissions<span class="sr-only">(current)</span></a>

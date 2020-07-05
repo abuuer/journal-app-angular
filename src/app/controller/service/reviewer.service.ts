@@ -7,6 +7,7 @@ import {HttpClient, HttpEvent, HttpRequest} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {FileInfo} from '../model/file.model';
 import {environment} from '../../../environments/environment';
+import {AbstractControl, FormControl, ValidationErrors} from "@angular/forms";
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class ReviewerService implements CanActivate{
 
   canActivate() {
     if(this.tokenService.getRoles() == null){
-      this.router.navigate(['/home'])
+      this.router.navigate(['/mjt/home'])
       return false
     } else {
       if (this.tokenService.getRoles().includes('ROLE_REVIEWER')) {
@@ -75,6 +76,13 @@ export class ReviewerService implements CanActivate{
 
   submitAticle(finalReview: FileInfo) {
    return  this.http.post(this.url + '/journal-api/file/save', finalReview).toPromise().then(data=>{
+      return data;
+    })
+  }
+
+  submitDecision(finalDecision: any, reference: string, email: string) {
+      return this.http.post(this.url + '/journal-api/user-article/updateDecision/email/'+ email +'/articleRef/' + reference +
+      '/decision/'+ finalDecision, '').toPromise().then(data=>{
       return data;
     })
   }

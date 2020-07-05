@@ -23,9 +23,15 @@
             <div class="col-md-12">
               <div class="issue">
                 <div class="row">
-                  <div class="col-md-12 "*ngFor="let a of latestIssue.articles; index as i">{{setArticle(a)}}
-                    <app-issue></app-issue>
-                  </div>
+                  <div class="col-md-12 "*ngFor="let a of latestIssue.publisheds; index as i">
+                      <div class="article-title">{{a.article.title}}</div>
+                      <div class="article-authors">
+                        <span *ngFor="let u of a.article.userArticleDetails">
+                          <a href="">{{u.user.lastName}} {{u.user.lastName}}, </a>
+                        </span>
+                      </div>
+                      <div class="volume">Vol {{latestIssue.volume.number}}, Issue {{latestIssue.number}}</div>
+                    </div>
               </div>
             </div>
           </div>

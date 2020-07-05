@@ -88,13 +88,13 @@ export class UserService implements CanActivate{
   }
 
   findByNumberAndVolumeNumber(issueNum: string, volNum: string) {
-    return this.http.get<Issue[]>(this._url +'/journal-api/issue/findByNumberAndVolume' +
+    return this.http.get<Issue>(this._url +'/journal-api/issue/findByNumberAndVolume' +
       '/issNumber/'+ issueNum+'/volNumber/'+ volNum).toPromise().then(data=>{return data})
   }
 
   findLatestIssue(){
-    this.http.get<Issue>(this._url +'/journal-api/issue/findLatestIssue').toPromise().then(data=>{
+    return this.http.get<Issue>(this._url +'/journal-api/issue/findLatestIssue').toPromise().then(data=>{
       this.issue = data
-    })
+      return data})
   }
 }

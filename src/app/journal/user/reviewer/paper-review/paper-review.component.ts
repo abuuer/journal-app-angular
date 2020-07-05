@@ -5,11 +5,12 @@ import {Observable} from 'rxjs';
 import {HttpEventType, HttpResponse} from '@angular/common/http';
 import {FileInfo} from '../../../../controller/model/file.model';
 import {Message} from "primeng/api";
+import {TokenStorageService} from "../../../../controller/service/token-storage.service";
 
 @Component({
   selector: 'app-paper-review',
   templateUrl: './paper-review.component.html',
-  styleUrls: ['./paperreview.component.css'],
+  styleUrls: ['./paperreview.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class PaperReviewComponent implements OnInit {
@@ -24,7 +25,16 @@ export class PaperReviewComponent implements OnInit {
   decisions: any[]
   finalNotes: string;
   progressBar =  false
-  constructor(private reviewerService : ReviewerService) {
+  finalDecision: any;
+  constructor(private reviewerService : ReviewerService, private tokenStorageService : TokenStorageService) {
+    this.decisions = [
+      {label: 'Select the final decision', value: null},
+      {label: 'Accept without any changes', value: 'Accept without any changes'},
+      {label: 'Accept with minor revisions', value: 'Accept with minor revisions'},
+      {label: 'Accept after major revisions', value: 'Accept after major revisions'},
+      {label: 'Revise and resubmit', value: 'Revise and resubmit'},
+      {label: 'Reject the paper', value: 'Reject the paper'},
+    ];
   }
 
   ngOnInit(): void {
@@ -86,15 +96,23 @@ export class PaperReviewComponent implements OnInit {
     this.progressBar  = true
     this.finalReview.article = this.article
     this.reviewerService.submitAticle(this.finalReview).then(data=>{
-      this.progressBar  = false
-      this.msg.push({severity: 'success', summary: 'Your review has been submitted successfully and will be reviewed by the editorial board'});
-      localStorage.removeItem(`final-review${this.reviewerService.getLocalStorage().article.ref}`)
-      localStorage.removeItem(`article`)
       window.scrollTo(0,0)
       window.location.href = '../submissions'
     },error=> {
-      this.msg.push({severity: 'warn', summary: 'Your review can\'t be submitted at the moment'});
+      this.msg.push({severity: 'warn', summary: 'Your file can\'t be submitted at the moment'});
     })
+    this.reviewerService.submitDecision(this.finalDecision, this.article.reference, this.tokenStorageService.getUser().email).then(
+      data=> {
+        this.progressBar  = false
+        this.msg.push({severity: 'success', summary: 'Your review has been submitted successfully and will be reviewed by' +
+            ' the editorial board'});
+        localStorage.removeItem(`final-review${this.reviewerService.getLocalStorage().article.ref}`)
+        localStorage.removeItem(`article`)
+        window.scrollTo(0,0)
+        window.location.href = '../submissions'
+      },error=> {
+        this.msg.push({severity: 'warn', summary: 'Your decision can\'t be submitted at the moment'});
+      })
   }
 
   deleteFile() {

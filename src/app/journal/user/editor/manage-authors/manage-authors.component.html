@@ -63,9 +63,9 @@
         </td>
         <td>
           <span class="ui-column-title">Registration Date</span>
-          2020-06-15
+          {{author.user.registrationDate}}
         </td>
-        <td> <button mat-mini-fab color="primary" class="pi pi-list" (click)="showDialog(rowIndex)" ></button></td>
+        <td> <button mat-mini-fab color="primary" class="pi pi-list" (click)="showDialog(author.user)" ></button></td>
       </tr>
     </ng-template>
     <ng-template pTemplate="emptymessage">

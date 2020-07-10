@@ -16,7 +16,7 @@
               </div>
               <div *ngIf="!spinner" class="col-md-12 block" >
                   <p-accordion *ngFor="let d of decades">
-                    <p-accordionTab [header]="d" >
+                    <p-accordionTab [header]="d +'s'" >
                       <div *ngFor="let v of volumes">
                         <div *ngIf="d.substr(0,3) === v.year.toString().substr(0,3)">
                           <div class="year" (click)="show(v.year)">

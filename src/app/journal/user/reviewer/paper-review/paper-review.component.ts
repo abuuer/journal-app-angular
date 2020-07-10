@@ -23,7 +23,7 @@ export class PaperReviewComponent implements OnInit {
   private _finalReview = new FileInfo()
   private _article = new Article()
   decisions: any[]
-  finalNotes: string;
+  additionalNotes: string;
   progressBar =  false
   finalDecision: any;
   constructor(private reviewerService : ReviewerService, private tokenStorageService : TokenStorageService) {
@@ -96,27 +96,28 @@ export class PaperReviewComponent implements OnInit {
     this.progressBar  = true
     this.finalReview.article = this.article
     this.reviewerService.submitAticle(this.finalReview).then(data=>{
-      window.scrollTo(0,0)
-      window.location.href = '../submissions'
+      this.msg.push({severity: 'success', summary: 'Your file has been uploaded'});
     },error=> {
-      this.msg.push({severity: 'warn', summary: 'Your file can\'t be submitted at the moment'});
+      this.msg.push({severity: 'warn', summary: 'Your file can\'t be uploaded at the moment'});
     })
-    this.reviewerService.submitDecision(this.finalDecision, this.article.reference, this.tokenStorageService.getUser().email).then(
+    this.reviewerService.submitDecision(this.finalDecision, this.article.reference
+      , this.tokenStorageService.getUser().email, this.additionalNotes).then(
       data=> {
         this.progressBar  = false
         this.msg.push({severity: 'success', summary: 'Your review has been submitted successfully and will be reviewed by' +
             ' the editorial board'});
-        localStorage.removeItem(`final-review${this.reviewerService.getLocalStorage().article.ref}`)
+        localStorage.removeItem(`final-review${this.reviewerService.getLocalStorage().article.reference}`)
         localStorage.removeItem(`article`)
         window.scrollTo(0,0)
-        window.location.href = '../submissions'
       },error=> {
+        this.progressBar  = false
         this.msg.push({severity: 'warn', summary: 'Your decision can\'t be submitted at the moment'});
+        window.scrollTo(0,0)
       })
   }
 
   deleteFile() {
-    localStorage.removeItem(`final-review${this.reviewerService.getLocalStorage().article.ref}`)
+    localStorage.removeItem(`final-review${this.reviewerService.getLocalStorage().article.reference}`)
     this.finalReview = null
   }
 }

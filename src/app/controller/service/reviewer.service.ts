@@ -19,7 +19,7 @@ export class ReviewerService implements CanActivate{
 
   canActivate() {
     if(this.tokenService.getRoles() == null){
-      this.router.navigate(['/mjt/home'])
+      this.router.navigate(['/'])
       return false
     } else {
       if (this.tokenService.getRoles().includes('ROLE_REVIEWER')) {
@@ -58,11 +58,11 @@ export class ReviewerService implements CanActivate{
   }
 
   setLocalStorageReview(articleReview : FileInfo): void {
-    localStorage.setItem(`final-review${this.getLocalStorage().article.id}`,JSON.stringify({articleReview}));
+    localStorage.setItem(`final-review${this.getLocalStorage().article.reference}`,JSON.stringify({articleReview}));
   }
 
   getLocalStorageReview(){
-    return JSON.parse(localStorage.getItem(`final-review${this.getLocalStorage().article.ref}`))
+    return JSON.parse(localStorage.getItem(`final-review${this.getLocalStorage().article.reference}`))
   }
 
   setLocalStorage(article : Article): void {
@@ -80,9 +80,9 @@ export class ReviewerService implements CanActivate{
     })
   }
 
-  submitDecision(finalDecision: any, reference: string, email: string) {
-      return this.http.post(this.url + '/journal-api/user-article/updateDecision/email/'+ email +'/articleRef/' + reference +
-      '/decision/'+ finalDecision, '').toPromise().then(data=>{
+  submitDecision(finalDecision: any, reference: string, email: string, additionalNotes : string) {
+    return this.http.put(this.url + '/journal-api/user-article/updateDecision/email/'+ email +'/articleRef/' + reference +
+      '/decision/'+ finalDecision + '/additionalNotes/'+ additionalNotes, '').toPromise().then(data=>{
       return data;
     })
   }

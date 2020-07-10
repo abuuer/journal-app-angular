@@ -52,7 +52,7 @@
     <ng-template pTemplate="body" let-article let-i="rowIndex">
       <tr *ngIf="article.status.toLowerCase() !== 'rejected' || hideRejected">
         <td>
-          <span (click)="scroll(target,i)" style="cursor: pointer; color: #007ad9; font-size: 12px">show details</span>
+          <span (click)="scroll(target,article)" style="cursor: pointer; color: #007ad9; font-size: 12px">show details</span>
         </td>
         <td>
           <span class="ui-column-title">Title</span>
@@ -327,9 +327,34 @@
               </thead>
               <tbody *ngFor="let f of selectedArticle.fileInfos; index as i">
               <tr class="d-flex"  *ngIf="f.type === 'review'">
-                <td class="col-md-2">File {{i+1}}</td>
+                <td class="col-md-2">File</td>
                 <td class="col-md-2"> Review</td>
                 <td class="col-md-8"><a href="{{f.url}}" target="_blank">{{f.url}}</a></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div >
+            <header><h5>Decisions</h5></header>
+            <table class="table col-md-12">
+              <thead class="thead-light">
+              <tr class="d-flex">
+                <th class="col-md-2" scope="col">Reviewer</th>
+                <th class="col-md-3" scope="col">Decision</th>
+                <th class="col-md-7" scope="col">Additional Notes</th>
+              </tr>
+              </thead>
+              <tbody *ngFor="let f of selectedArticle.userArticleDetails; index as i">
+              <tr class="d-flex"  *ngIf="f.function === 'Reviewer'">
+                <td class="col-md-2">Reviewer</td>
+                <td class="col-md-3">
+                  <span *ngIf="f.reviewerDecision !== null">{{f.reviewerDecision}}</span>
+                  <span *ngIf="f.reviewerDecision === null"> -- No decision yet --</span>
+                </td>
+                <td class="col-md-7">
+                  <span *ngIf="f.additionalNotes !== null">{{f.additionalNotes}}</span>
+                  <span *ngIf="f.additionalNotes === null"> -- No additional notes --</span>
+                </td>
               </tr>
               </tbody>
             </table>

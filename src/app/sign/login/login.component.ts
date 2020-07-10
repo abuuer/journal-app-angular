@@ -50,7 +50,6 @@ export class LoginComponent implements OnInit {
       this.error=false
       this.authService.login(this.formGroup.value).subscribe(
         data => {
-          console.log(data)
           this.tokenStorage.saveRoles(data.roles)
           this.tokenStorage.saveToken(data.accessToken)
           this.authService.getUserInfos(data.email).then(user => {

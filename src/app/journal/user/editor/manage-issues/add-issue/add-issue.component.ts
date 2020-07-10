@@ -71,7 +71,6 @@ export class AddIssueComponent implements OnInit {
     })
     this.editorService.findAllIssues().then(data=>{
       this.issues = data
-      console.log(data)
       this.loadingIssues = false
     })
   }
@@ -216,12 +215,13 @@ export class AddIssueComponent implements OnInit {
       icon: 'pi pi-check-circle',
       accept: () => {
         this.progressBar = true
-        this.editorService.publishIssue(this.selectedIssue.number,1).then(data=>{
+        this.editorService.publishIssue(this.selectedIssue.number,this.selectedIssue.volume.number).then(data=>{
           this.message = [];
           this.progressBar = false
           // @ts-ignore
           this.message.push({severity: 'success', detail: data.message});
           window.scrollTo(0,0)
+          window.location.reload()
         }, error=>{
           this.message = [];
           this.progressBar = false

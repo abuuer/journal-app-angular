@@ -1,7 +1,8 @@
 <div class="container col-md-12">
     <div id="large-header" class="large-header">
       <canvas id="demo-canvas"></canvas>
-      <h5 class="main-title"><span class="thin">Volume {{volNum}}</span> Issue {{issueNum}}</h5>
+      <h5 class="main-title"><span class="thin">Volume {{issue.volume.number}}</span> Issue {{issue.number}}</h5>
+      <div class="hsub-title"><b>{{issue.startMonth}} - {{issue.endMonth}} | {{issue.volume.year}}</b></div>
     </div>
     <div class="col-md-12 main-body">
           <div class="row">
@@ -16,16 +17,22 @@
                       <div class="col-md-12" *ngFor="let a of issue.publisheds; index as i">
                         <div class="row main-article">
                           <div class="col-md-12 issue">
-                            {{setArticle(a.article)}}
-                              <app-issue></app-issue>
+                            <div class="col-md-12 ">
+                              <div class="article-title">{{a.article.title}}</div>
+                              <div class="article-authors">
+                        <span *ngFor="let u of a.article.userArticleDetails">
+                          <span class="tags" *ngIf="u.mainAuthorCheck !== -1">{{u.user.lastName}} {{u.user.lastName}} </span>
+                        </span>
+                              </div>
+                              <div class="volume">Vol {{issue.volume.number}}, Issue {{issue.number}}</div>
+                              <div >
+                                {{a.article.submitDate}}
+                              </div>
+                            </div>
                               <div class="row options">
-                                <div class="col-md-12 ">
-                                  <div class="row">
-                                    <div class="col-md-6">
-                                      {{a.article.submitDate}}
-                                    </div>
-                                    <div class="col-md-6">
-                                      <button class="btn btn-outline-dark fa fa-file-pdf-o float-right"> PDF</button>
+                                    <div class="col-md-12">
+                                      <a [href]="getpdfLink(a.article)" target="_blank"><button *ngIf="pdfexist(a.article)" class="btn btn-outline-dark fa fa-file-pdf-o float-right">
+                                        PDF</button></a>
                                       <a class="btn btn-outline-dark fa fa-bars float-right"
                                               data-toggle="collapse" href="#collapseExample-{{i}}"
                                               aria-expanded="false" > Abstract</a>
@@ -34,8 +41,6 @@
                                     <div class="col-md-12 collapse abstract" id="collapseExample-{{i}}">
                                       {{a.article.abstractt}}
                                     </div>
-                                  </div>
-                                </div>
                               </div>
                           </div>
                         </div>

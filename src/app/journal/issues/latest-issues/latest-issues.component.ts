@@ -17,7 +17,6 @@ export class LatestIssuesComponent implements OnInit {
   volNum = ''
   constructor(private userService : UserService,private route : ActivatedRoute) { }
   ngOnInit(): void {
-    console.log('sballlalff')
     this.route.queryParams.subscribe(token=>{
       this.issueNum = token.issueNum
       this.volNum = token.volNum
@@ -47,5 +46,26 @@ export class LatestIssuesComponent implements OnInit {
 
   setArticle(a: Article) {
     this.userService.article = a
+  }
+
+  getpdfLink(article: Article) {
+    // tslint:disable-next-line:prefer-for-of
+    for(let i = 0 ; i< article.fileInfos.length ; i++){
+      if(article.fileInfos[i].type === 'Main Document'){
+       return article.fileInfos[i].url
+      }
+    }
+  }
+
+  pdfexist(article: Article) {
+    let t = false
+    // tslint:disable-next-line:prefer-for-of
+    for(let i = 0 ; i< article.fileInfos.length ; i++){
+      if(article.fileInfos[i].type === 'Main Document'){
+        return article.fileInfos[i].url
+        t= true
+      }
+    }
+    return t
   }
 }

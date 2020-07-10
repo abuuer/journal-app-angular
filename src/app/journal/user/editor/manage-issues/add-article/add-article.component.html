@@ -6,9 +6,6 @@
            [filterDelay]="0" >
     <ng-template pTemplate="caption">
       List of Accepted Articles
-      <div>
-        <mat-checkbox [(ngModel)]="hidePublished" style="font-size: 12px">Show published papers</mat-checkbox>
-      </div>
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
@@ -16,9 +13,9 @@
         <th pSortableColumn="title">Title <p-sortIcon field="title"></p-sortIcon></th>
         <th pSortableColumn="type">Type <p-sortIcon field="type"></p-sortIcon></th>
         <th pSortableColumn="submitDate">Date <p-sortIcon field="submitDate"></p-sortIcon></th>
-        <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
-        <th >Author </th>
-        <th >Reviewer </th>
+        <th ></th>
+        <th > </th>
+        <th > </th>
       </tr>
       <tr >
         <th>
@@ -33,16 +30,17 @@
         <th>
           <p-calendar (onSelect)="onDateSelect($event)" (onClearClick)="dt.filter('', 'submitDate', 'equals')" [showButtonBar]="true" styleClass="ui-column-filter" placeholder="Registration Date" [readonlyInput]="true" dateFormat="yy-mm-dd"></p-calendar>
         </th>
-        <th class="side">
-        </th>
         <th>
+          Status
         </th>
-        <th>
+        <th>Author
+        </th>
+        <th>Reviewer
         </th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-article let-i="rowIndex">
-      <tr *ngIf="article.status.toLowerCase() !== 'published' || hidePublished">
+      <tr>
         <td>
           <span (click)="scroll(target,i)" style="cursor: pointer; color: #007ad9; font-size: 12px">show details</span>
         </td>
@@ -60,7 +58,7 @@
         </td>
         <td>
           <span class="ui-column-title">Status</span>
-          <span [class]="'submission-badge status-' + getValueStatus(article.status)">{{article.status}}</span>
+          <span [class]="'submission-badge status-accepted'">{{article.status}}</span>
         </td>
         <td>
           <span class="ui-column-title">Author</span>
@@ -136,7 +134,7 @@
                 </tr>
                 </thead>
                 <tbody *ngFor="let f of selectedArticle.fileInfos; index as i">
-                <tr class="d-flex" *ngIf="f.type !== 'review'">
+                <tr class="d-flex">
                   <td class="col-md-2">File {{i+1}}</td>
                   <td class="col-md-2"> {{f.type}}</td>
                   <td class="col-md-8"><a href="{{f.url}}" target="_blank">{{f.url}}</a></td>

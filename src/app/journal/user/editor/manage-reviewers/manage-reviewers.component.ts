@@ -27,7 +27,6 @@ export class ManageReviewersComponent implements OnInit {
   ngOnInit(): void {
     this.editorService.getAllReviewers().then(reviewers => {
       this.reviewers = reviewers
-      console.log(reviewers)
       this.loading = false
     })
   }
@@ -51,9 +50,9 @@ export class ManageReviewersComponent implements OnInit {
     return date.getFullYear() + '-' + month + '-' + day;
   }
 
-  showDialog(rowIndex) {
+  showDialog(reviewer : User) {
     this.progress = false
-    this.selectedReviewer = this.reviewers[rowIndex].user
+    this.selectedReviewer = reviewer
     this.display = true;
   }
 

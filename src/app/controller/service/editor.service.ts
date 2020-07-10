@@ -123,7 +123,6 @@ export class EditorService implements CanActivate {
   }
 
   createNewIssue(issue: Issue) {
-	  console.log(issue)
     return this.http.post(this._url +'/journal-api/issue/createNewIssue',{
 		number : issue.number,
         startMonth : issue.startMonth,

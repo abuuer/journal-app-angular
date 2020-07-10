@@ -37,7 +37,6 @@ export class RegisterConfComponent implements OnInit {
   passwordReg(group : FormGroup) {
     const reg : RegExp = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/
     const pwd = group.get( 'pwd' );
-    console.log(pwd.value)
     return reg.test(pwd.value) ? null : {passwordReg: true};
   }
 

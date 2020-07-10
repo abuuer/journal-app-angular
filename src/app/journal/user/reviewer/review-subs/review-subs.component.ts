@@ -100,8 +100,8 @@ export class ReviewSubsComponent implements OnInit{
     }
   }
 
-  scroll(target: HTMLDivElement, i) {
-    this.selectedArticle = this.articles[i]
+  scroll(target: HTMLDivElement, article : Article) {
+    this.selectedArticle = article
     target.scrollIntoView()
   }
 

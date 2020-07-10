@@ -23,7 +23,7 @@
             <div class="col-md-12">
               <div class="issue">
                 <div class="row">
-                  <div class="col-md-12 "*ngFor="let a of latestIssue.publisheds; index as i">
+                  <div class="col-md-12 new-article"*ngFor="let a of latestIssue.publisheds; index as i">
                       <div class="article-title">{{a.article.title}}</div>
                       <div class="article-authors">
                         <span *ngFor="let u of a.article.userArticleDetails">
@@ -31,6 +31,11 @@
                         </span>
                       </div>
                       <div class="volume">Vol {{latestIssue.volume.number}}, Issue {{latestIssue.number}}</div>
+                    <div class="article-authors">
+                        <span class="tags" *ngFor="let t of a.article.articleTags">
+                          {{t.tag.name}}
+                        </span>
+                    </div>
                     </div>
               </div>
             </div>

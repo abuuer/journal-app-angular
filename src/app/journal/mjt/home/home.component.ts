@@ -19,22 +19,25 @@ export class HomeComponent implements OnInit {
     this.userService.findLatestIssue().then(data=> {
       this.latestIssue = data
     })
+   /* this.userService.findMostRead().then(data=> {
+      this.latestIssue = data
+    })*/
 
     this.mReadIssues =
       { number : 1,
         publishDate: new Date('2020-01-01'), status:'published',startMonth: 'Jan',endMonth: 'Feb',issn:'562-56',
         articles:[
-          {title : '54512 AAAAAAAA  AAAAAAAAAAAAA 5421 AAAAAAAAAAAAAAAAA 2145',
+          {title : 'Models for Analysis and Prognostication of the Indicators of the Distributed Computer Systems’ Characteristics',
             // @ts-ignore
-            userArticleDetails : [{user:{lastName:'Abouerraja'}},{user:{lastName:'Sfrouisd'}}]
+            userArticleDetails : [{user:{lastName:'Viktor'}},{user:{lastName:'Steshyn'}}]
           },
-          {title : 'HHHHH BBBBBBBBBBBBB 845454 BBBBBBBBBBBBBBB BBBBBBBBBBBBBBBB',
+          {title : 'Integrating Non-Functional Requirements Into a Case Based Reasoning Model for Software Effort Estimation',
             // @ts-ignore
-            userArticleDetails : [{user:{lastName:'Halima'}},{user:{lastName:'khlidfs'}}]
+            userArticleDetails : [{user:{lastName:'Halima'}},{user:{lastName:'khlidfa'}}]
           },
         ],
         // @ts-ignore
-        volume: {number: 1}
+        volume: {number: 4}
       }
   }
 

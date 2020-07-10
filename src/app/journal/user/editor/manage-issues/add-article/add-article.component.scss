@@ -9,34 +9,9 @@
   font-size: 12px;
   letter-spacing: .3px;
 
-&.status-qualified {
-   background-color: #C8E6C9;
-   color: #256029;
- }
-
-&.status-unqualified {
-   background-color: #FFCDD2;
-   color: #C63737;
- }
-
-&.status-negotiation {
-   background-color: #1a237e;
-   color: #e6ffff;
- }
-
-&.status-new {
+&.status-accepted {
    background-color: #B3E5FC;
    color: #23547B;
- }
-
-&.status-renewal {
-   background-color: #ECCFFF;
-   color: #694382;
- }
-
-&.status-proposal {
-   background-color: #FFD8B2;
-   color: #805B36;
  }
 }
 

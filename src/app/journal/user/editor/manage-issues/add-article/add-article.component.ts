@@ -3,8 +3,8 @@ import {Article} from '../../../../../controller/model/article.model';
 import {ConfirmationService, Table} from 'primeng';
 import {EditorService} from '../../../../../controller/service/editor.service';
 import {Message} from 'primeng/api';
-import {Volume} from "../../../../../controller/model/volume.model";
-import {Issue} from "../../../../../controller/model/issue.model";
+import {Volume} from '../../../../../controller/model/volume.model';
+import {Issue} from '../../../../../controller/model/issue.model';
 
 @Component({
   selector: 'app-add-article',
@@ -26,10 +26,6 @@ export class AddArticleComponent implements OnInit {
   message: Message[] = []
   loadingv =true
   loadingi =false
-  statuses = [
-    {label: 'Published', value: 'qualified'},
-    {label: 'Accepted', value: 'new'}
-  ]
 
 
   constructor(private editorService: EditorService , private confirmationService: ConfirmationService) {
@@ -66,18 +62,10 @@ export class AddArticleComponent implements OnInit {
     return date.getFullYear() + '-' + month + '-' + day;
   }
 
-  getValueStatus(status: string) {
-    // tslint:disable-next-line:prefer-for-of
-    for(let i = 0 ; i < this.statuses.length ; i++){
-      // tslint:disable-next-line:no-conditional-assignment
-      if(this.statuses[i].label.toLowerCase() === status.toLowerCase()){
-        return this.statuses[i].value
-      }
-    }
-  }
 
 
   scroll(target: HTMLDivElement, i) {
+    this.message = []
     this.selectedArticle = this.articles[i]
     target.scrollIntoView()
   }
@@ -104,6 +92,7 @@ export class AddArticleComponent implements OnInit {
       this.editorService.addToIssue(this.selectedArticle.reference, this.chosenIssue.number,this.chosenVolume.number).then(data=>{
         // @ts-ignore
         this.message.push({severity:'success', summary: data.message})
+        window.location.reload()
         this.progress = false
       },error=> {
         this.message.push({severity:'warn', summary: error.error.message})

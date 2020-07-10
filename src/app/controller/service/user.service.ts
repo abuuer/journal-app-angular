@@ -97,4 +97,9 @@ export class UserService implements CanActivate{
       this.issue = data
       return data})
   }
+
+  findMostRead() {
+    return this.http.get<Article>(this._url +'/journal-api/published/findMostRead').toPromise().then(data=>{
+      return data})
+  }
 }

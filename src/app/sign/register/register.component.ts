@@ -70,9 +70,6 @@ export class RegisterComponent implements OnInit {
     const emailConf = group.get( 'emailConf');
     return email.value === emailConf.value ? null : {nomatch: true};
   }
-  hi() {
-    console.log(this.emailConf.hasError('nomatch'))
-  }
  get firstName(): any {
     return this.formGroup.get('firstName');
   }

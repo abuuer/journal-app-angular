@@ -56,7 +56,6 @@ export class AddVolumeComponent implements OnInit {
   showDialog(i: number) {
     this.display = true
     this._selectedVolume = this.volumes[i]
-    console.log(this.selectedVolume)
   }
 
   delete() {

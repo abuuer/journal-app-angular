@@ -62,7 +62,7 @@
           <span class="ui-column-title">Registration Date</span>
           {{reviewer.user.registrationDate}}
         </td>
-        <td> <button mat-mini-fab color="primary" class="pi pi-list" (click)="showDialog(rowIndex)" ></button></td>
+        <td> <button mat-mini-fab color="primary" class="pi pi-list" (click)="showDialog(reviewer.user)" ></button></td>
       </tr>
     </ng-template>
     <ng-template pTemplate="emptymessage">
